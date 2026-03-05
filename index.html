@@ -76,18 +76,21 @@
 
   /* NAV */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+    position: fixed; top: 12px; left: 16px; right: 16px; z-index: 500;
     padding: 24px 48px;
     display: flex; justify-content: space-between; align-items: center;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    background: rgba(22, 0, 38, 0.4);
-    border-bottom: 1px solid rgba(239, 238, 230, 0.06);
+    background: rgba(22, 0, 38, 0.62);
+    border: 1px solid rgba(239, 238, 230, 0.20);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.22);
     transition: padding 0.4s ease;
   }
   nav.scrolled { padding: 16px 48px; }
 
   .nav-logo {
+    font-family: 'Degular Display', sans-serif;
     font-size: 22px; font-weight: 700;
     letter-spacing: 0.2em;
     color: var(--cream);
@@ -102,12 +105,33 @@
   .nav-links a:hover { color: var(--cream); }
   .nav-cta {
     padding: 10px 24px;
-    background: var(--grad);
+    background: linear-gradient(270deg, #ff0040, #7b00ff, #ff0040, #c8000a, #7b00ff);
+    background-size: 400% 400%;
     color: var(--cream) !important;
     border-radius: 100px;
     font-weight: 500 !important;
     letter-spacing: 0.05em !important;
     text-transform: none !important;
+    animation: navCtaGradientMove 2.5s ease infinite,
+               glowPulse 2.5s ease-in-out infinite;
+    transition: box-shadow 0.3s ease;
+  }
+  .nav-cta:hover {
+    animation-name: navCtaGradientMove, glowPulse;
+    animation-duration: 0.8s, 0.8s;
+    box-shadow: 0 0 30px 10px rgba(123, 0, 255, 0.6);
+  }
+
+  @keyframes navCtaGradientMove {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes glowPulse {
+    0%   { box-shadow: 0 0 8px 2px rgba(255, 0, 64, 0.4); }
+    50%  { box-shadow: 0 0 22px 6px rgba(123, 0, 255, 0.5); }
+    100% { box-shadow: 0 0 8px 2px rgba(255, 0, 64, 0.4); }
   }
 
   /* HERO */
@@ -167,8 +191,13 @@
     opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
   }
   .hero-title .line-grad {
-    color: #9f004a;
-    -webkit-text-fill-color: #9f004a;
+    background: linear-gradient(270deg, #ff0040, #7b00ff, #ff0040, #c8000a, #7b00ff);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: navCtaGradientMove 2.5s ease infinite;
     display: block;
     line-height: 1.15;
     margin: 0;
@@ -204,6 +233,79 @@
     transition: border-color 0.3s, color 0.3s;
   }
   .btn-ghost:hover { border-color: rgba(239,238,230,0.4); color: var(--cream); }
+
+  /* HOLO CARD */
+  #holo-card {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: perspective(800px) translateY(-50%);
+    width: 280px;
+    height: 380px;
+    border-radius: 20px;
+    background: rgba(22, 0, 38, 0.72);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(180, 0, 80, 0.3);
+    box-shadow: 0 0 30px rgba(123, 0, 255, 0.15), 0 20px 60px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    animation: holoFloat 4s ease-in-out infinite;
+    transition: box-shadow 0.3s ease;
+    will-change: transform;
+    transform-style: preserve-3d;
+  }
+  #holo-card:hover {
+    box-shadow: 0 0 50px rgba(123, 0, 255, 0.3), 0 30px 80px rgba(0,0,0,0.5);
+    animation-play-state: paused;
+  }
+  #holo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0) 0%,
+      rgba(180,0,80,0.08) 40%,
+      rgba(123,0,255,0.1) 60%,
+      rgba(255,255,255,0) 100%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  .holo-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0) 0%,
+      rgba(180,0,80,0.15) 25%,
+      rgba(123,0,255,0.2) 50%,
+      rgba(255,255,255,0.08) 75%,
+      rgba(255,255,255,0) 100%);
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    transition: background-position 0.1s ease;
+  }
+  #holo-card img {
+    width: 140px;
+    height: auto;
+    opacity: 0.92;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 0 18px rgba(180,0,80,0.4));
+  }
+  @keyframes holoFloat {
+    0%   { transform: perspective(800px) translateY(-50%) translateY(0px); }
+    50%  { transform: perspective(800px) translateY(-50%) translateY(-12px); }
+    100% { transform: perspective(800px) translateY(-50%) translateY(0px); }
+  }
+  @media (max-width: 768px) { #holo-card { display: none; } }
 
   .hero-scroll {
     position: absolute; bottom: 40px; left: 50%;
@@ -267,10 +369,10 @@
   .services { position: relative; background: var(--cream); }
   .services-header { max-width: 600px; margin-bottom: 80px; }
   .services-header p { font-size: 17px; color: rgba(22,0,38,0.65); line-height: 1.7; margin-top: 16px; }
-  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
   .service-card {
-    padding: 56px 48px;
+    padding: 40px;
     border: 1px solid rgba(22,0,38,0.1);
     background: rgba(22,0,38,0.03);
     backdrop-filter: blur(10px);
@@ -278,12 +380,39 @@
     position: relative; overflow: hidden;
     transition: background 0.4s, border-color 0.4s; cursor: none;
   }
+  /* top accent bar that expands on hover (Services section only) */
   .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--accent);
+    z-index: 1;
+    transition: height 0.4s ease;
+  }
+  .service-card:hover::before { height: 100%; }
+
+  /* ensure content stays above the expanding fill and can change color for contrast */
+  .service-card > * { position: relative; z-index: 3; }
+  .service-card .service-name,
+  .service-card .service-desc,
+  .service-card .service-tag { transition: color 0.25s ease; }
+  .service-card:hover .service-name,
+  .service-card:hover .service-desc,
+  .service-card:hover .service-tag { color: var(--cream); }
+  .service-card:hover .service-icon svg { stroke: var(--accent); }
+  /* make the square behind the icon cream on hover so the accent-stroked icon stands out */
+  .service-card:hover .service-icon { background: var(--cream); }
+  .service-card::after {
     content: ''; position: absolute; inset: 0;
-    background: var(--grad); opacity: 0; transition: opacity 0.4s;
+    background: var(--grad); opacity: 0; z-index: 2; transition: opacity 0.4s;
   }
   .service-card:hover { border-color: rgba(159,0,74,0.3); }
-  .service-card:hover::before { opacity: 0.04; }
+  .service-card:hover::after { opacity: 0.04; }
+  /* ensure strokes/borders are readable on hover (white) */
+  .service-card:hover { border-color: var(--cream); }
+  .service-card:hover .service-tag { border-color: var(--cream); }
 
   .glass-highlight {
     position: absolute; width: 200px; height: 200px;
@@ -294,6 +423,8 @@
   .service-card:hover .glass-highlight { opacity: 1; }
 
   .service-num { font-size: 11px; letter-spacing: 0.2em; color: rgba(22,0,38,0.35); margin-bottom: 32px; display: block; }
+  /* hide numeric labels inside Services section per request */
+  .services .service-num { display: none; }
   .service-icon {
     width: 48px; height: 48px; margin-bottom: 28px;
     background: var(--grad); border-radius: 12px;
@@ -302,12 +433,15 @@
   .service-icon svg { width: 22px; height: 22px; stroke: var(--cream); fill: none; stroke-width: 1.5; }
   .service-name {
     font-family: 'Degular Display', sans-serif;
-    font-size: 28px; font-weight: 600; margin-bottom: 16px; line-height: 1.15;
+    font-size: 22px; font-weight: 600; line-height: 1.1;
+    margin: 0 0 12px 0;
+    height: 28px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     position: relative; z-index: 1; color: var(--dark);
   }
   .service-desc {
     font-size: 15px; color: rgba(22,0,38,0.65); line-height: 1.7;
-    position: relative; z-index: 1; margin-bottom: 32px;
+    position: relative; z-index: 1; margin-top: 12px; margin-bottom: 32px;
   }
   .service-tags { display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 1; }
   .service-tag {
@@ -315,51 +449,174 @@
     border: 1px solid rgba(22,0,38,0.18); border-radius: 100px;
     font-size: 11px; letter-spacing: 0.1em; color: rgba(22,0,38,0.5); text-transform: uppercase;
   }
+  /* body text starts uniformly after header */
   .services .section-title { color: var(--dark); }
 
   /* ABOUT */
   #about { background: #000; }
   .philosophy { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .philosophy-visual { position: relative; height: 500px; }
+
+  /* Horizontal row of 3 equal-width stat cards */
+  .philosophy-visual {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Base: liquid glass dark card */
   .phil-box {
-    position: absolute;
-    border: 1px solid rgba(239,238,230,0.08);
-    background: rgba(239,238,230,0.02);
-    backdrop-filter: blur(20px); border-radius: 16px; padding: 32px;
+    width: 280px;
+    height: 200px;
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* liquid glass */
+    background: rgba(80, 10, 40, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(180, 60, 90, 0.3);
+    box-shadow: 0 8px 32px rgba(120, 20, 60, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
-  .phil-box-1 { width: 300px; top: 0; left: 0; }
-  .phil-box-2 { width: 260px; bottom: 40px; right: 0; }
+
+  /* Glass cards: keep all text light */
+  .phil-box-1, .phil-box-2 { /* inherits from .phil-box */ }
+
+  /* Middle gradient card: slightly taller, focal point */
   .phil-box-3 {
-    width: 180px; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--grad); border-color: transparent; text-align: center;
+    height: 228px;
+    background: var(--grad);
+    border-color: transparent;
+    text-align: center;
+    justify-content: center;
+    box-shadow: 0 12px 40px rgba(159, 0, 74, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
-  .phil-metric { font-size: 48px; font-family: 'Degular Display', sans-serif; font-weight: 700; color: var(--cream); }
-  .phil-metric-label { font-size: 13px; color: rgba(239,238,230,0.55); margin-top: 4px; }
-  .phil-box-3 .phil-metric { font-size: 36px; color: #fff; }
-  .phil-box-3 .phil-metric-label { color: rgba(255,255,255,0.75) !important; }
+
+  /* Consistent typography across dark cards */
+  .phil-metric { font-size: 40px; font-family: 'Degular Display', sans-serif; font-weight: 700; color: var(--cream); line-height: 1; margin-bottom: 4px; }
+  .phil-metric-label { font-size: 13px; color: rgba(239,238,230,0.75); margin-top: 6px; }
+
+  /* Middle card type overrides */
+  .phil-box-3 .phil-metric { font-size: 40px; color: #fff; }
+  .phil-box-3 .phil-metric-label { color: rgba(255,255,255,0.80) !important; }
+
   .philosophy-text .section-title { margin-bottom: 24px; }
   .philosophy-text p { font-size: 16px; line-height: 1.8; color: rgba(239,238,230,0.68); margin-bottom: 20px; }
   .accent-line { width: 60px; height: 2px; background: var(--grad); margin: 32px 0; }
 
   /* PROCESS */
-  .process-section { background: rgba(239,238,230,0.015); }
-  .process-steps {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 1px; margin-top: 80px; background: rgba(239,238,230,0.06);
+  .process-scroll-wrapper {
+    position: relative;
+    height: 250vh; /* ~62.5vh per phase */
   }
-  .process-step {
-    background: var(--dark); padding: 48px 36px;
-    position: relative; overflow: hidden; transition: background 0.3s;
+  .process-section {
+    background: rgba(239,238,230,0.015);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
   }
-  .process-step:hover { background: rgba(159,0,74,0.04); }
-  .process-step-num {
-    font-size: 72px; font-family: 'Degular Display', sans-serif; font-weight: 700;
-    color: rgba(239,238,230,0.08); line-height: 1; margin-bottom: 24px; transition: color 0.3s;
+  .process-layout {
+    display: flex;
+    gap: 64px;
+    margin-top: 80px;
+    align-items: center;
+    min-height: 400px;
   }
-  .process-step:hover .process-step-num { color: rgba(159,0,74,0.35); }
-  .process-step-title { font-family: 'Degular Display', sans-serif; font-size: 22px; font-weight: 600; margin-bottom: 12px; }
-  .process-step-desc { font-size: 14px; color: rgba(239,238,230,0.6); line-height: 1.7; }
+  /* — Left: stacked glass cards — */
+  .process-fan {
+    flex: 0 0 40%;
+    position: relative;
+    /* height set by aspect-ratio so card is 1.586:1 (credit card) */
+    aspect-ratio: 1.586;
+  }
+  .process-card {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+    padding: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1),
+                transform 0.5s cubic-bezier(0.23,1,0.32,1);
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  .process-card.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s,
+                transform 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s;
+    pointer-events: auto;
+    z-index: 2;
+  }
+  .process-card.exit {
+    opacity: 0;
+    transform: translateY(-40px);
+    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1),
+                transform 0.5s cubic-bezier(0.23,1,0.32,1);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .process-card-num {
+    font-size: 6rem; font-family: 'Degular Display', sans-serif;
+    font-weight: 800; color: var(--pink); line-height: 1;
+    flex-shrink: 0;
+  }
+  .process-card-title {
+    font-family: 'Degular Display', sans-serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--cream);
+    line-height: 1.2;
+  }
+  /* — Right: body text only — */
+  .process-detail {
+    flex: 1 1 60%;
+    position: relative;
+    min-height: 200px;
+  }
+  .process-detail-item {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+  }
+  .process-detail-item.exit {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .process-detail-item.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+    pointer-events: auto;
+  }
+  .process-detail-desc {
+    font-size: 2rem; color: rgba(239,238,230,0.85);
+    line-height: 1.6; max-width: 560px;
+  }
 
   /* CTA */
   .cta-section {
@@ -389,6 +646,100 @@
 
   .cta-section .btn-ghost { border-color: rgba(22,0,38,0.5); color: var(--dark); }
   .cta-section .btn-ghost:hover { border-color: var(--dark); color: var(--dark); }
+
+  /* CONTACT FORM */
+  .cf-form {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .cf-row {
+    display: flex;
+    gap: 16px;
+  }
+  .cf-row .cf-group { flex: 1 1 0; min-width: 0; }
+  .cf-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cf-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(22,0,38,0.5);
+  }
+  .cf-input,
+  .cf-select,
+  .cf-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(22,0,38,0.12);
+    background: rgba(22,0,38,0.04);
+    color: var(--dark);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .cf-input::placeholder,
+  .cf-textarea::placeholder {
+    color: rgba(22,0,38,0.35);
+  }
+  .cf-input:focus,
+  .cf-select:focus,
+  .cf-textarea:focus {
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(159,0,74,0.12);
+  }
+  .cf-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2392004a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+  .cf-select option { background: var(--cream); color: var(--dark); }
+  .cf-textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+  .cf-submit {
+    width: 100%;
+    padding: 16px 36px;
+    background: var(--grad);
+    color: var(--cream);
+    border: none;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 0 40px rgba(159,0,74,0.3);
+  }
+  .cf-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 60px rgba(159,0,74,0.5); }
+  /* contact form — label alignment & cursor overrides */
+  .cf-form .cf-label { text-align: left; display: block; }
+  #contact, #contact * { cursor: auto; }
+  /* per-field entrance animation */
+  .cf-field-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .cf-field-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   /* FOOTER */
   footer { padding: 80px 48px 40px; border-top: 1px solid rgba(239,238,230,0.06); }
@@ -431,10 +782,15 @@
     nav { padding: 20px 24px; }
     .nav-links { display: none; }
     .hero, section { padding: 100px 24px 80px; }
-    .services-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: repeat(4, 1fr); }
     .philosophy { grid-template-columns: 1fr; }
     .philosophy-visual { display: none; }
-    .process-steps { grid-template-columns: 1fr 1fr; }
+    .process-scroll-wrapper { height: auto; }
+    .process-section { position: relative; height: auto; }
+    .process-layout { flex-direction: column; gap: 40px; }
+    .process-fan { flex: none; width: 100%; aspect-ratio: 1.586; }
+    .process-detail { position: relative; min-height: 160px; }
+    .process-detail-desc { font-size: 1.4rem; }
     .footer-top { flex-direction: column; gap: 40px; }
     .footer-links { gap: 40px; flex-wrap: wrap; }
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
@@ -451,31 +807,33 @@
   }
   #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
   
-  .grapes-loader {
-    width: 60px; height: 72px;
-    animation: rotateGrapes 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-    opacity: 1; transition: opacity 0.5s ease;
-  }
-  .grapes-loader svg { width: 100%; height: 100%; fill: var(--cream); }
-  .grapes-loader.fade-out { opacity: 0; }
-  @keyframes rotateGrapes {
-    0% { transform: rotate(0deg) scale(0.8); }
-    50% { transform: rotate(360deg) scale(1.1); }
-    100% { transform: rotate(720deg) scale(0.8); }
-  }
-  
-  .malvec-text {
-    position: absolute; font-family: 'Degular Display', sans-serif;
-    font-weight: 700; font-size: clamp(40px, 8vw, 100px);
-    color: var(--cream); letter-spacing: 0.1em; opacity: 0;
+  /* loader image (using supplied PNG) */
+  .preloader-logo {
+    max-width: 60px;        /* 35% smaller than previous 90px */
+    width: 12vw;
+    height: auto;
+    opacity: 0;
     transform: scale(0.5);
-    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    animation: logoGrow 0.8s ease-out forwards;
+    transition: opacity 0.4s ease;
   }
-  .malvec-text.zoom-in { opacity: 1; transform: scale(1); }
-  .malvec-text.zoom-out {
-    opacity: 0; transform: scale(2);
-    transition: opacity 0.6s ease-in, transform 0.6s ease-in;
+  .preloader-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* enhanced pink glow behind the logo */
+    filter: drop-shadow(0 0 20px rgba(159,0,74,0.5))
+            drop-shadow(0 0 10px rgba(159,0,74,0.3));
+    transition: filter 0.3s ease;
   }
+  .preloader-logo.fade-out { opacity: 0; transition: opacity 0.4s ease; }
+
+  @keyframes logoGrow {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* text removed; logo only on preloader */
   body.loading { overflow: hidden !important; }
 </style>
 </head>
@@ -483,19 +841,10 @@
 
 <!-- PRELOADER -->
 <div id="preloader">
-  <div class="grapes-loader" id="grapesLoader">
-    <!-- Minimal Grapes SVG -->
-    <svg viewBox="0 0 100 120" fill="var(--cream)" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="10" width="80" height="20" rx="10" />
-      <circle cx="22" cy="50" r="11" />
-      <circle cx="50" cy="50" r="11" />
-      <circle cx="78" cy="50" r="11" />
-      <circle cx="36" cy="78" r="11" />
-      <circle cx="64" cy="78" r="11" />
-      <circle cx="50" cy="106" r="11" />
-    </svg>
+  <div class="preloader-logo" id="preloaderLogo">
+    <!-- the logo PNG should be placed at the specified path -->
+    <img src="logo.png" alt="MALVEC logo" />
   </div>
-  <div class="malvec-text" id="malvecText">MALVEC</div>
 </div>
 <!-- /PRELOADER -->
 
@@ -533,6 +882,11 @@
     <div class="scroll-line"></div>
     <span>Scroll</span>
   </div>
+
+  <div id="holo-card">
+    <div class="holo-shine"></div>
+    <img src="logo.png" alt="MALVEC" draggable="false">
+  </div>
 </section>
 
 <div class="marquee-section">
@@ -565,7 +919,6 @@
   <div class="services-grid stagger">
     <div class="service-card" data-card>
       <div class="glass-highlight"></div>
-      <span class="service-num">01</span>
       <div class="service-icon">
         <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
       </div>
@@ -580,7 +933,6 @@
     </div>
     <div class="service-card" data-card>
       <div class="glass-highlight"></div>
-      <span class="service-num">02</span>
       <div class="service-icon">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       </div>
@@ -595,7 +947,6 @@
     </div>
     <div class="service-card" data-card>
       <div class="glass-highlight"></div>
-      <span class="service-num">03</span>
       <div class="service-icon">
         <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
       </div>
@@ -610,7 +961,6 @@
     </div>
     <div class="service-card" data-card>
       <div class="glass-highlight"></div>
-      <span class="service-num">04</span>
       <div class="service-icon">
         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>
@@ -659,34 +1009,38 @@
 
 <div class="h-line"></div>
 
+<div class="process-scroll-wrapper" id="processWrapper">
 <section class="process-section" id="process">
   <div class="reveal">
     <div class="section-label">Process</div>
     <h2 class="section-title">How we work</h2>
   </div>
-  <div class="process-steps stagger">
-    <div class="process-step">
-      <div class="process-step-num">01</div>
-      <h3 class="process-step-title">Discovery</h3>
-      <p class="process-step-desc">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+  <div class="process-layout">
+    <!-- Left: fan cards -->
+    <div class="process-fan" id="processFan">
+      <div class="process-card" data-idx="0"><span class="process-card-num">01</span><span class="process-card-title">Discovery</span></div>
+      <div class="process-card" data-idx="1"><span class="process-card-num">02</span><span class="process-card-title">Strategy</span></div>
+      <div class="process-card" data-idx="2"><span class="process-card-num">03</span><span class="process-card-title">Execution</span></div>
+      <div class="process-card" data-idx="3"><span class="process-card-num">04</span><span class="process-card-title">Growth</span></div>
     </div>
-    <div class="process-step">
-      <div class="process-step-num">02</div>
-      <h3 class="process-step-title">Strategy</h3>
-      <p class="process-step-desc">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
-    </div>
-    <div class="process-step">
-      <div class="process-step-num">03</div>
-      <h3 class="process-step-title">Execution</h3>
-      <p class="process-step-desc">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
-    </div>
-    <div class="process-step">
-      <div class="process-step-num">04</div>
-      <h3 class="process-step-title">Growth</h3>
-      <p class="process-step-desc">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+    <!-- Right: body text only -->
+    <div class="process-detail" id="processDetail">
+      <div class="process-detail-item active" data-idx="0">
+        <p class="process-detail-desc">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+      </div>
+      <div class="process-detail-item" data-idx="1">
+        <p class="process-detail-desc">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+      </div>
+      <div class="process-detail-item" data-idx="2">
+        <p class="process-detail-desc">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+      </div>
+      <div class="process-detail-item" data-idx="3">
+        <p class="process-detail-desc">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+      </div>
     </div>
   </div>
 </section>
+</div>
 
 <section class="cta-section" id="contact">
   <div class="cta-blob"></div>
@@ -694,12 +1048,62 @@
     <div class="section-label" style="justify-content:center;">Contact</div>
     <h2 class="section-title">Ready to build something great?</h2>
     <p>Tell us about your project. We'll get back to you within 24 hours with ideas and a no-commitment quote.</p>
-    <div class="cta-card">
-      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-        <a href="/cdn-cgi/l/email-protection#e48c8188888bc2c7d2d0df898588928187ca878b89" class="btn-primary" style="min-width:220px;text-align:center;">hello&#64;malvec.com</a>
-        <a href="#" class="btn-ghost" style="min-width:220px;text-align:center;">WhatsApp &rarr;</a>
+    <form class="cf-form" id="contactForm" onsubmit="return false;">
+
+      <div class="cf-row">
+        <div class="cf-group cf-field-reveal">
+          <label class="cf-label" for="cf-name">Name</label>
+          <input class="cf-input" id="cf-name" type="text" placeholder="Your name" autocomplete="given-name">
+        </div>
+        <div class="cf-group cf-field-reveal">
+          <label class="cf-label" for="cf-lastname">Last Name</label>
+          <input class="cf-input" id="cf-lastname" type="text" placeholder="Your last name" autocomplete="family-name">
+        </div>
       </div>
-    </div>
+
+      <div class="cf-group cf-field-reveal">
+        <label class="cf-label" for="cf-email">Email</label>
+        <input class="cf-input" id="cf-email" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+
+      <div class="cf-group cf-field-reveal">
+        <label class="cf-label" for="cf-service">Type of Service</label>
+        <select class="cf-select" id="cf-service">
+          <option value="" disabled selected>Select a service</option>
+          <option value="branding">Branding</option>
+          <option value="web">Web Design</option>
+          <option value="social">Social Media</option>
+          <option value="combo">Full Combo</option>
+        </select>
+      </div>
+
+      <div class="cf-group cf-field-reveal">
+        <label class="cf-label" for="cf-site">Website or Instagram</label>
+        <input class="cf-input" id="cf-site" type="text" placeholder="yoursite.com or @yourhandle (optional)">
+      </div>
+
+      <div class="cf-group cf-field-reveal">
+        <label class="cf-label" for="cf-desc">Description of idea</label>
+        <textarea class="cf-textarea" id="cf-desc" placeholder="Tell us about your project or idea..."></textarea>
+      </div>
+
+      <div class="cf-group cf-field-reveal">
+        <label class="cf-label" for="cf-source">How did you find us?</label>
+        <select class="cf-select" id="cf-source">
+          <option value="" disabled selected>Select an option</option>
+          <option value="instagram">Instagram</option>
+          <option value="google">Google</option>
+          <option value="referral">Referral</option>
+          <option value="linkedin">LinkedIn</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="cf-field-reveal">
+        <button type="submit" class="cf-submit">Send Message</button>
+      </div>
+
+    </form>
   </div>
 </section>
 
@@ -747,15 +1151,11 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   window.addEventListener('load', () => {
     setTimeout(() => {
-      document.getElementById('grapesLoader').classList.add('fade-out');
+      // fade the logo image out first
+      document.getElementById('preloaderLogo').classList.add('fade-out');
       setTimeout(() => {
-        const text = document.getElementById('malvecText');
-        text.classList.add('zoom-in');
-        setTimeout(() => {
-          text.classList.replace('zoom-in', 'zoom-out');
           document.getElementById('preloader').classList.add('hidden');
           document.body.classList.remove('loading');
-        }, 1200);
       }, 500);
     }, 1500);
   });
@@ -826,6 +1226,229 @@
     if (o1) o1.style.transform = 'translate(' + (y*0.04) + 'px,' + (-y*0.06) + 'px)';
     if (o2) o2.style.transform = 'translate(' + (-y*0.03) + 'px,' + (y*0.02) + 'px)';
   });
+
+  /* Process card interaction — scroll-pinned */
+  (function () {
+    var wrapper = document.getElementById('processWrapper');
+    var fan     = document.getElementById('processFan');
+    var detail  = document.getElementById('processDetail');
+    if (!wrapper || !fan || !detail) return;
+
+    var cards   = fan.querySelectorAll('.process-card');
+    var panels  = detail.querySelectorAll('.process-detail-item');
+    var active  = 0;
+
+    /* initialise first card visible */
+    cards[0].classList.add('active');
+
+    function setActive(idx) {
+      if (idx === active) return;
+      /* exit current card + text */
+      cards[active].classList.remove('active');
+      cards[active].classList.add('exit');
+      panels[active].classList.remove('active');
+      panels[active].classList.add('exit');
+      var prev = active;
+      setTimeout(function () {
+        cards[prev].classList.remove('exit');
+        panels[prev].classList.remove('exit');
+      }, 520);
+
+      active = idx;
+      /* enter new card + text */
+      cards[active].classList.add('active');
+      panels[active].classList.add('active');
+    }
+
+    /* hover on cards — clickable area only on the active one */
+    cards.forEach(function (card) {
+      card.addEventListener('click', function () {
+        setActive(parseInt(card.dataset.idx, 10));
+      });
+    });
+
+    /* Scroll-pinned auto-advance through 400vh wrapper */
+    window.addEventListener('scroll', function () {
+      var wrapRect = wrapper.getBoundingClientRect();
+      var scrollable = wrapper.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      var scrolled = -wrapRect.top;
+      var progress = Math.max(0, Math.min(1, scrolled / scrollable));
+      var idx = Math.min(3, Math.floor(progress * 4));
+      setActive(idx);
+    });
+  })();
+
+  /* Holo card 3D tilt */
+  (function () {
+    var card = document.getElementById('holo-card');
+    if (!card) return;
+    var shine = card; // ::before is driven via CSS var trick — we update a data attribute instead
+
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      var cx = rect.left + rect.width  / 2;
+      var cy = rect.top  + rect.height / 2;
+      var dx = (e.clientX - cx) / (rect.width  / 2); // -1 to 1
+      var dy = (e.clientY - cy) / (rect.height / 2); // -1 to 1
+
+      var rotX = (-dy * 20).toFixed(2);
+      var rotY = ( dx * 20).toFixed(2);
+
+      card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
+      card.style.transform  = 'perspective(800px) translateY(-50%) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
+
+      /* shift shine gradient position with cursor */
+      var px = ((dx + 1) / 2 * 100).toFixed(1);
+      var py = ((dy + 1) / 2 * 100).toFixed(1);
+      card.style.setProperty('--shine-x', px + '%');
+      card.style.setProperty('--shine-y', py + '%');
+      /* directly update ::before via a transparent overlay element */
+      var overlay = card.querySelector('.holo-shine');
+      if (overlay) overlay.style.backgroundPosition = px + '% ' + py + '%';
+    });
+
+    card.addEventListener('mouseleave', function () {
+      card.style.transition = 'transform 0.6s cubic-bezier(0.23,1,0.32,1), box-shadow 0.3s ease';
+      card.style.transform  = 'perspective(800px) translateY(-50%) rotateX(0deg) rotateY(0deg)';
+    });
+  })();
+
+  /* Contact form — staggered field entrance */
+  (function () {
+    var fields = document.querySelectorAll('#contactForm .cf-field-reveal');
+    fields.forEach(function (el, i) {
+      el.style.transitionDelay = (i * 0.1) + 's';
+    });
+    var formObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          formObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    fields.forEach(function (el) { formObserver.observe(el); });
+  })();
+</script>
+
+<!-- HERO PARTICLE TRAIL — self-contained, removable -->
+<script>
+(function () {
+  var hero = document.getElementById('home');
+  if (!hero) return;
+
+  /* --- canvas setup with device pixel ratio --- */
+  var canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:10;will-change:transform;';
+  hero.appendChild(canvas);
+  var ctx = canvas.getContext('2d');
+
+  var dpr = window.devicePixelRatio || 1;
+
+  function resizeCanvas() {
+    var w = hero.offsetWidth;
+    var h = hero.offsetHeight;
+    canvas.width  = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.scale(dpr, dpr);
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  /* --- state --- */
+  var MAX_PARTICLES = 80;
+  var particles  = [];
+  var palette    = ['#ff0040', '#7b00ff', '#c8000a', '#ff4d6d', '#9d00ff'];
+  var rafId      = null;
+  var spawning   = false;
+
+  /* --- helpers --- */
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function spawnBurst(x, y) {
+    /* cap: remove oldest first if at limit */
+    var count = Math.floor(rand(2, 4)); // 2-3 inclusive
+    while (particles.length + count > MAX_PARTICLES) {
+      particles.shift();
+    }
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: x, y: y,
+        vx: rand(-1.5, 1.5),
+        vy: rand(-3, -1),
+        size: rand(3, 7),
+        color: palette[Math.floor(Math.random() * palette.length)],
+        life: 1.0
+      });
+    }
+  }
+
+  /* --- animation loop (single RAF) --- */
+  function loop() {
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+    /* no ctx.filter — glow is handled per-particle with double-draw */
+
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.vy   += 0.05;
+      p.x    += p.vx;
+      p.y    += p.vy;
+      p.life -= 0.022;
+
+      if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+      ctx.fillStyle = p.color;
+
+      /* first pass — soft outer glow: size * 2.5, opacity * 0.2 */
+      ctx.globalAlpha = p.life * 0.2;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      /* second pass — solid core */
+      ctx.globalAlpha = p.life;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.globalAlpha = 1;
+
+    /* keep loop alive while there are particles or cursor is inside */
+    if (spawning || particles.length > 0) {
+      rafId = requestAnimationFrame(loop);
+    } else {
+      rafId = null;
+    }
+  }
+
+  /* --- event wiring --- */
+  var lastSpawn = 0;
+
+  hero.addEventListener('mousemove', function (e) {
+    var now = performance.now();
+    if (now - lastSpawn < 16) return; /* time-throttle: max once per 16 ms */
+    lastSpawn = now;
+
+    var rect = hero.getBoundingClientRect();
+    spawnBurst(e.clientX - rect.left, e.clientY - rect.top);
+
+    /* start loop if not already running */
+    if (!rafId) { rafId = requestAnimationFrame(loop); }
+  });
+
+  hero.addEventListener('mouseenter', function () {
+    spawning = true;
+  });
+
+  hero.addEventListener('mouseleave', function () {
+    spawning = false;
+    /* loop continues until remaining particles finish naturally */
+  });
+})();
 </script>
 </body>
 </html>
