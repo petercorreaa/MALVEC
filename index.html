@@ -136,21 +136,30 @@
 
   /* HERO */
   .hero {
-    min-height: 100vh;
+    height: 100svh;
     display: flex; flex-direction: column;
     justify-content: center; align-items: flex-start;
-    padding: 140px 48px 80px;
+    padding: 110px 48px 60px;
     position: relative; overflow: hidden;
   }
-  .hero-bg {
+  #hero-fluid-canvas {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 80% 50%, rgba(146,0,74,0.18) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(22,0,38,0.8) 0%, transparent 70%);
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.52;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 1;
+    background: radial-gradient(ellipse 80% 60% at 80% 50%, rgba(146,0,74,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(22,0,38,0.15) 0%, transparent 70%);
   }
   .orb {
     position: absolute; border-radius: 50%;
     filter: blur(80px);
     animation: float 8s ease-in-out infinite;
+    z-index: 1;
   }
   .orb-1 {
     width: 500px; height: 500px;
@@ -182,12 +191,12 @@
   .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--pink); }
 
   .hero-title {
-    font-size: clamp(56px, 9vw, 120px);
+    font-size: clamp(38px, 6vw, 90px);
     line-height: 1.15;
     font-weight: 700;
     font-family: 'Degular Display', sans-serif;
     color: var(--cream);
-    margin-bottom: 32px;
+    margin-bottom: 16px;
     opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
   }
   .hero-title .line-grad {
@@ -205,8 +214,8 @@
   }
 
   .hero-sub {
-    max-width: 480px; font-size: 17px; line-height: 1.7;
-    color: rgba(239,238,230,0.72); margin-bottom: 48px;
+    max-width: 480px; font-size: 16px; line-height: 1.65;
+    color: rgba(239,238,230,0.72); margin-bottom: 32px;
     opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
   }
   .hero-actions {
@@ -325,29 +334,47 @@
 
   /* MARQUEE */
   .marquee-section {
-    padding: 20px 0;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
     overflow: hidden;
-    background: #000;
+    background: var(--dark);
+    padding: 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    user-select: none;
+  }
+  .marquee-row {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+  .marquee-row--reverse {
+    /* JS drives this, base offset starts at -50% so it fills naturally */
   }
   .marquee-track {
-    display: flex; gap: 0;
-    animation: marquee 20s linear infinite;
+    display: flex;
+    align-items: center;
     white-space: nowrap;
   }
   .marquee-item {
-    display: inline-flex; align-items: center;
-    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--dark);
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Degular Display', sans-serif;
+    font-size: clamp(18px, 2.4vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--cream);
+    line-height: 1;
+    padding: 0 24px;
   }
-  .marquee-item span:first-child { padding: 0 28px; }
-  .marquee-item .dot {
-    width: 5px; height: 5px;
-    background: var(--pink); border-radius: 50%;
-    flex-shrink: 0; display: inline-block;
+  .marquee-item .star {
+    display: inline-block;
+    font-size: 0.55em;
+    color: var(--pink);
+    margin: 0 8px;
+    line-height: 1;
+    transform: translateY(-4px);
   }
-  @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  .marquee-item, .marquee-item span { color: var(--cream) !important; }
 
   /* SECTION */
   section { padding: 120px 48px; }
@@ -365,92 +392,8 @@
     font-weight: 600; line-height: 1.05; margin-bottom: 16px;
   }
 
-  /* SERVICES */
-  .services { position: relative; background: var(--cream); }
-  .services-header { max-width: 600px; margin-bottom: 80px; }
-  .services-header p { font-size: 17px; color: rgba(22,0,38,0.65); line-height: 1.7; margin-top: 16px; }
-  .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-
-  .service-card {
-    padding: 40px;
-    border: 1px solid rgba(22,0,38,0.1);
-    background: rgba(22,0,38,0.03);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    position: relative; overflow: hidden;
-    transition: background 0.4s, border-color 0.4s; cursor: none;
-  }
-  /* top accent bar that expands on hover (Services section only) */
-  .service-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--accent);
-    z-index: 1;
-    transition: height 0.4s ease;
-  }
-  .service-card:hover::before { height: 100%; }
-
-  /* ensure content stays above the expanding fill and can change color for contrast */
-  .service-card > * { position: relative; z-index: 3; }
-  .service-card .service-name,
-  .service-card .service-desc,
-  .service-card .service-tag { transition: color 0.25s ease; }
-  .service-card:hover .service-name,
-  .service-card:hover .service-desc,
-  .service-card:hover .service-tag { color: var(--cream); }
-  .service-card:hover .service-icon svg { stroke: var(--accent); }
-  /* make the square behind the icon cream on hover so the accent-stroked icon stands out */
-  .service-card:hover .service-icon { background: var(--cream); }
-  .service-card::after {
-    content: ''; position: absolute; inset: 0;
-    background: var(--grad); opacity: 0; z-index: 2; transition: opacity 0.4s;
-  }
-  .service-card:hover { border-color: rgba(159,0,74,0.3); }
-  .service-card:hover::after { opacity: 0.04; }
-  /* ensure strokes/borders are readable on hover (white) */
-  .service-card:hover { border-color: var(--cream); }
-  .service-card:hover .service-tag { border-color: var(--cream); }
-
-  .glass-highlight {
-    position: absolute; width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    border-radius: 50%; pointer-events: none;
-    transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.3s;
-  }
-  .service-card:hover .glass-highlight { opacity: 1; }
-
-  .service-num { font-size: 11px; letter-spacing: 0.2em; color: rgba(22,0,38,0.35); margin-bottom: 32px; display: block; }
-  /* hide numeric labels inside Services section per request */
-  .services .service-num { display: none; }
-  .service-icon {
-    width: 48px; height: 48px; margin-bottom: 28px;
-    background: var(--grad); border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .service-icon svg { width: 22px; height: 22px; stroke: var(--cream); fill: none; stroke-width: 1.5; }
-  .service-name {
-    font-family: 'Degular Display', sans-serif;
-    font-size: 22px; font-weight: 600; line-height: 1.1;
-    margin: 0 0 12px 0;
-    height: 28px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    position: relative; z-index: 1; color: var(--dark);
-  }
-  .service-desc {
-    font-size: 15px; color: rgba(22,0,38,0.65); line-height: 1.7;
-    position: relative; z-index: 1; margin-top: 12px; margin-bottom: 32px;
-  }
-  .service-tags { display: flex; flex-wrap: wrap; gap: 8px; position: relative; z-index: 1; }
-  .service-tag {
-    padding: 5px 14px;
-    border: 1px solid rgba(22,0,38,0.18); border-radius: 100px;
-    font-size: 11px; letter-spacing: 0.1em; color: rgba(22,0,38,0.5); text-transform: uppercase;
-  }
-  /* body text starts uniformly after header */
-  .services .section-title { color: var(--dark); }
+  /* SERVICES — legacy card styles removed; section now rendered by React */
+  /* .services wrapper background preserved for seamless page flow */
 
   /* ABOUT */
   #about { background: #000; }
@@ -781,8 +724,9 @@
   @media (max-width: 768px) {
     nav { padding: 20px 24px; }
     .nav-links { display: none; }
-    .hero, section { padding: 100px 24px 80px; }
-    .services-grid { grid-template-columns: repeat(4, 1fr); }
+    .hero { padding: 80px 24px 40px; height: 100svh; }
+    section { padding: 100px 24px 80px; }
+    /* services section padding handled by React component */
     .philosophy { grid-template-columns: 1fr; }
     .philosophy-visual { display: none; }
     .process-scroll-wrapper { height: auto; }
@@ -796,7 +740,7 @@
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
     .h-line { margin: 0 24px; }
   }
-  .marquee-item, .marquee-item span { color: #fff !important; }
+  .marquee-item, .marquee-item span { color: var(--cream) !important; }
 
   /* PRELOADER */
   #preloader {
@@ -836,6 +780,7 @@
   /* text removed; logo only on preloader */
   body.loading { overflow: hidden !important; }
 </style>
+<script type="module" src="/src/main.tsx"></script>
 </head>
 <body class="loading">
 
@@ -863,6 +808,7 @@
 </nav>
 
 <section class="hero" id="home">
+  <canvas id="hero-fluid-canvas"></canvas>
   <div class="hero-bg"></div>
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
@@ -889,92 +835,48 @@
   </div>
 </section>
 
-<div class="marquee-section">
-  <div class="marquee-track">
-    <div class="marquee-item"><span>Web Development</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Branding</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>SEO / SEM</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Paid Ads</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Social Content</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Rebranding</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>UI/UX</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Digital Strategy</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Web Development</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Branding</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>SEO / SEM</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Paid Ads</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Social Content</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Rebranding</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>UI/UX</span><span class="dot"></span></div>
-    <div class="marquee-item"><span>Digital Strategy</span><span class="dot"></span></div>
+<div class="marquee-section" id="marqueeSection">
+  <!-- Row 1: moves left -->
+  <div class="marquee-row" id="marqueeRow1">
+    <div class="marquee-track">
+      <div class="marquee-item">Web Development <span class="star">✦</span></div>
+      <div class="marquee-item">Branding <span class="star">✦</span></div>
+      <div class="marquee-item">SEO / SEM <span class="star">✦</span></div>
+      <div class="marquee-item">UI / UX <span class="star">✦</span></div>
+      <div class="marquee-item">Digital Strategy <span class="star">✦</span></div>
+      <div class="marquee-item">Paid Ads <span class="star">✦</span></div>
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      <div class="marquee-item">Web Development <span class="star">✦</span></div>
+      <div class="marquee-item">Branding <span class="star">✦</span></div>
+      <div class="marquee-item">SEO / SEM <span class="star">✦</span></div>
+      <div class="marquee-item">UI / UX <span class="star">✦</span></div>
+      <div class="marquee-item">Digital Strategy <span class="star">✦</span></div>
+      <div class="marquee-item">Paid Ads <span class="star">✦</span></div>
+    </div>
+  </div>
+  <!-- Row 2: moves right -->
+  <div class="marquee-row" id="marqueeRow2">
+    <div class="marquee-track">
+      <div class="marquee-item">Social Content <span class="star">✦</span></div>
+      <div class="marquee-item">Rebranding <span class="star">✦</span></div>
+      <div class="marquee-item">E-Commerce <span class="star">✦</span></div>
+      <div class="marquee-item">Strategy <span class="star">✦</span></div>
+      <div class="marquee-item">Performance <span class="star">✦</span></div>
+      <div class="marquee-item">Conversion <span class="star">✦</span></div>
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      <div class="marquee-item">Social Content <span class="star">✦</span></div>
+      <div class="marquee-item">Rebranding <span class="star">✦</span></div>
+      <div class="marquee-item">E-Commerce <span class="star">✦</span></div>
+      <div class="marquee-item">Strategy <span class="star">✦</span></div>
+      <div class="marquee-item">Performance <span class="star">✦</span></div>
+      <div class="marquee-item">Conversion <span class="star">✦</span></div>
+    </div>
   </div>
 </div>
 
-<section class="services" id="services">
-  <div class="services-header reveal">
-    <div class="section-label">Services</div>
-    <h2 class="section-title">Everything your brand needs</h2>
-    <p>End-to-end solutions to build, grow and dominate your digital space.</p>
-  </div>
-  <div class="services-grid stagger">
-    <div class="service-card" data-card>
-      <div class="glass-highlight"></div>
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      </div>
-      <h3 class="service-name">Web Development</h3>
-      <p class="service-desc">High-impact websites built from scratch or fully rebuilt. Performance, design and conversion in every line of code.</p>
-      <div class="service-tags">
-        <span class="service-tag">From Scratch</span>
-        <span class="service-tag">Re-Built</span>
-        <span class="service-tag">E-Commerce</span>
-        <span class="service-tag">Landing Pages</span>
-      </div>
-    </div>
-    <div class="service-card" data-card>
-      <div class="glass-highlight"></div>
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-      </div>
-      <h3 class="service-name">Branding &amp; Rebranding</h3>
-      <p class="service-desc">Visual identity that communicates who you are before you say a word. Logo, palette, typography, brand guidelines — everything you need to be unforgettable.</p>
-      <div class="service-tags">
-        <span class="service-tag">Brand Identity</span>
-        <span class="service-tag">Logo</span>
-        <span class="service-tag">Brand Book</span>
-        <span class="service-tag">Rebranding</span>
-      </div>
-    </div>
-    <div class="service-card" data-card>
-      <div class="glass-highlight"></div>
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-      </div>
-      <h3 class="service-name">Digital Marketing</h3>
-      <p class="service-desc">Data-driven strategies to attract, convert and scale. Organic SEO, SEM campaigns and paid advertising that generate real ROI.</p>
-      <div class="service-tags">
-        <span class="service-tag">SEO</span>
-        <span class="service-tag">SEM</span>
-        <span class="service-tag">Google Ads</span>
-        <span class="service-tag">Meta Ads</span>
-      </div>
-    </div>
-    <div class="service-card" data-card>
-      <div class="glass-highlight"></div>
-      <div class="service-icon">
-        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </div>
-      <h3 class="service-name">Social Network Content</h3>
-      <p class="service-desc">Strategic and creative content for social media that builds community, drives engagement and grows your audience organically.</p>
-      <div class="service-tags">
-        <span class="service-tag">Instagram</span>
-        <span class="service-tag">TikTok</span>
-        <span class="service-tag">LinkedIn</span>
-        <span class="service-tag">Copywriting</span>
-      </div>
-    </div>
-  </div>
-</section>
+<div id="services-react-root"></div>
 
 <div class="h-line"></div>
 
@@ -1168,17 +1070,6 @@
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     cursor.style.transform = 'translate(' + (mx - 5) + 'px, ' + (my - 5) + 'px)';
-
-    var dx = mx - lastTrailX, dy = my - lastTrailY;
-    if (Math.sqrt(dx*dx + dy*dy) > 9) {
-      var star = document.createElement('div');
-      star.className = 'cursor-trail';
-      var size = Math.random() * 5 + 5;
-      star.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + mx + 'px;top:' + my + 'px;';
-      document.body.appendChild(star);
-      setTimeout(function() { if (star.parentNode) star.remove(); }, 500);
-      lastTrailX = mx; lastTrailY = my;
-    }
   });
 
   function animateRing() {
@@ -1226,6 +1117,60 @@
     if (o1) o1.style.transform = 'translate(' + (y*0.04) + 'px,' + (-y*0.06) + 'px)';
     if (o2) o2.style.transform = 'translate(' + (-y*0.03) + 'px,' + (y*0.02) + 'px)';
   });
+
+  /* Marquee — JS-driven RAF loop with scroll parallax */
+  (function () {
+    var row1 = document.getElementById('marqueeRow1');
+    var row2 = document.getElementById('marqueeRow2');
+    if (!row1 || !row2) return;
+
+    var BASE_SPEED = 0.4;   /* px per frame at rest */
+    var SCROLL_FACTOR = 0.12; /* extra px per scrollY unit (decays) */
+
+    var pos1 = 0;
+    var pos2 = 0;
+    var scrollVel = 0;      /* accumulated scroll velocity */
+    var lastScrollY = window.scrollY;
+
+    /* width of one track clone (half the row) */
+    function halfWidth(row) {
+      return row.firstElementChild.offsetWidth;
+    }
+
+    window.addEventListener('scroll', function () {
+      var dy = window.scrollY - lastScrollY;
+      scrollVel += dy * SCROLL_FACTOR;
+      lastScrollY = window.scrollY;
+    });
+
+    function tick() {
+      var hw1 = halfWidth(row1);
+      var hw2 = halfWidth(row2);
+
+      var speed = BASE_SPEED + Math.abs(scrollVel);
+
+      /* row1 moves left, row2 moves right */
+      pos1 -= speed;
+      pos2 += (scrollVel >= 0 ? BASE_SPEED : speed);
+
+      /* wrap seamlessly at the half-width boundary */
+      if (Math.abs(pos1) >= hw1) pos1 += hw1;
+      if (pos2 >= 0) pos2 -= hw2;
+
+      row1.style.transform = 'translateX(' + pos1 + 'px)';
+      row2.style.transform = 'translateX(' + pos2 + 'px)';
+
+      /* decay scroll velocity */
+      scrollVel *= 0.88;
+      if (Math.abs(scrollVel) < 0.01) scrollVel = 0;
+
+      requestAnimationFrame(tick);
+    }
+
+    /* initialise row2 offset so it starts half-way through to look staggered */
+    pos2 = -row2.firstElementChild.offsetWidth * 0.5;
+    tick();
+  })();
 
   /* Process card interaction — scroll-pinned */
   (function () {
@@ -1332,123 +1277,390 @@
   })();
 </script>
 
-<!-- HERO PARTICLE TRAIL — self-contained, removable -->
+<!-- HERO WEBGL FLUID SIMULATION — back layer -->
 <script>
 (function () {
-  var hero = document.getElementById('home');
-  if (!hero) return;
+  'use strict';
 
-  /* --- canvas setup with device pixel ratio --- */
-  var canvas = document.createElement('canvas');
-  canvas.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:10;will-change:transform;';
-  hero.appendChild(canvas);
-  var ctx = canvas.getContext('2d');
+  var hero   = document.getElementById('home');
+  var canvas = document.getElementById('hero-fluid-canvas');
+  if (!hero || !canvas) return;
 
-  var dpr = window.devicePixelRatio || 1;
+  canvas.width  = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+
+  var config = {
+    TEXTURE_DOWNSAMPLE:   1,
+    DENSITY_DISSIPATION:  0.963,
+    VELOCITY_DISSIPATION: 0.97,
+    PRESSURE_DISSIPATION: 0.8,
+    PRESSURE_ITERATIONS:  20,
+    CURL:                 22,
+    SPLAT_RADIUS:         0.0028
+  };
+
+  /* ---- MALVEC palette (0-10 range, scaled ×0.3 inside splat fn) ---- */
+  var PALETTE = [
+    [10,  0,    4   ],  /* #FF0066  electric magenta */
+    [10,  1.65, 6.16],  /* #FF2A9D  soft pink        */
+    [10,  1.18, 2.35],  /* #FF1E3C  deep red         */
+    [4.8, 0,    10  ],  /* #7B00FF  violet           */
+    [8,   0,    3   ]   /* dark crimson accent       */
+  ];
+
+  var pointers   = [];
+  var splatStack = [];
+
+  function pointerPrototype() {
+    this.id    = -1;
+    this.x     = 0;
+    this.y     = 0;
+    this.dx    = 0;
+    this.dy    = 0;
+    this.down  = false;
+    this.moved = false;
+    this.color = PALETTE[0].slice();
+  }
+  pointers.push(new pointerPrototype());
+
+  /* ---- WebGL context ---- */
+  function getWebGLContext(canvas) {
+    var params = { alpha: false, depth: false, stencil: false, antialias: false };
+    var gl = canvas.getContext('webgl2', params);
+    var isWebGL2 = !!gl;
+    if (!isWebGL2)
+      gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+
+    var halfFloat, supportLinearFiltering;
+    if (isWebGL2) {
+      gl.getExtension('EXT_color_buffer_float');
+      supportLinearFiltering = gl.getExtension('OES_texture_float_linear');
+    } else {
+      halfFloat = gl.getExtension('OES_texture_half_float');
+      supportLinearFiltering = gl.getExtension('OES_texture_half_float_linear');
+    }
+
+    /* Dark violet background #160026 = rgb(22, 0, 38) */
+    gl.clearColor(22/255, 0, 38/255, 1.0);
+
+    var halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat.HALF_FLOAT_OES;
+    var formatRGBA, formatRG, formatR;
+    if (isWebGL2) {
+      formatRGBA = getSupportedFormat(gl, gl.RGBA16F, gl.RGBA, halfFloatTexType);
+      formatRG   = getSupportedFormat(gl, gl.RG16F,   gl.RG,   halfFloatTexType);
+      formatR    = getSupportedFormat(gl, gl.R16F,    gl.RED,  halfFloatTexType);
+    } else {
+      formatRGBA = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+      formatRG   = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+      formatR    = getSupportedFormat(gl, gl.RGBA, gl.RGBA, halfFloatTexType);
+    }
+    return { gl: gl, ext: { formatRGBA: formatRGBA, formatRG: formatRG, formatR: formatR,
+                            halfFloatTexType: halfFloatTexType, supportLinearFiltering: supportLinearFiltering } };
+  }
+
+  function getSupportedFormat(gl, internalFormat, format, type) {
+    if (!supportRenderTextureFormat(gl, internalFormat, format, type)) {
+      if (internalFormat === gl.R16F)  return getSupportedFormat(gl, gl.RG16F,   gl.RG,   type);
+      if (internalFormat === gl.RG16F) return getSupportedFormat(gl, gl.RGBA16F, gl.RGBA, type);
+      return null;
+    }
+    return { internalFormat: internalFormat, format: format };
+  }
+
+  function supportRenderTextureFormat(gl, internalFormat, format, type) {
+    var tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, 4, 4, 0, format, type, null);
+    var fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    return gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+  }
+
+  var webgl = getWebGLContext(canvas);
+  var gl  = webgl.gl;
+  var ext = webgl.ext;
+
+  /* ---- Shaders ---- */
+  function compileShader(type, source) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, source);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s);
+    return s;
+  }
+
+  var baseVS = compileShader(gl.VERTEX_SHADER, [
+    'precision highp float;',
+    'precision mediump sampler2D;',
+    'attribute vec2 aPosition;',
+    'varying vec2 vUv; varying vec2 vL; varying vec2 vR; varying vec2 vT; varying vec2 vB;',
+    'uniform vec2 texelSize;',
+    'void main(){',
+    '  vUv=aPosition*0.5+0.5;',
+    '  vL=vUv-vec2(texelSize.x,0.0); vR=vUv+vec2(texelSize.x,0.0);',
+    '  vT=vUv+vec2(0.0,texelSize.y); vB=vUv-vec2(0.0,texelSize.y);',
+    '  gl_Position=vec4(aPosition,0.0,1.0);',
+    '}'
+  ].join('\n'));
+
+  var clearFS        = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;uniform sampler2D uTexture;uniform float value;void main(){gl_FragColor=value*texture2D(uTexture,vUv);}');
+  var displayFS      = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;uniform sampler2D uTexture;void main(){gl_FragColor=texture2D(uTexture,vUv);}');
+  var splatFS        = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;uniform sampler2D uTarget;uniform float aspectRatio;uniform vec3 color;uniform vec2 point;uniform float radius;void main(){vec2 p=vUv-point.xy;p.x*=aspectRatio;vec3 splat=exp(-dot(p,p)/radius)*color;vec3 base=texture2D(uTarget,vUv).xyz;gl_FragColor=vec4(base+splat,1.0);}');
+  var advectionFS    = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;uniform sampler2D uVelocity;uniform sampler2D uSource;uniform vec2 texelSize;uniform float dt;uniform float dissipation;void main(){vec2 coord=vUv-dt*texture2D(uVelocity,vUv).xy*texelSize;gl_FragColor=dissipation*texture2D(uSource,coord);gl_FragColor.a=1.0;}');
+  var advectionMFS   = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;uniform sampler2D uVelocity;uniform sampler2D uSource;uniform vec2 texelSize;uniform float dt;uniform float dissipation;vec4 bilerp(in sampler2D sam,in vec2 p){vec4 st;st.xy=floor(p-0.5)+0.5;st.zw=st.xy+1.0;vec4 uv=st*texelSize.xyxy;vec4 a=texture2D(sam,uv.xy);vec4 b=texture2D(sam,uv.zy);vec4 c=texture2D(sam,uv.xw);vec4 d=texture2D(sam,uv.zw);vec2 f=p-st.xy;return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);}void main(){vec2 coord=gl_FragCoord.xy-dt*texture2D(uVelocity,vUv).xy;gl_FragColor=dissipation*bilerp(uSource,coord);gl_FragColor.a=1.0;}');
+  var divergenceFS   = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;varying vec2 vL;varying vec2 vR;varying vec2 vT;varying vec2 vB;uniform sampler2D uVelocity;vec2 sampleVelocity(in vec2 uv){vec2 m=vec2(1.0,1.0);if(uv.x<0.0){uv.x=0.0;m.x=-1.0;}if(uv.x>1.0){uv.x=1.0;m.x=-1.0;}if(uv.y<0.0){uv.y=0.0;m.y=-1.0;}if(uv.y>1.0){uv.y=1.0;m.y=-1.0;}return m*texture2D(uVelocity,uv).xy;}void main(){float L=sampleVelocity(vL).x;float R=sampleVelocity(vR).x;float T=sampleVelocity(vT).y;float B=sampleVelocity(vB).y;gl_FragColor=vec4(0.5*(R-L+T-B),0.0,0.0,1.0);}');
+  var curlFS         = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;varying vec2 vL;varying vec2 vR;varying vec2 vT;varying vec2 vB;uniform sampler2D uVelocity;void main(){float L=texture2D(uVelocity,vL).y;float R=texture2D(uVelocity,vR).y;float T=texture2D(uVelocity,vT).x;float B=texture2D(uVelocity,vB).x;gl_FragColor=vec4(R-L-T+B,0.0,0.0,1.0);}');
+  var vorticityFS    = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;varying vec2 vT;varying vec2 vB;uniform sampler2D uVelocity;uniform sampler2D uCurl;uniform float curl;uniform float dt;void main(){float T=texture2D(uCurl,vT).x;float B=texture2D(uCurl,vB).x;float C=texture2D(uCurl,vUv).x;vec2 force=vec2(abs(T)-abs(B),0.0);force*=1.0/length(force+0.00001)*curl*C;vec2 vel=texture2D(uVelocity,vUv).xy;gl_FragColor=vec4(vel+force*dt,0.0,1.0);}');
+  var pressureFS     = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;varying vec2 vL;varying vec2 vR;varying vec2 vT;varying vec2 vB;uniform sampler2D uPressure;uniform sampler2D uDivergence;vec2 boundary(in vec2 uv){return min(max(uv,0.0),1.0);}void main(){float L=texture2D(uPressure,boundary(vL)).x;float R=texture2D(uPressure,boundary(vR)).x;float T=texture2D(uPressure,boundary(vT)).x;float B=texture2D(uPressure,boundary(vB)).x;float divergence=texture2D(uDivergence,vUv).x;gl_FragColor=vec4((L+R+B+T-divergence)*0.25,0.0,0.0,1.0);}');
+  var gradSubtractFS = compileShader(gl.FRAGMENT_SHADER, 'precision highp float;precision mediump sampler2D;varying vec2 vUv;varying vec2 vL;varying vec2 vR;varying vec2 vT;varying vec2 vB;uniform sampler2D uPressure;uniform sampler2D uVelocity;vec2 boundary(in vec2 uv){return min(max(uv,0.0),1.0);}void main(){float L=texture2D(uPressure,boundary(vL)).x;float R=texture2D(uPressure,boundary(vR)).x;float T=texture2D(uPressure,boundary(vT)).x;float B=texture2D(uPressure,boundary(vB)).x;vec2 velocity=texture2D(uVelocity,vUv).xy;velocity.xy-=vec2(R-L,T-B);gl_FragColor=vec4(velocity,0.0,1.0);}');
+
+  /* ---- GLProgram helper ---- */
+  function GLProgram(vs, fs) {
+    this.uniforms = {};
+    this.program  = gl.createProgram();
+    gl.attachShader(this.program, vs);
+    gl.attachShader(this.program, fs);
+    gl.linkProgram(this.program);
+    if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) throw gl.getProgramInfoLog(this.program);
+    var n = gl.getProgramParameter(this.program, gl.ACTIVE_UNIFORMS);
+    for (var i = 0; i < n; i++) {
+      var name = gl.getActiveUniform(this.program, i).name;
+      this.uniforms[name] = gl.getUniformLocation(this.program, name);
+    }
+  }
+  GLProgram.prototype.bind = function() { gl.useProgram(this.program); };
+
+  var clearProg      = new GLProgram(baseVS, clearFS);
+  var displayProg    = new GLProgram(baseVS, displayFS);
+  var splatProg      = new GLProgram(baseVS, splatFS);
+  var advectionProg  = new GLProgram(baseVS, ext.supportLinearFiltering ? advectionFS : advectionMFS);
+  var divergenceProg = new GLProgram(baseVS, divergenceFS);
+  var curlProg       = new GLProgram(baseVS, curlFS);
+  var vorticityProg  = new GLProgram(baseVS, vorticityFS);
+  var pressureProg   = new GLProgram(baseVS, pressureFS);
+  var gradSubProg    = new GLProgram(baseVS, gradSubtractFS);
+
+  /* ---- Framebuffers ---- */
+  var textureWidth, textureHeight, density, velocity, divergenceFBO, curlFBO, pressure;
+
+  function createFBO(texId, w, h, internalFormat, format, type, param) {
+    gl.activeTexture(gl.TEXTURE0 + texId);
+    var tex = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, param);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, param);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
+    var fbo = gl.createFramebuffer();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    gl.viewport(0, 0, w, h);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    return [tex, fbo, texId];
+  }
+
+  function createDoubleFBO(texId, w, h, internalFormat, format, type, param) {
+    var fbo1 = createFBO(texId,     w, h, internalFormat, format, type, param);
+    var fbo2 = createFBO(texId + 1, w, h, internalFormat, format, type, param);
+    return {
+      get read()  { return fbo1; },
+      get write() { return fbo2; },
+      swap: function() { var t = fbo1; fbo1 = fbo2; fbo2 = t; }
+    };
+  }
+
+  function initFramebuffers() {
+    textureWidth  = gl.drawingBufferWidth  >> config.TEXTURE_DOWNSAMPLE;
+    textureHeight = gl.drawingBufferHeight >> config.TEXTURE_DOWNSAMPLE;
+    var tt   = ext.halfFloatTexType;
+    var rgba = ext.formatRGBA;
+    var rg   = ext.formatRG;
+    var r    = ext.formatR;
+    var lin  = ext.supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
+    density      = createDoubleFBO(2, textureWidth, textureHeight, rgba.internalFormat, rgba.format, tt, lin);
+    velocity     = createDoubleFBO(0, textureWidth, textureHeight, rg.internalFormat,   rg.format,   tt, lin);
+    divergenceFBO= createFBO      (4, textureWidth, textureHeight, r.internalFormat,    r.format,    tt, gl.NEAREST);
+    curlFBO      = createFBO      (5, textureWidth, textureHeight, r.internalFormat,    r.format,    tt, gl.NEAREST);
+    pressure     = createDoubleFBO(6, textureWidth, textureHeight, r.internalFormat,    r.format,    tt, gl.NEAREST);
+  }
+  initFramebuffers();
+
+  /* ---- Blit ---- */
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,-1,1,1,1,1,-1]), gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0,1,2,0,2,3]), gl.STATIC_DRAW);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(0);
+  function blit(dest) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, dest);
+    gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+  }
+
+  /* ---- Splat helpers ---- */
+  function splat(x, y, dx, dy, color) {
+    splatProg.bind();
+    gl.uniform1i(splatProg.uniforms.uTarget, velocity.read[2]);
+    gl.uniform1f(splatProg.uniforms.aspectRatio, canvas.width / canvas.height);
+    gl.uniform2f(splatProg.uniforms.point, x / canvas.width, 1.0 - y / canvas.height);
+    gl.uniform3f(splatProg.uniforms.color, dx, -dy, 1.0);
+    gl.uniform1f(splatProg.uniforms.radius, config.SPLAT_RADIUS);
+    blit(velocity.write[1]);
+    velocity.swap();
+    gl.uniform1i(splatProg.uniforms.uTarget, density.read[2]);
+    gl.uniform3f(splatProg.uniforms.color, color[0] * 0.19, color[1] * 0.19, color[2] * 0.19);
+    blit(density.write[1]);
+    density.swap();
+  }
+
+  function randomPaletteColor() {
+    return PALETTE[Math.floor(Math.random() * PALETTE.length)].slice();
+  }
+
+  function multipleSplats(amount) {
+    for (var i = 0; i < amount; i++) {
+      var color = randomPaletteColor();
+      var x  = canvas.width  * Math.random();
+      var y  = canvas.height * Math.random();
+      var dx = 1000 * (Math.random() - 0.5);
+      var dy = 1000 * (Math.random() - 0.5);
+      splat(x, y, dx, dy, color);
+    }
+  }
 
   function resizeCanvas() {
-    var w = hero.offsetWidth;
-    var h = hero.offsetHeight;
-    canvas.width  = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width  = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.scale(dpr, dpr);
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  /* --- state --- */
-  var MAX_PARTICLES = 80;
-  var particles  = [];
-  var palette    = ['#ff0040', '#7b00ff', '#c8000a', '#ff4d6d', '#9d00ff'];
-  var rafId      = null;
-  var spawning   = false;
-
-  /* --- helpers --- */
-  function rand(min, max) { return Math.random() * (max - min) + min; }
-
-  function spawnBurst(x, y) {
-    /* cap: remove oldest first if at limit */
-    var count = Math.floor(rand(2, 4)); // 2-3 inclusive
-    while (particles.length + count > MAX_PARTICLES) {
-      particles.shift();
-    }
-    for (var i = 0; i < count; i++) {
-      particles.push({
-        x: x, y: y,
-        vx: rand(-1.5, 1.5),
-        vy: rand(-3, -1),
-        size: rand(3, 7),
-        color: palette[Math.floor(Math.random() * palette.length)],
-        life: 1.0
-      });
+    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+      canvas.width  = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      initFramebuffers();
     }
   }
 
-  /* --- animation loop (single RAF) --- */
-  function loop() {
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-    /* no ctx.filter — glow is handled per-particle with double-draw */
+  /* ---- Update loop ---- */
+  var lastTime = Date.now();
+  multipleSplats(Math.floor(Math.random() * 5) + 4);
 
-    for (var i = particles.length - 1; i >= 0; i--) {
-      var p = particles[i];
-      p.vy   += 0.05;
-      p.x    += p.vx;
-      p.y    += p.vy;
-      p.life -= 0.022;
+  function update() {
+    resizeCanvas();
+    var dt = Math.min((Date.now() - lastTime) / 1000, 0.016);
+    lastTime = Date.now();
+    gl.viewport(0, 0, textureWidth, textureHeight);
 
-      if (p.life <= 0) { particles.splice(i, 1); continue; }
+    if (splatStack.length > 0) multipleSplats(splatStack.pop());
 
-      ctx.fillStyle = p.color;
+    advectionProg.bind();
+    gl.uniform2f(advectionProg.uniforms.texelSize, 1.0/textureWidth, 1.0/textureHeight);
+    gl.uniform1i(advectionProg.uniforms.uVelocity, velocity.read[2]);
+    gl.uniform1i(advectionProg.uniforms.uSource,   velocity.read[2]);
+    gl.uniform1f(advectionProg.uniforms.dt,           dt);
+    gl.uniform1f(advectionProg.uniforms.dissipation,  config.VELOCITY_DISSIPATION);
+    blit(velocity.write[1]); velocity.swap();
 
-      /* first pass — soft outer glow: size * 2.5, opacity * 0.2 */
-      ctx.globalAlpha = p.life * 0.2;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
-      ctx.fill();
+    gl.uniform1i(advectionProg.uniforms.uVelocity, velocity.read[2]);
+    gl.uniform1i(advectionProg.uniforms.uSource,   density.read[2]);
+    gl.uniform1f(advectionProg.uniforms.dissipation, config.DENSITY_DISSIPATION);
+    blit(density.write[1]); density.swap();
 
-      /* second pass — solid core */
-      ctx.globalAlpha = p.life;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
+    for (var i = 0; i < pointers.length; i++) {
+      var ptr = pointers[i];
+      if (ptr.moved) { splat(ptr.x, ptr.y, ptr.dx, ptr.dy, ptr.color); ptr.moved = false; }
     }
 
-    ctx.globalAlpha = 1;
+    curlProg.bind();
+    gl.uniform2f(curlProg.uniforms.texelSize, 1.0/textureWidth, 1.0/textureHeight);
+    gl.uniform1i(curlProg.uniforms.uVelocity, velocity.read[2]);
+    blit(curlFBO[1]);
 
-    /* keep loop alive while there are particles or cursor is inside */
-    if (spawning || particles.length > 0) {
-      rafId = requestAnimationFrame(loop);
-    } else {
-      rafId = null;
+    vorticityProg.bind();
+    gl.uniform2f(vorticityProg.uniforms.texelSize, 1.0/textureWidth, 1.0/textureHeight);
+    gl.uniform1i(vorticityProg.uniforms.uVelocity, velocity.read[2]);
+    gl.uniform1i(vorticityProg.uniforms.uCurl,     curlFBO[2]);
+    gl.uniform1f(vorticityProg.uniforms.curl, config.CURL);
+    gl.uniform1f(vorticityProg.uniforms.dt,   dt);
+    blit(velocity.write[1]); velocity.swap();
+
+    divergenceProg.bind();
+    gl.uniform2f(divergenceProg.uniforms.texelSize, 1.0/textureWidth, 1.0/textureHeight);
+    gl.uniform1i(divergenceProg.uniforms.uVelocity, velocity.read[2]);
+    blit(divergenceFBO[1]);
+
+    clearProg.bind();
+    var pTexId = pressure.read[2];
+    gl.activeTexture(gl.TEXTURE0 + pTexId);
+    gl.bindTexture(gl.TEXTURE_2D, pressure.read[0]);
+    gl.uniform1i(clearProg.uniforms.uTexture, pTexId);
+    gl.uniform1f(clearProg.uniforms.value, config.PRESSURE_DISSIPATION);
+    blit(pressure.write[1]); pressure.swap();
+
+    pressureProg.bind();
+    gl.uniform2f(pressureProg.uniforms.texelSize, 1.0/textureWidth, 1.0/textureHeight);
+    gl.uniform1i(pressureProg.uniforms.uDivergence, divergenceFBO[2]);
+    pTexId = pressure.read[2];
+    gl.uniform1i(pressureProg.uniforms.uPressure, pTexId);
+    gl.activeTexture(gl.TEXTURE0 + pTexId);
+    for (var j = 0; j < config.PRESSURE_ITERATIONS; j++) {
+      gl.bindTexture(gl.TEXTURE_2D, pressure.read[0]);
+      blit(pressure.write[1]); pressure.swap();
     }
+
+    gradSubProg.bind();
+    gl.uniform2f(gradSubProg.uniforms.texelSize, 1.0/textureWidth, 1.0/textureHeight);
+    gl.uniform1i(gradSubProg.uniforms.uPressure, pressure.read[2]);
+    gl.uniform1i(gradSubProg.uniforms.uVelocity, velocity.read[2]);
+    blit(velocity.write[1]); velocity.swap();
+
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    displayProg.bind();
+    gl.uniform1i(displayProg.uniforms.uTexture, density.read[2]);
+    blit(null);
+
+    requestAnimationFrame(update);
   }
+  update();
 
-  /* --- event wiring --- */
-  var lastSpawn = 0;
-
-  hero.addEventListener('mousemove', function (e) {
-    var now = performance.now();
-    if (now - lastSpawn < 16) return; /* time-throttle: max once per 16 ms */
-    lastSpawn = now;
-
+  /* ---- Events — scoped to hero, always react on hover ---- */
+  hero.addEventListener('mousemove', function(e) {
     var rect = hero.getBoundingClientRect();
-    spawnBurst(e.clientX - rect.left, e.clientY - rect.top);
-
-    /* start loop if not already running */
-    if (!rafId) { rafId = requestAnimationFrame(loop); }
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    pointers[0].moved = true;
+    pointers[0].dx = (x - pointers[0].x) * 8.0;
+    pointers[0].dy = (y - pointers[0].y) * 8.0;
+    pointers[0].x  = x;
+    pointers[0].y  = y;
   });
 
-  hero.addEventListener('mouseenter', function () {
-    spawning = true;
+  hero.addEventListener('mousedown', function() {
+    pointers[0].color = randomPaletteColor();
   });
 
-  hero.addEventListener('mouseleave', function () {
-    spawning = false;
-    /* loop continues until remaining particles finish naturally */
-  });
+  /* touch support */
+  hero.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    var rect   = hero.getBoundingClientRect();
+    var touches = e.targetTouches;
+    for (var i = 0; i < touches.length; i++) {
+      if (i >= pointers.length) pointers.push(new pointerPrototype());
+      var x = touches[i].clientX - rect.left;
+      var y = touches[i].clientY - rect.top;
+      pointers[i].moved = true;
+      pointers[i].dx = (x - pointers[i].x) * 8.0;
+      pointers[i].dy = (y - pointers[i].y) * 8.0;
+      pointers[i].x  = x;
+      pointers[i].y  = y;
+      pointers[i].color = randomPaletteColor();
+    }
+  }, false);
+
 })();
 </script>
+
+
 </body>
 </html>

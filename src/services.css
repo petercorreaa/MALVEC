@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scoped resets — only inside our React island */
+#services-react-root *,
+#services-react-root *::before,
+#services-react-root *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Inherit the Degular font from the host page */
+#services-react-root {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Override the host page's cursor: none on buttons inside our island */
+#services-react-root button,
+#services-react-root a {
+  cursor: pointer;
+}
+
+/* Smooth all transitions that involve color/opacity/transform */
+#services-react-root .service-list button {
+  background: none;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Responsive padding tweak */
+@media (max-width: 768px) {
+  #services-react-root .services-section {
+    padding: 80px 24px !important;
+  }
+}
