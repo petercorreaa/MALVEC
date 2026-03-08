@@ -61,7 +61,9 @@
   .cursor {
     box-shadow: 0 0 10px 3px rgba(159,0,74,0.6) !important;
     mix-blend-mode: normal !important;
+    transition: opacity 0.15s ease;
   }
+  .cursor.in-hero { opacity: 0 !important; }
   .cursor-trail {
     position: fixed; pointer-events: none; z-index: 9997;
     border-radius: 50%;
@@ -1072,6 +1074,13 @@
     mx = e.clientX; my = e.clientY;
     cursor.style.transform = 'translate(' + (mx - 5) + 'px, ' + (my - 5) + 'px)';
   });
+
+  /* Hide dot cursor inside hero — smoke handles it there */
+  var heroSection = document.getElementById('home');
+  if (heroSection) {
+    heroSection.addEventListener('mouseenter', function() { cursor.classList.add('in-hero'); });
+    heroSection.addEventListener('mouseleave', function() { cursor.classList.remove('in-hero'); });
+  }
 
   function animateRing() {
     rx += (mx - rx - 18) * 0.12;
