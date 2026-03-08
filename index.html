@@ -346,19 +346,19 @@
     text-transform: uppercase;
     color: var(--cream);
     line-height: 1;
-    padding: 20px 24px;
+    padding: 20px 0;
+    margin: 0 24px;
   }
-  .marquee-item .star {
-    display: inline-block;
+  .marquee-track .star {
+    display: inline-flex;
+    align-items: center;
     font-size: 0.55em;
     color: var(--pink);
-    margin: 0 20px;
+    margin: 0 24px;
     line-height: 1;
-    vertical-align: middle;
   }
   .marquee-item { color: var(--cream) !important; }
-  .marquee-item span:not(.star) { color: var(--cream) !important; }
-  .marquee-item .star { color: var(--pink) !important; }
+  .marquee-track .star { color: var(--pink) !important; }
 
   /* SECTION */
   section { padding: 120px 48px; }
@@ -725,8 +725,7 @@
     .h-line { margin: 0 24px; }
   }
   .marquee-item { color: var(--cream) !important; }
-  .marquee-item span:not(.star) { color: var(--cream) !important; }
-  .marquee-item .star { color: var(--pink) !important; }
+  .marquee-track .star { color: var(--pink) !important; }
 
   /* PRELOADER */
   #preloader {
@@ -823,39 +822,39 @@
   <!-- Row 1: moves left -->
   <div class="marquee-row" id="marqueeRow1">
     <div class="marquee-track">
-      <div class="marquee-item">Web Development <span class="star">✦</span></div>
-      <div class="marquee-item">Branding <span class="star">✦</span></div>
-      <div class="marquee-item">SEO / SEM <span class="star">✦</span></div>
-      <div class="marquee-item">UI / UX <span class="star">✦</span></div>
-      <div class="marquee-item">Digital Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Paid Ads <span class="star">✦</span></div>
+      <div class="marquee-item">Web Development</div><span class="star">✦</span>
+      <div class="marquee-item">Branding</div><span class="star">✦</span>
+      <div class="marquee-item">SEO / SEM</div><span class="star">✦</span>
+      <div class="marquee-item">UI / UX</div><span class="star">✦</span>
+      <div class="marquee-item">Digital Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Paid Ads</div><span class="star">✦</span>
     </div>
     <div class="marquee-track" aria-hidden="true">
-      <div class="marquee-item">Web Development <span class="star">✦</span></div>
-      <div class="marquee-item">Branding <span class="star">✦</span></div>
-      <div class="marquee-item">SEO / SEM <span class="star">✦</span></div>
-      <div class="marquee-item">UI / UX <span class="star">✦</span></div>
-      <div class="marquee-item">Digital Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Paid Ads <span class="star">✦</span></div>
+      <div class="marquee-item">Web Development</div><span class="star">✦</span>
+      <div class="marquee-item">Branding</div><span class="star">✦</span>
+      <div class="marquee-item">SEO / SEM</div><span class="star">✦</span>
+      <div class="marquee-item">UI / UX</div><span class="star">✦</span>
+      <div class="marquee-item">Digital Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Paid Ads</div><span class="star">✦</span>
     </div>
   </div>
   <!-- Row 2: moves right -->
   <div class="marquee-row" id="marqueeRow2">
     <div class="marquee-track">
-      <div class="marquee-item">Social Content <span class="star">✦</span></div>
-      <div class="marquee-item">Rebranding <span class="star">✦</span></div>
-      <div class="marquee-item">E-Commerce <span class="star">✦</span></div>
-      <div class="marquee-item">Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Performance <span class="star">✦</span></div>
-      <div class="marquee-item">Conversion <span class="star">✦</span></div>
+      <div class="marquee-item">Social Content</div><span class="star">✦</span>
+      <div class="marquee-item">Rebranding</div><span class="star">✦</span>
+      <div class="marquee-item">E-Commerce</div><span class="star">✦</span>
+      <div class="marquee-item">Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Performance</div><span class="star">✦</span>
+      <div class="marquee-item">Conversion</div><span class="star">✦</span>
     </div>
     <div class="marquee-track" aria-hidden="true">
-      <div class="marquee-item">Social Content <span class="star">✦</span></div>
-      <div class="marquee-item">Rebranding <span class="star">✦</span></div>
-      <div class="marquee-item">E-Commerce <span class="star">✦</span></div>
-      <div class="marquee-item">Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Performance <span class="star">✦</span></div>
-      <div class="marquee-item">Conversion <span class="star">✦</span></div>
+      <div class="marquee-item">Social Content</div><span class="star">✦</span>
+      <div class="marquee-item">Rebranding</div><span class="star">✦</span>
+      <div class="marquee-item">E-Commerce</div><span class="star">✦</span>
+      <div class="marquee-item">Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Performance</div><span class="star">✦</span>
+      <div class="marquee-item">Conversion</div><span class="star">✦</span>
     </div>
   </div>
 </div>
@@ -1094,12 +1093,11 @@
     var row2 = document.getElementById('marqueeRow2');
     if (!row1 || !row2) return;
 
-    var BASE_SPEED = 0.4;   /* px per frame at rest */
-    var SCROLL_FACTOR = 0.12; /* extra px per scrollY unit (decays) */
+    var BASE_SPEED = 0.4;          /* px per frame at rest */
 
     var pos1 = 0;
     var pos2 = 0;
-    var scrollVel = 0;      /* accumulated scroll velocity */
+    var currentSpeed = BASE_SPEED; /* single shared speed for both rows */
     var lastScrollY = window.scrollY;
 
     /* width of one track clone (half the row) */
@@ -1109,7 +1107,7 @@
 
     window.addEventListener('scroll', function () {
       var dy = window.scrollY - lastScrollY;
-      scrollVel += dy * SCROLL_FACTOR;
+      currentSpeed += dy * 0.08;   /* accelerate on scroll-down, decelerate on scroll-up */
       lastScrollY = window.scrollY;
     });
 
@@ -1117,11 +1115,12 @@
       var hw1 = halfWidth(row1);
       var hw2 = halfWidth(row2);
 
-      var speed = BASE_SPEED + Math.abs(scrollVel);
+      /* ease currentSpeed back to base — identical lerp applied to both rows */
+      currentSpeed += (BASE_SPEED - currentSpeed) * 0.05;
 
-      /* row1 moves left, row2 moves right */
-      pos1 -= speed;
-      pos2 += (scrollVel >= 0 ? BASE_SPEED : speed);
+      /* row1 moves left, row2 moves right — same magnitude */
+      pos1 -= currentSpeed;
+      pos2 += currentSpeed;
 
       /* wrap seamlessly at the half-width boundary */
       if (Math.abs(pos1) >= hw1) pos1 += hw1;
@@ -1129,10 +1128,6 @@
 
       row1.style.transform = 'translateX(' + pos1 + 'px)';
       row2.style.transform = 'translateX(' + pos2 + 'px)';
-
-      /* decay scroll velocity */
-      scrollVel *= 0.88;
-      if (Math.abs(scrollVel) < 0.01) scrollVel = 0;
 
       requestAnimationFrame(tick);
     }
