@@ -23,21 +23,7 @@
     color: var(--cream);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     overflow-x: hidden;
-    cursor: none;
   }
-
-  /* CURSOR */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--pink);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 9999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring { display: none; }
-  .cursor-ring.hovered { display: none; }
 
   /* NOISE */
   body::before {
@@ -57,13 +43,7 @@
     transition: width 0.05s linear;
   }
 
-  /* CURSOR GLOW + TRAIL */
-  .cursor {
-    box-shadow: 0 0 10px 3px rgba(159,0,74,0.6) !important;
-    mix-blend-mode: normal !important;
-    transition: opacity 0.15s ease;
-  }
-  .cursor.in-hero { opacity: 0 !important; }
+
   .cursor-trail {
     position: fixed; pointer-events: none; z-index: 9997;
     border-radius: 50%;
@@ -229,7 +209,7 @@
     padding: 16px 36px; background: var(--grad);
     color: var(--cream); border: none; border-radius: 100px;
     font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
-    cursor: none; text-decoration: none;
+    cursor: pointer; text-decoration: none;
     transition: transform 0.2s, box-shadow 0.3s;
     box-shadow: 0 0 40px rgba(159,0,74,0.3);
   }
@@ -240,7 +220,7 @@
     color: rgba(239,238,230,0.7);
     border: 1px solid rgba(239,238,230,0.15); border-radius: 100px;
     font-size: 14px; letter-spacing: 0.05em;
-    cursor: none; text-decoration: none;
+    cursor: pointer; text-decoration: none;
     transition: border-color 0.3s, color 0.3s;
   }
   .btn-ghost:hover { border-color: rgba(239,238,230,0.4); color: var(--cream); }
@@ -795,8 +775,6 @@
 </div>
 <!-- /PRELOADER -->
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
 <div class="progress-bar" id="progressBar"></div>
 
 <nav id="navbar">
@@ -1065,34 +1043,12 @@
     }, 1500);
   });
 
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
+  let mx = 0, my = 0;
   let lastTrailX = 0, lastTrailY = 0;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.transform = 'translate(' + (mx - 5) + 'px, ' + (my - 5) + 'px)';
-  });
-
-  /* Hide dot cursor inside hero — smoke handles it there */
-  var heroSection = document.getElementById('home');
-  if (heroSection) {
-    heroSection.addEventListener('mouseenter', function() { cursor.classList.add('in-hero'); });
-    heroSection.addEventListener('mouseleave', function() { cursor.classList.remove('in-hero'); });
-  }
-
-  function animateRing() {
-    rx += (mx - rx - 18) * 0.12;
-    ry += (my - ry - 18) * 0.12;
-    ring.style.transform = 'translate(' + rx + 'px, ' + ry + 'px)';
-    requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
   document.querySelectorAll('a, button, [data-card]').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { ring.classList.add('hovered'); });
-    el.addEventListener('mouseleave', function() { ring.classList.remove('hovered'); });
+    el.addEventListener('mouseenter', function() { });
+    el.addEventListener('mouseleave', function() { });
   });
 
   document.querySelectorAll('[data-card]').forEach(function(card) {
