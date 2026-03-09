@@ -343,10 +343,12 @@
   /* PROCESS CAROUSEL */
   .process-section {
     background: rgba(239,238,230,0.015);
+    overflow: hidden;
   }
   .process-carousel {
-    overflow: hidden;
-    width: 100%;
+    overflow: visible;
+    width: 100vw;
+    margin-left: -48px;
     margin-top: 48px;
   }
   .process-track {
@@ -594,7 +596,7 @@
     /* services section padding handled by React component */
     .philosophy { grid-template-columns: 1fr; }
     .philosophy-visual { display: none; }
-    .process-carousel { overflow-x: auto; }
+    .process-carousel { overflow-x: auto; margin-left: -24px; width: 100vw; }
     .process-item { flex: 0 0 85%; }
     .footer-top { flex-direction: column; gap: 40px; }
     .footer-links { gap: 40px; flex-wrap: wrap; }
