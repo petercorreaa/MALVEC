@@ -356,9 +356,19 @@
   .process-item {
     flex: 0 0 calc(50% - 32px);
     min-height: 320px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.05);
     padding: 48px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
   }
   .process-item-num {
     font-size: 5rem;
@@ -380,6 +390,39 @@
     font-size: 1rem;
     color: rgba(239,238,230,0.65);
     line-height: 1.65;
+  }
+  .process-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.06) 40%,
+      rgba(180, 0, 80, 0.08) 60%,
+      rgba(123, 0, 255, 0.06) 80%,
+      rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .process-item:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 40px rgba(180, 0, 80, 0.25),
+      0 0 80px rgba(123, 0, 255, 0.15),
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  }
+  .process-item-content {
+    position: relative;
+    z-index: 2;
+  }
+  .process-item-icon {
+    display: block;
+    margin-bottom: 20px;
+    color: var(--accent);
   }
 
   /* CTA */
@@ -748,45 +791,69 @@
     <div class="process-track" id="processTrack">
       <!-- Set 1 -->
       <div class="process-item">
-        <div class="process-item-num">01</div>
-        <div class="process-item-title">Discovery</div>
-        <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">01</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="process-item-title">Discovery</div>
+          <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+        </div>
       </div>
       <div class="process-item">
-        <div class="process-item-num">02</div>
-        <div class="process-item-title">Strategy</div>
-        <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">02</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <div class="process-item-title">Strategy</div>
+          <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+        </div>
       </div>
       <div class="process-item">
-        <div class="process-item-num">03</div>
-        <div class="process-item-title">Execution</div>
-        <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">03</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div class="process-item-title">Execution</div>
+          <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+        </div>
       </div>
       <div class="process-item">
-        <div class="process-item-num">04</div>
-        <div class="process-item-title">Growth</div>
-        <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">04</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <div class="process-item-title">Growth</div>
+          <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+        </div>
       </div>
       <!-- Set 2 (duplicate for seamless loop) -->
       <div class="process-item">
-        <div class="process-item-num">01</div>
-        <div class="process-item-title">Discovery</div>
-        <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">01</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="process-item-title">Discovery</div>
+          <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+        </div>
       </div>
       <div class="process-item">
-        <div class="process-item-num">02</div>
-        <div class="process-item-title">Strategy</div>
-        <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">02</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <div class="process-item-title">Strategy</div>
+          <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+        </div>
       </div>
       <div class="process-item">
-        <div class="process-item-num">03</div>
-        <div class="process-item-title">Execution</div>
-        <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">03</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div class="process-item-title">Execution</div>
+          <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+        </div>
       </div>
       <div class="process-item">
-        <div class="process-item-num">04</div>
-        <div class="process-item-title">Growth</div>
-        <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+        <div class="process-item-content">
+          <div class="process-item-num">04</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <div class="process-item-title">Growth</div>
+          <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+        </div>
       </div>
     </div>
   </div>
