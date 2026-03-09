@@ -179,6 +179,7 @@
     font-family: 'Degular Display', sans-serif;
     color: var(--cream);
     margin-bottom: 16px;
+    text-align: center;
     opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
   }
   .hero-title .line-grad {
@@ -198,106 +199,9 @@
   .hero-sub {
     max-width: 480px; font-size: 16px; line-height: 1.65;
     color: rgba(239,238,230,0.72); margin-bottom: 32px;
+    text-align: center;
     opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
   }
-  .hero-actions {
-    display: flex; gap: 16px; align-items: center;
-    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
-  }
-
-  .btn-primary {
-    padding: 16px 36px; background: var(--grad);
-    color: var(--cream); border: none; border-radius: 100px;
-    font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
-    cursor: pointer; text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.3s;
-    box-shadow: 0 0 40px rgba(159,0,74,0.3);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 60px rgba(159,0,74,0.5); }
-
-  .btn-ghost {
-    padding: 16px 36px; background: transparent;
-    color: rgba(239,238,230,0.7);
-    border: 1px solid rgba(239,238,230,0.15); border-radius: 100px;
-    font-size: 14px; letter-spacing: 0.05em;
-    cursor: pointer; text-decoration: none;
-    transition: border-color 0.3s, color 0.3s;
-  }
-  .btn-ghost:hover { border-color: rgba(239,238,230,0.4); color: var(--cream); }
-
-  /* HOLO CARD */
-  #holo-card {
-    position: absolute;
-    right: 80px;
-    top: 50%;
-    transform: perspective(800px) translateY(-50%);
-    width: 280px;
-    height: 380px;
-    border-radius: 20px;
-    background: rgba(22, 0, 38, 0.72);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(180, 0, 80, 0.3);
-    box-shadow: 0 0 30px rgba(123, 0, 255, 0.15), 0 20px 60px rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;
-    animation: holoFloat 4s ease-in-out infinite;
-    transition: box-shadow 0.3s ease;
-    will-change: transform;
-    transform-style: preserve-3d;
-  }
-  #holo-card:hover {
-    box-shadow: 0 0 50px rgba(123, 0, 255, 0.3), 0 30px 80px rgba(0,0,0,0.5);
-    animation-play-state: paused;
-  }
-  #holo-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0) 0%,
-      rgba(180,0,80,0.08) 40%,
-      rgba(123,0,255,0.1) 60%,
-      rgba(255,255,255,0) 100%);
-    mix-blend-mode: overlay;
-    pointer-events: none;
-  }
-  .holo-shine {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0) 0%,
-      rgba(180,0,80,0.15) 25%,
-      rgba(123,0,255,0.2) 50%,
-      rgba(255,255,255,0.08) 75%,
-      rgba(255,255,255,0) 100%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
-    mix-blend-mode: overlay;
-    pointer-events: none;
-    transition: background-position 0.1s ease;
-  }
-  #holo-card img {
-    width: 140px;
-    height: auto;
-    opacity: 0.92;
-    pointer-events: none;
-    user-select: none;
-    filter: drop-shadow(0 0 18px rgba(180,0,80,0.4));
-  }
-  @keyframes holoFloat {
-    0%   { transform: perspective(800px) translateY(-50%) translateY(0px); }
-    50%  { transform: perspective(800px) translateY(-50%) translateY(-12px); }
-    100% { transform: perspective(800px) translateY(-50%) translateY(0px); }
-  }
-  @media (max-width: 768px) { #holo-card { display: none; } }
-
   .hero-scroll {
     position: absolute; bottom: 40px; left: 50%;
     transform: translateX(-50%);
@@ -800,20 +704,11 @@
   <p class="hero-sub">
     Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
   </p>
-  <div class="hero-actions">
-    <a href="#services" class="btn-primary">Our Services</a>
-    <a href="#contact" class="btn-ghost">Let's Talk &rarr;</a>
-  </div>
-
   <div class="hero-scroll">
     <div class="scroll-line"></div>
     <span>Scroll</span>
   </div>
 
-  <div id="holo-card">
-    <div class="holo-shine"></div>
-    <img src="logo.png" alt="MALVEC" draggable="false">
-  </div>
 </section>
 
 <div class="marquee-section" id="marqueeSection">
@@ -1201,41 +1096,6 @@
       var progress = Math.max(0, Math.min(1, scrolled / scrollable));
       var idx = Math.min(3, Math.floor(progress * 4));
       setActive(idx);
-    });
-  })();
-
-  /* Holo card 3D tilt */
-  (function () {
-    var card = document.getElementById('holo-card');
-    if (!card) return;
-    var shine = card; // ::before is driven via CSS var trick — we update a data attribute instead
-
-    card.addEventListener('mousemove', function (e) {
-      var rect = card.getBoundingClientRect();
-      var cx = rect.left + rect.width  / 2;
-      var cy = rect.top  + rect.height / 2;
-      var dx = (e.clientX - cx) / (rect.width  / 2); // -1 to 1
-      var dy = (e.clientY - cy) / (rect.height / 2); // -1 to 1
-
-      var rotX = (-dy * 20).toFixed(2);
-      var rotY = ( dx * 20).toFixed(2);
-
-      card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
-      card.style.transform  = 'perspective(800px) translateY(-50%) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-
-      /* shift shine gradient position with cursor */
-      var px = ((dx + 1) / 2 * 100).toFixed(1);
-      var py = ((dy + 1) / 2 * 100).toFixed(1);
-      card.style.setProperty('--shine-x', px + '%');
-      card.style.setProperty('--shine-y', py + '%');
-      /* directly update ::before via a transparent overlay element */
-      var overlay = card.querySelector('.holo-shine');
-      if (overlay) overlay.style.backgroundPosition = px + '% ' + py + '%';
-    });
-
-    card.addEventListener('mouseleave', function () {
-      card.style.transition = 'transform 0.6s cubic-bezier(0.23,1,0.32,1), box-shadow 0.3s ease';
-      card.style.transform  = 'perspective(800px) translateY(-50%) rotateX(0deg) rotateY(0deg)';
     });
   })();
 
