@@ -53,20 +53,20 @@ export default function ServicesSection() {
 
       {/* Section header */}
       <motion.div
-        className="relative z-10 flex items-center justify-center gap-6 px-12"
+        className="relative z-10 flex items-center justify-start gap-6 px-12"
         style={{
           borderBottom: '1px solid rgba(22,0,38,0.08)',
           paddingTop: '42px',
           paddingBottom: '18px',
+          marginBottom: '60px',
         }}
         initial={{ opacity: 0, y: 16 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <span className="block w-14 h-px" style={{ background: '#92004a' }} />
         <span
-          className="text-[13px] tracking-[0.36em] uppercase font-semibold"
-          style={{ color: '#92004a' }}
+          className="tracking-[0.36em] uppercase font-semibold"
+          style={{ color: '#92004a', fontSize: 'clamp(1rem, 1.8vw, 1.4rem)', textAlign: 'left', alignSelf: 'flex-start', paddingLeft: '48px' }}
         >
           Services
         </span>
@@ -117,19 +117,25 @@ export default function ServicesSection() {
                       transformPerspective: 1000,
                       width: '340px',
                       aspectRatio: '4/3',
-                      background: 'rgba(22,0,38,0.06)',
                       borderRadius: '12px',
-                      border: '1px solid rgba(22,0,38,0.07)',
+                      border: 'none',
+                      background: 'transparent',
                       boxShadow: '0 20px 56px rgba(22,0,38,0.12)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
                       flexShrink: 0,
+                      overflow: 'hidden',
                     }}
                   >
-                    <span style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(22,0,38,0.18)' }}>
-                      Visual
-                    </span>
+                    <img
+                      src={`/MALVEC%20Previews-${services[activeIndex].index}.png`}
+                      alt={services[activeIndex].name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: 'inherit',
+                        display: 'block',
+                      }}
+                    />
                   </motion.div>
 
                   {/* Free text */}

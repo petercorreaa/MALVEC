@@ -10,8 +10,9 @@ interface ServiceRowProps {
   onHover: (index: number | null) => void
 }
 
-const EASE_OUT    = [0.25, 0.46, 0.45, 0.94] as const
-const EASE_REVEAL = [0.22, 1,    0.36, 1    ] as const
+const EASE_OUT  = [0.25, 0.46, 0.45, 0.94] as const
+const EASE_PUSH = [0.23, 1, 0.32, 1] as const
+const PUSH_DUR  = 0.5
 
 export default function ServiceRow({
   service,
@@ -42,90 +43,110 @@ export default function ServiceRow({
         aria-label={`${service.name} — view service detail`}
         initial={false}
       >
-        {/* ── Collapsed row (always visible) ── */}
+        {/* ── Row layout ── */}
         <div
           className="relative flex items-center px-12"
           style={{ minHeight: '150px' }}
         >
           {/* Left accent bar */}
           <motion.span
-            className="absolute left-0 top-0 bottom-0 w-[3px]"
+            className="absolute left-0 top-0 bottom-0 w-[5px]"
             style={{ background: '#92004a', transformOrigin: 'top' }}
             animate={{ scaleY: isActive ? 1 : 0 }}
-            transition={{ duration: 0.42, ease: EASE_REVEAL }}
+            transition={{ duration: 0.8, ease: EASE_PUSH }}
           />
 
           {/* Three-column row: name | spacer | index */}
           <div className="flex items-center w-full">
 
-            {/* Service name — dual-layer mask reveal + tab shift */}
-            <motion.div
-              className="flex-1"
-              style={{ overflow: 'hidden', paddingBottom: '0.04em' }}
-              animate={{ x: isActive ? 18 : 0 }}
-              transition={{ duration: 0.42, ease: EASE_REVEAL }}
+            {/* Service name — slide-up push with two layers */}
+            <div
+              className="flex-1 relative"
+              style={{
+                overflow: 'hidden',
+                paddingLeft: '48px',    /* mirrors the marginLeft: 32px on the number div */
+              }}
             >
-              {/* Muted layer — sets height */}
-              <motion.span
-                className="block font-semibold leading-none select-none"
+              {/* Invisible sizer — keeps row height stable at all times */}
+              <span
+                className="block font-semibold leading-none select-none pointer-events-none"
                 style={{
                   fontFamily: "'Degular Display', sans-serif",
                   fontSize: 'clamp(20px, 2.4vw, 38px)',
                   letterSpacing: '-0.02em',
+                  visibility: 'hidden',
                 }}
-                animate={{ color: isActive ? 'transparent' : 'rgba(22,0,38,0.82)' }}
-                transition={{ duration: 0.28, ease: EASE_OUT }}
-                aria-hidden={isActive ? 'true' : undefined}
+                aria-hidden="true"
+              >
+                {service.name}
+              </span>
+
+              {/* Layer 1 — default visible, slides up on hover */}
+              <motion.span
+                className="absolute inset-0 font-semibold leading-none flex items-center"
+                style={{
+                  fontFamily: "'Degular Display', sans-serif",
+                  fontSize: 'clamp(20px, 2.4vw, 38px)',
+                  letterSpacing: '-0.02em',
+                  color: '#160026',
+                  paddingLeft: '48px',
+                }}
+                animate={{
+                  y: isActive ? '-100%' : '0%',
+                  opacity: isActive ? 0 : 1,
+                }}
+                transition={{ duration: PUSH_DUR, ease: EASE_PUSH }}
+                aria-hidden="true"
               >
                 {service.name}
               </motion.span>
 
-              {/* Active layer — clips upward */}
-              <span className="absolute inset-0" style={{ overflow: 'hidden' }} aria-hidden="true">
-                <motion.span
-                  className="absolute inset-0 font-semibold leading-none flex items-center"
-                  style={{
-                    fontFamily: "'Degular Display', sans-serif",
-                    fontSize: 'clamp(20px, 2.4vw, 38px)',
-                    letterSpacing: '-0.02em',
-                    color: '#160026',
-                  }}
-                  animate={{ y: isActive ? '0%' : '105%' }}
-                  transition={{ duration: 0.5, ease: EASE_REVEAL }}
-                >
-                  {service.name}
-                </motion.span>
-              </span>
-            </motion.div>
-
-            {/* Index + arrow */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, marginLeft: '32px' }}>
+              {/* Layer 2 — clone below, slides up into place on hover */}
               <motion.span
-                className="text-[11px] tracking-[0.2em] font-mono tabular-nums"
-                animate={{ color: isActive ? '#92004a' : 'rgba(22,0,38,0.28)' }}
-                transition={{ duration: 0.28, ease: EASE_OUT }}
+                className="absolute inset-0 font-semibold leading-none flex items-center"
+                style={{
+                  fontFamily: "'Degular Display', sans-serif",
+                  fontSize: 'clamp(20px, 2.4vw, 38px)',
+                  letterSpacing: '-0.02em',
+                  color: '#160026',
+                  paddingLeft: '48px',
+                }}
+                animate={{
+                  y: isActive ? '0%' : '100%',
+                  opacity: isActive ? 1 : 0,
+                }}
+                transition={{ duration: PUSH_DUR, ease: EASE_PUSH }}
+                aria-hidden="true"
               >
-                {service.index}
+                {service.name}
               </motion.span>
 
-              {/* Arrow — appears on hover */}
+              {/* Screen-reader label */}
+              <span className="sr-only">{service.name}</span>
+            </div>
+
+            {/* Index + arrow */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0', flexShrink: 0, marginLeft: '32px', paddingRight: '48px' }}>
+              {/* Arrow — appears on hover, now sits left of the number */}
               <motion.span
-                style={{
-                  fontSize: '16px',
-                  color: '#92004a',
-                  display: 'block',
-                  lineHeight: 1,
-                }}
+                style={{ fontSize: '16px', color: '#92004a', display: 'block', lineHeight: 1, marginRight: '10px' }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -6 }}
-                transition={{ duration: 0.28, ease: EASE_OUT }}
+                transition={{ duration: 0.8, ease: EASE_PUSH }}
                 aria-hidden="true"
               >
                 →
               </motion.span>
+
+              <motion.span
+                className="text-[1.4rem] tracking-[0.2em] font-mono tabular-nums"
+                animate={{ color: isActive ? '#92004a' : 'rgba(22,0,38,0.28)' }}
+                transition={{ duration: 0.8, ease: EASE_PUSH }}
+              >
+                {service.index}
+              </motion.span>
             </div>
           </div>
         </div>
-
 
       </motion.a>
     </motion.div>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MALVEC — Digital Agency</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Degular+Display:wght@400;500;600;700&family=Degular:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Degular+Display:wght@400;500;600;700&family=Degular:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <style>
   :root {
     --cream: #efeee6;
@@ -16,7 +16,7 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: auto; }
 
   body {
     background: var(--dark);
@@ -138,9 +138,10 @@
   .hero {
     height: 100svh;
     display: flex; flex-direction: column;
-    justify-content: center; align-items: flex-start;
+    justify-content: center; align-items: center;
     padding: 110px 48px 60px;
     position: relative; overflow: hidden;
+    text-align: center;
   }
   #hero-fluid-canvas {
     position: absolute; inset: 0;
@@ -214,12 +215,13 @@
   }
 
   .hero-sub {
-    max-width: 480px; font-size: 16px; line-height: 1.65;
+    max-width: 560px; font-size: 16px; line-height: 1.65;
     color: rgba(239,238,230,0.72); margin-bottom: 32px;
+    text-align: center;
     opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
   }
   .hero-actions {
-    display: flex; gap: 16px; align-items: center;
+    display: flex; gap: 16px; align-items: center; justify-content: center;
     opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
   }
 
@@ -335,24 +337,22 @@
   /* MARQUEE */
   .marquee-section {
     overflow: hidden;
-    background: var(--dark);
+    background: #000000;
     padding: 0;
     border-top: 1px solid rgba(255,255,255,0.06);
     border-bottom: 1px solid rgba(255,255,255,0.06);
     user-select: none;
   }
   .marquee-row {
-    display: flex;
-    width: max-content;
-    will-change: transform;
+    overflow: hidden;
+    width: 100%;
   }
-  .marquee-row--reverse {
-    /* JS drives this, base offset starts at -50% so it fills naturally */
-  }
-  .marquee-track {
+  .marquee-inner {
     display: flex;
     align-items: center;
     white-space: nowrap;
+    width: max-content;
+    will-change: transform;
   }
   .marquee-item {
     display: inline-flex;
@@ -364,17 +364,19 @@
     text-transform: uppercase;
     color: var(--cream);
     line-height: 1;
-    padding: 0 24px;
+    padding: 20px 0;
+    margin: 0 24px;
   }
-  .marquee-item .star {
-    display: inline-block;
-    font-size: 0.55em;
+  .marquee-inner .star {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.4em;
     color: var(--pink);
-    margin: 0 8px;
+    margin: 0 24px;
     line-height: 1;
-    transform: translateY(-4px);
   }
-  .marquee-item, .marquee-item span { color: var(--cream) !important; }
+  .marquee-item { color: var(--cream) !important; }
+  .marquee-inner .star { color: var(--pink) !important; }
 
   /* SECTION */
   section { padding: 120px 48px; }
@@ -452,113 +454,107 @@
   .philosophy-text p { font-size: 16px; line-height: 1.8; color: rgba(239,238,230,0.68); margin-bottom: 20px; }
   .accent-line { width: 60px; height: 2px; background: var(--grad); margin: 32px 0; }
 
+  /* Lenis Smooth Scroll */
+  .lenis.lenis-smooth { scroll-behavior: auto; }
+  .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-scrolling iframe { pointer-events: none; }
+  .lenis.lenis-stopped { overflow: hidden; }
+
   /* PROCESS */
-  .process-scroll-wrapper {
-    position: relative;
-    height: 250vh; /* ~62.5vh per phase */
-  }
+  /* PROCESS CAROUSEL */
   .process-section {
     background: rgba(239,238,230,0.015);
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     overflow: hidden;
   }
-  .process-layout {
-    display: flex;
-    gap: 64px;
-    margin-top: 80px;
-    align-items: center;
-    min-height: 400px;
+  .process-carousel {
+    overflow: visible;
+    width: 100vw;
+    margin-left: -48px;
+    margin-top: 48px;
   }
-  /* — Left: stacked glass cards — */
-  .process-fan {
-    flex: 0 0 40%;
+  .process-track {
+    display: flex;
+    gap: 32px;
+    user-select: none;
+    -webkit-user-select: none;
+    will-change: transform;
+  }
+  .process-item {
+    flex: 0 0 calc(50% - 32px);
+    min-height: 320px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    padding: 48px;
     position: relative;
-    /* height set by aspect-ratio so card is 1.586:1 (credit card) */
-    aspect-ratio: 1.586;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
   }
-  .process-card {
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25),
-                inset 0 -1px 0 rgba(255, 255, 255, 0.08);
-    padding: 40px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 24px;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1),
-                transform 0.5s cubic-bezier(0.23,1,0.32,1);
-    pointer-events: none;
-    will-change: transform, opacity;
+  .process-item-num {
+    font-size: 5rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1;
+    font-family: 'Degular Display', sans-serif;
+    margin-bottom: 16px;
   }
-  .process-card.active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s,
-                transform 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s;
-    pointer-events: auto;
+  .process-item-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #f5f5f5;
+    font-family: 'Degular Display', sans-serif;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .process-item-body {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.65;
+  }
+  .process-item::before {
+    display: none;
+  }
+  .process-item:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 40px rgba(180, 0, 80, 0.25),
+      0 0 80px rgba(123, 0, 255, 0.15),
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  }
+  .process-item-content {
+    position: relative;
     z-index: 2;
   }
-  .process-card.exit {
-    opacity: 0;
-    transform: translateY(-40px);
-    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1),
-                transform 0.5s cubic-bezier(0.23,1,0.32,1);
-    pointer-events: none;
-    z-index: 1;
+  .process-item-icon {
+    display: block;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.85);
+    /* Force SVG stroke to white so icons appear white across all cards */
+    stroke: #ffffff !important;
   }
-  .process-card-num {
-    font-size: 6rem; font-family: 'Degular Display', sans-serif;
-    font-weight: 800; color: var(--pink); line-height: 1;
-    flex-shrink: 0;
+  /* Per-card gradients — repeating across both sets of 4 */
+  .process-track .process-item:nth-child(4n+1) {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--accent) 100%);
   }
-  .process-card-title {
-    font-family: 'Degular Display', sans-serif;
-    font-size: 2.2rem; font-weight: 700; color: var(--cream);
-    line-height: 1.2;
+  .process-track .process-item:nth-child(4n+2) {
+    background: linear-gradient(135deg, var(--pink) 0%, var(--dark) 100%);
   }
-  /* — Right: body text only — */
-  .process-detail {
-    flex: 1 1 60%;
-    position: relative;
-    min-height: 200px;
+  .process-track .process-item:nth-child(4n+3) {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
   }
-  .process-detail-item {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; justify-content: center;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none;
+  .process-track .process-item:nth-child(4n+4) {
+    background: linear-gradient(135deg, var(--dark) 0%, var(--pink) 100%);
   }
-  .process-detail-item.exit {
-    opacity: 0;
-    transform: translateY(-30px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
-  .process-detail-item.active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
-    pointer-events: auto;
-  }
-  .process-detail-desc {
-    font-size: 2rem; color: rgba(239,238,230,0.85);
-    line-height: 1.6; max-width: 560px;
+
+  /* Specific override for the third card (Execution) to ensure it uses the crimson -> dark pink gradient */
+  .process-track .process-item:nth-child(3) {
+    /* use the same gradient as the first card (Discovery) */
+    background: linear-gradient(135deg, var(--dark) 0%, var(--accent) 100%);
   }
 
   /* CTA */
@@ -729,18 +725,15 @@
     /* services section padding handled by React component */
     .philosophy { grid-template-columns: 1fr; }
     .philosophy-visual { display: none; }
-    .process-scroll-wrapper { height: auto; }
-    .process-section { position: relative; height: auto; }
-    .process-layout { flex-direction: column; gap: 40px; }
-    .process-fan { flex: none; width: 100%; aspect-ratio: 1.586; }
-    .process-detail { position: relative; min-height: 160px; }
-    .process-detail-desc { font-size: 1.4rem; }
+    .process-carousel { overflow-x: auto; margin-left: -24px; width: 100vw; }
+    .process-item { flex: 0 0 85%; }
     .footer-top { flex-direction: column; gap: 40px; }
     .footer-links { gap: 40px; flex-wrap: wrap; }
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
     .h-line { margin: 0 24px; }
   }
-  .marquee-item, .marquee-item span { color: var(--cream) !important; }
+  .marquee-item { color: var(--cream) !important; }
+  .marquee-inner .star { color: var(--pink) !important; }
 
   /* PRELOADER */
   #preloader {
@@ -779,6 +772,86 @@
 
   /* text removed; logo only on preloader */
   body.loading { overflow: hidden !important; }
+
+  /* ── Text Reveal Animation Section ── */
+  .text-reveal-section {
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 0 14rem;
+    perspective: 2000px;
+    background: #050506;
+  }
+
+  .text-reveal__img-box {
+    position: absolute;
+    overflow: hidden;
+    opacity: 0.08;
+    border-radius: 0.5rem;
+    transition: opacity 0.5s;
+    pointer-events: none;
+  }
+
+  .text-reveal__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: grayscale(1);
+  }
+
+  .text-reveal__img-box:nth-child(1) { top: 5%;  left: 3%;   max-width: 22vw; }
+  .text-reveal__img-box:nth-child(2) { top: 35%; right: 4%;  max-width: 24vw; }
+  .text-reveal__img-box:nth-child(3) { top: 62%; left: 38%;  max-width: 20vw; }
+
+  .text-reveal__line {
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 0 3rem;
+    font-size: clamp(2.8rem, 5.5vw, 7rem);
+    line-height: 1.25;
+    font-weight: 500;
+    font-family: 'Lora', Georgia, serif;
+    color: white;
+    transform-origin: 50% 0;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: rotateX(-120deg);
+    mix-blend-mode: difference;
+    transform-style: preserve-3d;
+    position: relative;
+    z-index: 1;
+  }
+
+  .text-reveal__line--gap {
+    margin-top: 3.5rem;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .text-reveal-section { padding: 5rem 0 16rem; }
+    .text-reveal__line { font-size: clamp(2.2rem, 6vw, 5rem); }
+    .text-reveal__line--gap { margin-top: 2.5rem; }
+    .text-reveal__img-box { max-width: 36vw !important; }
+  }
+
+  @media screen and (max-width: 768px) {
+    .text-reveal-section { padding: 4rem 0 12rem; }
+    .text-reveal__line { font-size: clamp(1.8rem, 6.5vw, 3.5rem); padding: 0 1.5rem; }
+    .text-reveal__line--gap { margin-top: 2rem; }
+    .text-reveal__img-box { max-width: 42vw !important; }
+  }
+
+  @media screen and (max-width: 575px) {
+    .text-reveal__line { font-size: clamp(1.6rem, 7vw, 2.8rem); }
+    .text-reveal__line--gap { margin-top: 1.5rem; }
+    .text-reveal__img-box { display: none; }
+  }
+
+  @media screen and (min-height: 900px) {
+    .text-reveal-section { padding: 6rem 0 22rem; }
+  }
 </style>
 <script type="module" src="/src/main.tsx"></script>
 </head>
@@ -815,66 +888,91 @@
   <div class="orb orb-3"></div>
 
   <div class="hero-tag">Digital Agency · Argentina</div>
-  <h1 class="hero-title">We build<span class="line-grad">digital presence</span>that converts.</h1>
+  <h1 class="hero-title">Design that moves<span class="line-grad">brands forward.</span></h1>
   <p class="hero-sub">
     Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
   </p>
-  <div class="hero-actions">
-    <a href="#services" class="btn-primary">Our Services</a>
-    <a href="#contact" class="btn-ghost">Let's Talk &rarr;</a>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
-  </div>
-
-  <div id="holo-card">
-    <div class="holo-shine"></div>
-    <img src="logo.png" alt="MALVEC" draggable="false">
-  </div>
 </section>
 
 <div class="marquee-section" id="marqueeSection">
   <!-- Row 1: moves left -->
   <div class="marquee-row" id="marqueeRow1">
-    <div class="marquee-track">
-      <div class="marquee-item">Web Development <span class="star">✦</span></div>
-      <div class="marquee-item">Branding <span class="star">✦</span></div>
-      <div class="marquee-item">SEO / SEM <span class="star">✦</span></div>
-      <div class="marquee-item">UI / UX <span class="star">✦</span></div>
-      <div class="marquee-item">Digital Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Paid Ads <span class="star">✦</span></div>
-    </div>
-    <div class="marquee-track" aria-hidden="true">
-      <div class="marquee-item">Web Development <span class="star">✦</span></div>
-      <div class="marquee-item">Branding <span class="star">✦</span></div>
-      <div class="marquee-item">SEO / SEM <span class="star">✦</span></div>
-      <div class="marquee-item">UI / UX <span class="star">✦</span></div>
-      <div class="marquee-item">Digital Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Paid Ads <span class="star">✦</span></div>
+    <div class="marquee-inner">
+      <div class="marquee-item">Web Development</div><span class="star">✦</span>
+      <div class="marquee-item">Branding</div><span class="star">✦</span>
+      <div class="marquee-item">SEO / SEM</div><span class="star">✦</span>
+      <div class="marquee-item">UI / UX</div><span class="star">✦</span>
+      <div class="marquee-item">Digital Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Paid Ads</div><span class="star">✦</span>
+      <div class="marquee-item">Web Development</div><span class="star">✦</span>
+      <div class="marquee-item">Branding</div><span class="star">✦</span>
+      <div class="marquee-item">SEO / SEM</div><span class="star">✦</span>
+      <div class="marquee-item">UI / UX</div><span class="star">✦</span>
+      <div class="marquee-item">Digital Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Paid Ads</div><span class="star">✦</span>
+      <div class="marquee-item">Web Development</div><span class="star">✦</span>
+      <div class="marquee-item">Branding</div><span class="star">✦</span>
+      <div class="marquee-item">SEO / SEM</div><span class="star">✦</span>
+      <div class="marquee-item">UI / UX</div><span class="star">✦</span>
+      <div class="marquee-item">Digital Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Paid Ads</div><span class="star">✦</span>
+      <div class="marquee-item">Web Development</div><span class="star">✦</span>
+      <div class="marquee-item">Branding</div><span class="star">✦</span>
+      <div class="marquee-item">SEO / SEM</div><span class="star">✦</span>
+      <div class="marquee-item">UI / UX</div><span class="star">✦</span>
+      <div class="marquee-item">Digital Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Paid Ads</div><span class="star">✦</span>
     </div>
   </div>
   <!-- Row 2: moves right -->
   <div class="marquee-row" id="marqueeRow2">
-    <div class="marquee-track">
-      <div class="marquee-item">Social Content <span class="star">✦</span></div>
-      <div class="marquee-item">Rebranding <span class="star">✦</span></div>
-      <div class="marquee-item">E-Commerce <span class="star">✦</span></div>
-      <div class="marquee-item">Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Performance <span class="star">✦</span></div>
-      <div class="marquee-item">Conversion <span class="star">✦</span></div>
-    </div>
-    <div class="marquee-track" aria-hidden="true">
-      <div class="marquee-item">Social Content <span class="star">✦</span></div>
-      <div class="marquee-item">Rebranding <span class="star">✦</span></div>
-      <div class="marquee-item">E-Commerce <span class="star">✦</span></div>
-      <div class="marquee-item">Strategy <span class="star">✦</span></div>
-      <div class="marquee-item">Performance <span class="star">✦</span></div>
-      <div class="marquee-item">Conversion <span class="star">✦</span></div>
+    <div class="marquee-inner">
+      <div class="marquee-item">Social Content</div><span class="star">✦</span>
+      <div class="marquee-item">Rebranding</div><span class="star">✦</span>
+      <div class="marquee-item">E-Commerce</div><span class="star">✦</span>
+      <div class="marquee-item">Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Performance</div><span class="star">✦</span>
+      <div class="marquee-item">Conversion</div><span class="star">✦</span>
+      <div class="marquee-item">Social Content</div><span class="star">✦</span>
+      <div class="marquee-item">Rebranding</div><span class="star">✦</span>
+      <div class="marquee-item">E-Commerce</div><span class="star">✦</span>
+      <div class="marquee-item">Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Performance</div><span class="star">✦</span>
+      <div class="marquee-item">Conversion</div><span class="star">✦</span>
+      <div class="marquee-item">Social Content</div><span class="star">✦</span>
+      <div class="marquee-item">Rebranding</div><span class="star">✦</span>
+      <div class="marquee-item">E-Commerce</div><span class="star">✦</span>
+      <div class="marquee-item">Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Performance</div><span class="star">✦</span>
+      <div class="marquee-item">Conversion</div><span class="star">✦</span>
+      <div class="marquee-item">Social Content</div><span class="star">✦</span>
+      <div class="marquee-item">Rebranding</div><span class="star">✦</span>
+      <div class="marquee-item">E-Commerce</div><span class="star">✦</span>
+      <div class="marquee-item">Strategy</div><span class="star">✦</span>
+      <div class="marquee-item">Performance</div><span class="star">✦</span>
+      <div class="marquee-item">Conversion</div><span class="star">✦</span>
     </div>
   </div>
 </div>
+
+<!-- ── Text Reveal / ScrollTrigger Section ── -->
+<section class="text-reveal-section">
+  <!-- Floating images -->
+  <div class="text-reveal__img-box has-tr-prlx" data-speed="0.15" data-opacity="0.85">
+    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="" loading="lazy">
+  </div>
+  <div class="text-reveal__img-box has-tr-prlx" data-speed="0.25" data-opacity="0.70">
+    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=600&q=80" alt="" loading="lazy">
+  </div>
+  <div class="text-reveal__img-box has-tr-prlx" data-speed="0.10" data-opacity="0.80">
+    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" alt="" loading="lazy">
+  </div>
+
+  <!-- Lines -->
+  <div class="text-reveal__line">Art is not only a form of expression,</div>
+  <div class="text-reveal__line">it is a way of discovering oneself.</div>
+  <div class="text-reveal__line text-reveal__line--gap">We Create websites that bring companies to life.</div>
+</section>
 
 <div id="services-react-root"></div>
 
@@ -911,38 +1009,82 @@
 
 <div class="h-line"></div>
 
-<div class="process-scroll-wrapper" id="processWrapper">
 <section class="process-section" id="process">
   <div class="reveal">
     <div class="section-label">Process</div>
     <h2 class="section-title">How we work</h2>
   </div>
-  <div class="process-layout">
-    <!-- Left: fan cards -->
-    <div class="process-fan" id="processFan">
-      <div class="process-card" data-idx="0"><span class="process-card-num">01</span><span class="process-card-title">Discovery</span></div>
-      <div class="process-card" data-idx="1"><span class="process-card-num">02</span><span class="process-card-title">Strategy</span></div>
-      <div class="process-card" data-idx="2"><span class="process-card-num">03</span><span class="process-card-title">Execution</span></div>
-      <div class="process-card" data-idx="3"><span class="process-card-num">04</span><span class="process-card-title">Growth</span></div>
-    </div>
-    <!-- Right: body text only -->
-    <div class="process-detail" id="processDetail">
-      <div class="process-detail-item active" data-idx="0">
-        <p class="process-detail-desc">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+  <div class="process-carousel">
+    <div class="process-track" id="processTrack">
+      <!-- Set 1 -->
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">01</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="process-item-title">Discovery</div>
+          <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+        </div>
       </div>
-      <div class="process-detail-item" data-idx="1">
-        <p class="process-detail-desc">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">02</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <div class="process-item-title">Strategy</div>
+          <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+        </div>
       </div>
-      <div class="process-detail-item" data-idx="2">
-        <p class="process-detail-desc">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">03</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div class="process-item-title">Execution</div>
+          <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+        </div>
       </div>
-      <div class="process-detail-item" data-idx="3">
-        <p class="process-detail-desc">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">04</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <div class="process-item-title">Growth</div>
+          <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+        </div>
+      </div>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">01</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <div class="process-item-title">Discovery</div>
+          <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">02</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          <div class="process-item-title">Strategy</div>
+          <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">03</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <div class="process-item-title">Execution</div>
+          <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+        </div>
+      </div>
+      <div class="process-item">
+        <div class="process-item-content">
+          <div class="process-item-num">04</div>
+          <svg class="process-item-icon" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          <div class="process-item-title">Growth</div>
+          <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
-</div>
 
 <section class="cta-section" id="contact">
   <div class="cta-blob"></div>
@@ -1119,145 +1261,156 @@
     if (o2) o2.style.transform = 'translate(' + (-y*0.03) + 'px,' + (y*0.02) + 'px)';
   });
 
-  /* Marquee — JS-driven RAF loop with scroll parallax */
+  /* Marquee — RAF loop; speed lerps on scroll, never resets position */
   (function () {
-    var row1 = document.getElementById('marqueeRow1');
-    var row2 = document.getElementById('marqueeRow2');
-    if (!row1 || !row2) return;
+    var inner1 = document.querySelector('#marqueeRow1 .marquee-inner');
+    var inner2 = document.querySelector('#marqueeRow2 .marquee-inner');
+    if (!inner1 || !inner2) return;
 
-    var BASE_SPEED = 0.4;   /* px per frame at rest */
-    var SCROLL_FACTOR = 0.12; /* extra px per scrollY unit (decays) */
-
-    var pos1 = 0;
-    var pos2 = 0;
-    var scrollVel = 0;      /* accumulated scroll velocity */
-    var lastScrollY = window.scrollY;
-
-    /* width of one track clone (half the row) */
-    function halfWidth(row) {
-      return row.firstElementChild.offsetWidth;
-    }
+    var BASE_SPEED   = 0.4;  /* px/frame at rest */
+    var SCROLL_SPEED = 1.8;  /* px/frame while scrolling */
+    var pos1         = 0;
+    var pos2         = 0;
+    var currentSpeed = BASE_SPEED;
+    var targetSpeed  = BASE_SPEED;
+    var scrollTimer;
 
     window.addEventListener('scroll', function () {
-      var dy = window.scrollY - lastScrollY;
-      scrollVel += dy * SCROLL_FACTOR;
-      lastScrollY = window.scrollY;
+      targetSpeed = SCROLL_SPEED;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function () {
+        targetSpeed = BASE_SPEED;
+      }, 150);
     });
 
     function tick() {
-      var hw1 = halfWidth(row1);
-      var hw2 = halfWidth(row2);
+      /* smooth deceleration/acceleration via lerp */
+      currentSpeed += (targetSpeed - currentSpeed) * 0.04;
 
-      var speed = BASE_SPEED + Math.abs(scrollVel);
+      var hw1 = inner1.scrollWidth / 2;
+      var hw2 = inner2.scrollWidth / 2;
 
-      /* row1 moves left, row2 moves right */
-      pos1 -= speed;
-      pos2 += (scrollVel >= 0 ? BASE_SPEED : speed);
+      pos1 -= currentSpeed;
+      pos2 += currentSpeed;
 
-      /* wrap seamlessly at the half-width boundary */
-      if (Math.abs(pos1) >= hw1) pos1 += hw1;
-      if (pos2 >= 0) pos2 -= hw2;
+      /* seamless wrap at the half-content boundary */
+      if (pos1 <= -hw1) pos1 += hw1;
+      if (pos2 >= 0)    pos2 -= hw2;
 
-      row1.style.transform = 'translateX(' + pos1 + 'px)';
-      row2.style.transform = 'translateX(' + pos2 + 'px)';
-
-      /* decay scroll velocity */
-      scrollVel *= 0.88;
-      if (Math.abs(scrollVel) < 0.01) scrollVel = 0;
+      inner1.style.transform = 'translateX(' + pos1 + 'px)';
+      inner2.style.transform = 'translateX(' + pos2 + 'px)';
 
       requestAnimationFrame(tick);
     }
 
-    /* initialise row2 offset so it starts half-way through to look staggered */
-    pos2 = -row2.firstElementChild.offsetWidth * 0.5;
+    /* start row2 at -50% for a staggered look */
+    pos2 = -(inner2.scrollWidth / 2);
     tick();
   })();
 
-  /* Process card interaction — scroll-pinned */
+  /* Process carousel — infinite RAF scroll + drag */
   (function () {
-    var wrapper = document.getElementById('processWrapper');
-    var fan     = document.getElementById('processFan');
-    var detail  = document.getElementById('processDetail');
-    if (!wrapper || !fan || !detail) return;
+    var carousel = document.querySelector('.process-carousel');
+    var track    = document.getElementById('processTrack');
+    if (!carousel || !track) return;
 
-    var cards   = fan.querySelectorAll('.process-card');
-    var panels  = detail.querySelectorAll('.process-detail-item');
-    var active  = 0;
+    /* Ensure no CSS transition fights the RAF loop */
+    track.style.transition = 'none';
 
-    /* initialise first card visible */
-    cards[0].classList.add('active');
+    var GAP         = 32;          /* must match the CSS gap value */
+    var BASE_SPEED  = 0.6;
+    var HOVER_SPEED = 0.2;
+    var currentSpeed = BASE_SPEED;
+    var targetSpeed  = BASE_SPEED;
 
-    function setActive(idx) {
-      if (idx === active) return;
-      /* exit current card + text */
-      cards[active].classList.remove('active');
-      cards[active].classList.add('exit');
-      panels[active].classList.remove('active');
-      panels[active].classList.add('exit');
-      var prev = active;
-      setTimeout(function () {
-        cards[prev].classList.remove('exit');
-        panels[prev].classList.remove('exit');
-      }, 520);
+    var currentX   = 0;            /* current translateX in px (always ≤ 0) */
+    var resetPoint = 0;            /* (cardWidth + gap) * 4  — measured dynamically */
+    var isDragging = false;
+    var startX     = 0;
+    var dragStartX = 0;
 
-      active = idx;
-      /* enter new card + text */
-      cards[active].classList.add('active');
-      panels[active].classList.add('active');
+    /* Measure the exact pixel width of one set of 4 cards using getBoundingClientRect */
+    function measureResetPoint() {
+      var first = track.querySelector('.process-item');
+      if (!first) return;
+      var rect = first.getBoundingClientRect();
+      resetPoint = (rect.width + GAP) * 4;
     }
 
-    /* hover on cards — clickable area only on the active one */
-    cards.forEach(function (card) {
-      card.addEventListener('click', function () {
-        setActive(parseInt(card.dataset.idx, 10));
-      });
+    function applyTransform() {
+      track.style.transform = 'translateX(' + currentX + 'px)';
+    }
+
+    /* Add back exactly one set-width so the jump is invisible */
+    function wrapX() {
+      if (resetPoint <= 0) return;
+      if (Math.abs(currentX) >= resetPoint) currentX += resetPoint;
+      if (currentX > 0)                     currentX -= resetPoint;
+    }
+
+    function tick() {
+      currentSpeed += (targetSpeed - currentSpeed) * 0.08;
+      if (!isDragging) {
+        currentX -= currentSpeed;
+        wrapX();
+      }
+      applyTransform();
+      requestAnimationFrame(tick);
+    }
+
+    /* hover slow-down */
+    carousel.addEventListener('mouseenter', function () { targetSpeed = HOVER_SPEED; });
+    carousel.addEventListener('mouseleave', function () {
+      targetSpeed = BASE_SPEED;
+      if (isDragging) {
+        isDragging = false;
+        carousel.style.cursor = '';
+      }
     });
 
-    /* Scroll-pinned auto-advance through 400vh wrapper */
-    window.addEventListener('scroll', function () {
-      var wrapRect = wrapper.getBoundingClientRect();
-      var scrollable = wrapper.offsetHeight - window.innerHeight;
-      if (scrollable <= 0) return;
-      var scrolled = -wrapRect.top;
-      var progress = Math.max(0, Math.min(1, scrolled / scrollable));
-      var idx = Math.min(3, Math.floor(progress * 4));
-      setActive(idx);
-    });
-  })();
-
-  /* Holo card 3D tilt */
-  (function () {
-    var card = document.getElementById('holo-card');
-    if (!card) return;
-    var shine = card; // ::before is driven via CSS var trick — we update a data attribute instead
-
-    card.addEventListener('mousemove', function (e) {
-      var rect = card.getBoundingClientRect();
-      var cx = rect.left + rect.width  / 2;
-      var cy = rect.top  + rect.height / 2;
-      var dx = (e.clientX - cx) / (rect.width  / 2); // -1 to 1
-      var dy = (e.clientY - cy) / (rect.height / 2); // -1 to 1
-
-      var rotX = (-dy * 20).toFixed(2);
-      var rotY = ( dx * 20).toFixed(2);
-
-      card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
-      card.style.transform  = 'perspective(800px) translateY(-50%) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-
-      /* shift shine gradient position with cursor */
-      var px = ((dx + 1) / 2 * 100).toFixed(1);
-      var py = ((dy + 1) / 2 * 100).toFixed(1);
-      card.style.setProperty('--shine-x', px + '%');
-      card.style.setProperty('--shine-y', py + '%');
-      /* directly update ::before via a transparent overlay element */
-      var overlay = card.querySelector('.holo-shine');
-      if (overlay) overlay.style.backgroundPosition = px + '% ' + py + '%';
+    /* ── Mouse drag ── */
+    carousel.addEventListener('mousedown', function (e) {
+      isDragging = true;
+      startX     = e.clientX;
+      dragStartX = currentX;
+      carousel.style.cursor = 'grabbing';
+      e.preventDefault();
     });
 
-    card.addEventListener('mouseleave', function () {
-      card.style.transition = 'transform 0.6s cubic-bezier(0.23,1,0.32,1), box-shadow 0.3s ease';
-      card.style.transform  = 'perspective(800px) translateY(-50%) rotateX(0deg) rotateY(0deg)';
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+      currentX = dragStartX + (e.clientX - startX);
+      wrapX();
     });
+
+    document.addEventListener('mouseup', function () {
+      if (!isDragging) return;
+      isDragging = false;
+      carousel.style.cursor = '';
+    });
+
+    /* ── Touch drag ── */
+    carousel.addEventListener('touchstart', function (e) {
+      isDragging = true;
+      startX     = e.touches[0].clientX;
+      dragStartX = currentX;
+    }, { passive: true });
+
+    carousel.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      currentX = dragStartX + (e.touches[0].clientX - startX);
+      wrapX();
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', function () {
+      isDragging = false;
+    });
+
+    /* Kick off — measure after layout is complete, re-measure on resize */
+    carousel.style.cursor = 'grab';
+    measureResetPoint();
+    window.addEventListener('resize', measureResetPoint);
+    requestAnimationFrame(tick);
   })();
 
   /* Contact form — staggered field entrance */
@@ -1659,6 +1812,72 @@
     }
   }, false);
 
+})();
+</script>
+
+<!-- Lenis smooth scroll -->
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script>
+(function () {
+  gsap.registerPlugin(ScrollTrigger);
+
+  var lines  = document.querySelectorAll('.text-reveal__line');
+  var images = document.querySelectorAll('.text-reveal__img-box');
+
+  lines.forEach(function (line, index) {
+    // Text flip-in
+    gsap.fromTo(
+      line,
+      { rotateX: -150, opacity: 0 },
+      {
+        rotateX: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: line,
+          start: 'top 95%',
+          end: 'top 30%',
+          scrub: 1.5
+        }
+      }
+    );
+
+    // Image reveal tied to corresponding line
+    if (images[index]) {
+      var targetOpacity = parseFloat(images[index].getAttribute('data-opacity')) || 0.85;
+      var startOffset   = window.innerWidth < 1024 ? '-=150' : '-=400';
+      gsap.to(images[index], {
+        opacity: targetOpacity,
+        scrollTrigger: {
+          trigger: line,
+          start: 'bottom bottom' + startOffset,
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+    }
+  });
+
+  // Parallax on images
+  images.forEach(function (el) {
+    var speed = parseFloat(el.getAttribute('data-speed')) || 0.2;
+    gsap.to(el, {
+      y: function () { return -(1 - speed) * 120; },
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 0.5
+      }
+    });
+  });
+
+  window.addEventListener('resize', function () { ScrollTrigger.refresh(); });
 })();
 </script>
 
