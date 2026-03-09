@@ -430,8 +430,8 @@
 
   /* Specific override for the third card (Execution) to ensure it uses the crimson -> dark pink gradient */
   .process-track .process-item:nth-child(3) {
-    /* stronger two-stop crimson -> dark-pink gradient for better contrast */
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent) 40%, var(--pink) 100%);
+    /* use the same gradient as the first card (Discovery) */
+    background: linear-gradient(135deg, var(--dark) 0%, var(--accent) 100%);
   }
 
   /* CTA */
@@ -787,6 +787,40 @@
       <a href="#contact" class="btn-primary" style="margin-top:16px;display:inline-block;">Meet the team &rarr;</a>
     </div>
   </div>
+  <script>
+    (function(){
+      const el = document.querySelector('.process-track .process-item:nth-child(3)');
+      const el1 = document.querySelector('.process-track .process-item:nth-child(1)');
+      if(!el){ console.log('process card 3 (Execution) not found'); return; }
+      console.log('process card 3 inline style:', el.getAttribute('style'));
+      const cs = getComputedStyle(el);
+      console.log('process card 3 computed backgroundImage:', cs.backgroundImage || cs.background);
+      // attempt to list matched stylesheet selectors
+      try{
+        const matched = [];
+        for(const ss of document.styleSheets){
+          try{
+            for(const r of ss.cssRules){
+              if(r.selectorText){
+                try{ if(el.matches(r.selectorText)) matched.push(r.selectorText); }catch(e){}
+              }
+            }
+          }catch(e){}
+        }
+        console.log('CSS selectors matching card 3 element:', matched);
+      }catch(e){ console.log('error reading stylesheets', e); }
+
+      if(el1){
+        const cs1 = getComputedStyle(el1);
+        console.log('process card 1 computed backgroundImage:', cs1.backgroundImage || cs1.background);
+        // set inline background to match card 1 for immediate verification
+        el.style.background = cs1.backgroundImage || cs1.background;
+        console.log('card 3 inline background set to card 1 value:', el.style.background);
+      } else {
+        console.log('process card 1 (Discovery) not found');
+      }
+    })();
+  </script>
 </section>
 
 <div class="h-line"></div>
