@@ -117,19 +117,24 @@ export default function ServicesSection() {
                       transformPerspective: 1000,
                       width: '340px',
                       aspectRatio: '4/3',
-                      background: 'rgba(22,0,38,0.06)',
                       borderRadius: '12px',
                       border: '1px solid rgba(22,0,38,0.07)',
                       boxShadow: '0 20px 56px rgba(22,0,38,0.12)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
                       flexShrink: 0,
+                      overflow: 'hidden',
                     }}
                   >
-                    <span style={{ fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(22,0,38,0.18)' }}>
-                      Visual
-                    </span>
+                    <img
+                      src={`/MALVEC%20Previews-${services[activeIndex].index}.png`}
+                      alt={services[activeIndex].name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: 'inherit',
+                        display: 'block',
+                      }}
+                    />
                   </motion.div>
 
                   {/* Free text */}
