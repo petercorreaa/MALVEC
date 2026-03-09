@@ -126,23 +126,23 @@ export default function ServiceRow({
             </div>
 
             {/* Index + arrow */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, marginLeft: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0', flexShrink: 0, marginLeft: '32px' }}>
+              {/* Arrow — appears on hover, now sits left of the number */}
+              <motion.span
+                style={{ fontSize: '16px', color: '#92004a', display: 'block', lineHeight: 1, marginRight: '10px' }}
+                animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -6 }}
+                transition={{ duration: 0.8, ease: EASE_PUSH }}
+                aria-hidden="true"
+              >
+                →
+              </motion.span>
+
               <motion.span
                 className="text-[1.4rem] tracking-[0.2em] font-mono tabular-nums"
                 animate={{ color: isActive ? '#92004a' : 'rgba(22,0,38,0.28)' }}
                 transition={{ duration: 0.8, ease: EASE_PUSH }}
               >
                 {service.index}
-              </motion.span>
-
-              {/* Arrow — appears on hover */}
-              <motion.span
-                style={{ fontSize: '16px', color: '#92004a', display: 'block', lineHeight: 1 }}
-                animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -6 }}
-                transition={{ duration: 0.8, ease: EASE_PUSH }}
-                aria-hidden="true"
-              >
-                →
               </motion.span>
             </div>
           </div>
