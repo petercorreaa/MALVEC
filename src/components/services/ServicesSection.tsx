@@ -66,7 +66,7 @@ export default function ServicesSection() {
       >
         <span
           className="tracking-[0.36em] uppercase font-semibold"
-          style={{ color: '#92004a', fontSize: 'clamp(1rem, 1.8vw, 1.4rem)', textAlign: 'left', alignSelf: 'flex-start' }}
+          style={{ color: '#92004a', fontSize: 'clamp(1rem, 1.8vw, 1.4rem)', textAlign: 'left', alignSelf: 'flex-start', paddingLeft: '48px' }}
         >
           Services
         </span>
