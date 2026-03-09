@@ -19,6 +19,73 @@
   html { scroll-behavior: smooth; }
 
   body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.4;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px;
+    background: var(--grad);
+    z-index: 9000;
+    width: 0%;
+    transition: width 0.05s linear;
+  }
+
+
+  .cursor-trail {
+    position: fixed; pointer-events: none; z-index: 9997;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(159,0,74,0.85) 0%, rgba(159,0,74,0) 70%);
+    transform: translate(-50%, -50%);
+    animation: trailFade 0.5s ease-out forwards;
+  }
+  @keyframes trailFade {
+    0%   { opacity: 0.7; width: 8px;  height: 8px; }
+    100% { opacity: 0;   width: 22px; height: 22px; }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 12px; left: 16px; right: 16px; z-index: 500;
+    padding: 24px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(22, 0, 38, 0.62);
+    border: 1px solid rgba(239, 238, 230, 0.20);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.22);
+    transition: padding 0.4s ease;
+  }
+  nav.scrolled { padding: 16px 48px; }
+
+  .nav-logo {
+    font-family: 'Degular Display', sans-serif;
+    font-size: 22px; font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: rgba(239,238,230,0.6);
+    text-decoration: none; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--cream); }
+  .nav-cta {
     padding: 10px 24px;
     background: linear-gradient(270deg, #ff0040, #7b00ff, #ff0040, #c8000a, #7b00ff);
     background-size: 400% 400%;
@@ -120,16 +187,6 @@
     line-height: 1.15;
     margin: 0;
     padding: 0;
-  }
-
-  /* Prevent layout shift for the converts word */
-  #converts-word {
-    display: inline-block;
-    width: 10ch;
-    overflow: hidden;
-    vertical-align: bottom;
-    line-height: 1.15;
-    white-space: nowrap;
   }
 
   .hero-sub {
@@ -283,112 +340,46 @@
   .accent-line { width: 60px; height: 2px; background: var(--grad); margin: 32px 0; }
 
   /* PROCESS */
-  .process-scroll-wrapper {
-    position: relative;
-    height: 250vh; /* ~62.5vh per phase */
-  }
+  /* PROCESS CAROUSEL */
   .process-section {
     background: rgba(239,238,230,0.015);
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  }
+  .process-carousel {
     overflow: hidden;
+    width: 100%;
+    margin-top: 48px;
   }
-  .process-layout {
+  .process-track {
     display: flex;
-    gap: 64px;
-    margin-top: 80px;
-    align-items: center;
-    min-height: 400px;
+    gap: 32px;
   }
-  /* — Left: stacked glass cards — */
-  .process-fan {
-    flex: 0 0 40%;
-    position: relative;
-    /* height set by aspect-ratio so card is 1.586:1 (credit card) */
-    aspect-ratio: 1.586;
-  }
-  .process-card {
-    position: absolute;
-    inset: 0;
+  .process-item {
+    flex: 0 0 calc(50% - 32px);
+    min-height: 320px;
+    background: rgba(255,255,255,0.04);
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.25),
-                inset 0 -1px 0 rgba(255, 255, 255, 0.08);
-    padding: 40px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 24px;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1),
-                transform 0.5s cubic-bezier(0.23,1,0.32,1);
-    pointer-events: none;
-    will-change: transform, opacity;
+    padding: 48px;
   }
-  .process-card.active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s,
-                transform 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s;
-    pointer-events: auto;
-    z-index: 2;
-  }
-  .process-card.exit {
-    opacity: 0;
-    transform: translateY(-40px);
-    transition: opacity 0.5s cubic-bezier(0.23,1,0.32,1),
-                transform 0.5s cubic-bezier(0.23,1,0.32,1);
-    pointer-events: none;
-    z-index: 1;
-  }
-  .process-card-num {
-    font-size: 6rem; font-family: 'Degular Display', sans-serif;
-    font-weight: 800; color: var(--pink); line-height: 1;
-    flex-shrink: 0;
-  }
-  .process-card-title {
+  .process-item-num {
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--pink);
+    line-height: 1;
     font-family: 'Degular Display', sans-serif;
-    font-size: 2.2rem; font-weight: 700; color: var(--cream);
+    margin-bottom: 16px;
+  }
+  .process-item-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--cream);
+    font-family: 'Degular Display', sans-serif;
     line-height: 1.2;
+    margin-bottom: 16px;
   }
-  /* — Right: body text only — */
-  .process-detail {
-    flex: 1 1 60%;
-    position: relative;
-    min-height: 200px;
-  }
-  .process-detail-item {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column; justify-content: center;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    pointer-events: none;
-  }
-  .process-detail-item.exit {
-    opacity: 0;
-    transform: translateY(-30px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
-  .process-detail-item.active {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
-    pointer-events: auto;
-  }
-  .process-detail-desc {
-    font-size: 2rem; color: rgba(239,238,230,0.85);
-    line-height: 1.6; max-width: 560px;
+  .process-item-body {
+    font-size: 1rem;
+    color: rgba(239,238,230,0.65);
+    line-height: 1.65;
   }
 
   /* CTA */
@@ -559,12 +550,8 @@
     /* services section padding handled by React component */
     .philosophy { grid-template-columns: 1fr; }
     .philosophy-visual { display: none; }
-    .process-scroll-wrapper { height: auto; }
-    .process-section { position: relative; height: auto; }
-    .process-layout { flex-direction: column; gap: 40px; }
-    .process-fan { flex: none; width: 100%; aspect-ratio: 1.586; }
-    .process-detail { position: relative; min-height: 160px; }
-    .process-detail-desc { font-size: 1.4rem; }
+    .process-carousel { overflow-x: auto; }
+    .process-item { flex: 0 0 85%; }
     .footer-top { flex-direction: column; gap: 40px; }
     .footer-links { gap: 40px; flex-wrap: wrap; }
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
@@ -644,7 +631,7 @@
   <div class="orb orb-3"></div>
 
   <div class="hero-content">
-    <h1 class="hero-title">We build<span class="line-grad">digital presence</span>that <span id="converts-word">converts</span>.</h1>
+    <h1 class="hero-title">We build<span class="line-grad">digital presence</span>that converts.</h1>
     <p class="hero-sub">
       Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
     </p>
@@ -752,38 +739,58 @@
 
 <div class="h-line"></div>
 
-<div class="process-scroll-wrapper" id="processWrapper">
 <section class="process-section" id="process">
   <div class="reveal">
     <div class="section-label">Process</div>
     <h2 class="section-title">How we work</h2>
   </div>
-  <div class="process-layout">
-    <!-- Left: fan cards -->
-    <div class="process-fan" id="processFan">
-      <div class="process-card" data-idx="0"><span class="process-card-num">01</span><span class="process-card-title">Discovery</span></div>
-      <div class="process-card" data-idx="1"><span class="process-card-num">02</span><span class="process-card-title">Strategy</span></div>
-      <div class="process-card" data-idx="2"><span class="process-card-num">03</span><span class="process-card-title">Execution</span></div>
-      <div class="process-card" data-idx="3"><span class="process-card-num">04</span><span class="process-card-title">Growth</span></div>
-    </div>
-    <!-- Right: body text only -->
-    <div class="process-detail" id="processDetail">
-      <div class="process-detail-item active" data-idx="0">
-        <p class="process-detail-desc">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+  <div class="process-carousel">
+    <div class="process-track" id="processTrack">
+      <!-- Set 1 -->
+      <div class="process-item">
+        <div class="process-item-num">01</div>
+        <div class="process-item-title">Discovery</div>
+        <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
       </div>
-      <div class="process-detail-item" data-idx="1">
-        <p class="process-detail-desc">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+      <div class="process-item">
+        <div class="process-item-num">02</div>
+        <div class="process-item-title">Strategy</div>
+        <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
       </div>
-      <div class="process-detail-item" data-idx="2">
-        <p class="process-detail-desc">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+      <div class="process-item">
+        <div class="process-item-num">03</div>
+        <div class="process-item-title">Execution</div>
+        <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
       </div>
-      <div class="process-detail-item" data-idx="3">
-        <p class="process-detail-desc">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+      <div class="process-item">
+        <div class="process-item-num">04</div>
+        <div class="process-item-title">Growth</div>
+        <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
+      </div>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="process-item">
+        <div class="process-item-num">01</div>
+        <div class="process-item-title">Discovery</div>
+        <p class="process-item-body">We analyze your brand, your market and your competition. Nothing gets built without understanding the terrain.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-item-num">02</div>
+        <div class="process-item-title">Strategy</div>
+        <p class="process-item-body">We define clear goals, measurable KPIs and a roadmap that connects every action to real results.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-item-num">03</div>
+        <div class="process-item-title">Execution</div>
+        <p class="process-item-body">We design, develop and launch with obsessive attention to detail. Every pixel, every line of code, every word.</p>
+      </div>
+      <div class="process-item">
+        <div class="process-item-num">04</div>
+        <div class="process-item-title">Growth</div>
+        <p class="process-item-body">We measure, iterate and scale. The best projects are the ones that constantly evolve.</p>
       </div>
     </div>
   </div>
 </section>
-</div>
 
 <section class="cta-section" id="contact">
   <div class="cta-blob"></div>
@@ -990,58 +997,6 @@
     /* start row2 at -50% for a staggered look */
     pos2 = -(inner2.scrollWidth / 2);
     tick();
-  })();
-
-  /* Process card interaction — scroll-pinned */
-  (function () {
-    var wrapper = document.getElementById('processWrapper');
-    var fan     = document.getElementById('processFan');
-    var detail  = document.getElementById('processDetail');
-    if (!wrapper || !fan || !detail) return;
-
-    var cards   = fan.querySelectorAll('.process-card');
-    var panels  = detail.querySelectorAll('.process-detail-item');
-    var active  = 0;
-
-    /* initialise first card visible */
-    cards[0].classList.add('active');
-
-    function setActive(idx) {
-      if (idx === active) return;
-      /* exit current card + text */
-      cards[active].classList.remove('active');
-      cards[active].classList.add('exit');
-      panels[active].classList.remove('active');
-      panels[active].classList.add('exit');
-      var prev = active;
-      setTimeout(function () {
-        cards[prev].classList.remove('exit');
-        panels[prev].classList.remove('exit');
-      }, 520);
-
-      active = idx;
-      /* enter new card + text */
-      cards[active].classList.add('active');
-      panels[active].classList.add('active');
-    }
-
-    /* hover on cards — clickable area only on the active one */
-    cards.forEach(function (card) {
-      card.addEventListener('click', function () {
-        setActive(parseInt(card.dataset.idx, 10));
-      });
-    });
-
-    /* Scroll-pinned auto-advance through 400vh wrapper */
-    window.addEventListener('scroll', function () {
-      var wrapRect = wrapper.getBoundingClientRect();
-      var scrollable = wrapper.offsetHeight - window.innerHeight;
-      if (scrollable <= 0) return;
-      var scrolled = -wrapRect.top;
-      var progress = Math.max(0, Math.min(1, scrolled / scrollable));
-      var idx = Math.min(3, Math.floor(progress * 4));
-      setActive(idx);
-    });
   })();
 
   /* Contact form — staggered field entrance */
@@ -1457,39 +1412,3 @@
 
 </body>
 </html>
-
-<script>
-  (function(){
-    var el = document.getElementById('converts-word');
-    if (!el) return;
-    // lock display and sizing to prevent layout shift
-    el.style.display = 'inline-block';
-    el.style.width = el.style.width || '10ch';
-    el.style.overflow = 'hidden';
-    el.style.verticalAlign = 'bottom';
-    el.style.lineHeight = '1.15';
-    el.style.whiteSpace = 'nowrap';
-
-    var fonts = [
-      {family: "Georgia, serif", weight: "700", style: "normal"},
-      {family: "'Helvetica Neue', sans-serif", weight: "400", style: "normal"},
-      {family: "Garamond, serif", weight: "700", style: "normal"},
-      {family: "Century Gothic, 'Futura', sans-serif", weight: "400", style: "normal"},
-      {family: "Palatino, serif", weight: "400", style: "italic"}
-    ];
-    var idx = 0;
-    el.style.transition = 'opacity 0.15s ease';
-    el.style.opacity = '1';
-    setInterval(function(){
-      el.style.opacity = '0';
-      setTimeout(function(){
-        var f = fonts[idx];
-        el.style.fontFamily = f.family;
-        el.style.fontStyle = f.style === 'italic' ? 'italic' : 'normal';
-        el.style.fontWeight = f.weight;
-        el.style.opacity = '1';
-        idx = (idx + 1) % fonts.length;
-      }, 150);
-    }, 500);
-  })();
-</script>
