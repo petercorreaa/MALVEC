@@ -89,6 +89,7 @@ export default function ServiceRow({
                   fontSize: 'clamp(20px, 2.4vw, 38px)',
                   letterSpacing: '-0.02em',
                   color: '#160026',
+                  paddingLeft: '48px',
                 }}
                 animate={{
                   y: isActive ? '-100%' : '0%',
@@ -108,6 +109,7 @@ export default function ServiceRow({
                   fontSize: 'clamp(20px, 2.4vw, 38px)',
                   letterSpacing: '-0.02em',
                   color: '#160026',
+                  paddingLeft: '48px',
                 }}
                 animate={{
                   y: isActive ? '0%' : '100%',
