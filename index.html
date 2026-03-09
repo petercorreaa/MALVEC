@@ -120,7 +120,7 @@
   .hero {
     height: 100svh;
     display: flex; flex-direction: column;
-    justify-content: center; align-items: flex-start;
+    justify-content: center; align-items: center;
     padding: 110px 48px 60px;
     position: relative; overflow: hidden;
   }
@@ -164,14 +164,6 @@
     66% { transform: translate(-20px, 20px) scale(0.97); }
   }
 
-  .hero-tag {
-    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--pink); margin-bottom: 24px;
-    display: flex; align-items: center; gap: 12px;
-    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
-  }
-  .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--pink); }
-
   .hero-title {
     font-size: clamp(38px, 6vw, 90px);
     line-height: 1.15;
@@ -201,6 +193,14 @@
     color: rgba(239,238,230,0.72); margin-bottom: 32px;
     text-align: center;
     opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-content {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    width: 100%; max-width: 800px;
+    margin: 0 auto;
+    position: relative; z-index: 2;
   }
   .hero-scroll {
     position: absolute; bottom: 40px; left: 50%;
@@ -699,11 +699,12 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 
-  <div class="hero-tag">Digital Agency · Argentina</div>
-  <h1 class="hero-title">We build<span class="line-grad">digital presence</span>that converts.</h1>
-  <p class="hero-sub">
-    Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
-  </p>
+  <div class="hero-content">
+    <h1 class="hero-title">We build<span class="line-grad">digital presence</span>that converts.</h1>
+    <p class="hero-sub">
+      Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
+    </p>
+  </div>
   <div class="hero-scroll">
     <div class="scroll-line"></div>
     <span>Scroll</span>
