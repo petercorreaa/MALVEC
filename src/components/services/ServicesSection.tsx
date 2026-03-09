@@ -53,7 +53,7 @@ export default function ServicesSection() {
 
       {/* Section header */}
       <motion.div
-        className="relative z-10 flex items-center justify-center gap-6 px-12"
+        className="relative z-10 flex items-center justify-start gap-6 px-12"
         style={{
           borderBottom: '1px solid rgba(22,0,38,0.08)',
           paddingTop: '42px',
@@ -64,10 +64,9 @@ export default function ServicesSection() {
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        <span className="block w-14 h-px" style={{ background: '#92004a' }} />
         <span
           className="tracking-[0.36em] uppercase font-semibold"
-          style={{ color: '#92004a', fontSize: 'clamp(1.8rem, 3vw, 2.5rem)' }}
+          style={{ color: '#92004a', fontSize: 'clamp(1rem, 1.8vw, 1.4rem)', textAlign: 'left', alignSelf: 'flex-start' }}
         >
           Services
         </span>
