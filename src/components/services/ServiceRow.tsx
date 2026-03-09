@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useRef, useEffect } from 'react'
 import { type Service } from '../../data/serviceData'
 
 interface ServiceRowProps {
@@ -10,8 +11,10 @@ interface ServiceRowProps {
   onHover: (index: number | null) => void
 }
 
-const EASE_OUT    = [0.25, 0.46, 0.45, 0.94] as const
-const EASE_REVEAL = [0.22, 1,    0.36, 1    ] as const
+const EASE_OUT = [0.25, 0.46, 0.45, 0.94] as const
+
+// Words cycled during the spin phase — generic enough to work for all services
+const SPIN_POOL = ['Motion', 'Impact', 'Signal', 'Growth', 'Vision', 'Scale', 'Drive', 'Reach', 'Edge', 'Bold']
 
 export default function ServiceRow({
   service,
@@ -21,6 +24,92 @@ export default function ServiceRow({
   isInView,
   onHover,
 }: ServiceRowProps) {
+  const slotRef   = useRef<HTMLSpanElement>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const t1Ref       = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const t2Ref       = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    const el = slotRef.current
+    if (!el) return
+
+    // Clear any in-flight timers
+    if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null }
+    if (t1Ref.current)       { clearTimeout(t1Ref.current);        t1Ref.current = null }
+    if (t2Ref.current)       { clearTimeout(t2Ref.current);        t2Ref.current = null }
+
+    if (!isActive) {
+      // Instant restore — no reverse animation
+      el.style.transition = 'none'
+      el.textContent = service.name
+      el.style.transform = 'translateY(0)'
+      el.style.opacity = '1'
+      return
+    }
+
+    // ── Phase 1: spin ──────────────────────────────────────────
+    const pool = SPIN_POOL.filter(w => w !== service.name)
+    let spinCount = 0
+    const SPINS = 3
+
+    const showSpinWord = () => {
+      const word = pool[spinCount % pool.length]
+      // Snap to below, invisible
+      el.style.transition = 'none'
+      el.textContent = word
+      el.style.transform = 'translateY(100%)'
+      el.style.opacity = '0'
+      void el.offsetHeight // force reflow
+      // Slide up to centre, partially visible
+      el.style.transition = 'transform 38ms ease, opacity 38ms ease'
+      el.style.transform = 'translateY(0)'
+      el.style.opacity = '0.45'
+      // Continue upward and vanish
+      t1Ref.current = setTimeout(() => {
+        el.style.transition = 'transform 38ms ease, opacity 38ms ease'
+        el.style.transform = 'translateY(-100%)'
+        el.style.opacity = '0'
+      }, 38)
+    }
+
+    showSpinWord()
+
+    intervalRef.current = setInterval(() => {
+      spinCount++
+      if (spinCount >= SPINS) {
+        clearInterval(intervalRef.current!)
+        intervalRef.current = null
+
+        // ── Phase 2: land ────────────────────────────────────────
+        t2Ref.current = setTimeout(() => {
+          // Snap to below with actual name
+          el.style.transition = 'none'
+          el.textContent = service.name
+          el.style.transform = 'translateY(100%)'
+          el.style.opacity = '0'
+          void el.offsetHeight
+          // Slide to overshoot position with full opacity
+          el.style.transition = 'transform 0.26s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.15s ease'
+          el.style.transform = 'translateY(-4px)'
+          el.style.opacity = '1'
+          // Settle to rest
+          t1Ref.current = setTimeout(() => {
+            el.style.transition = 'transform 0.12s ease'
+            el.style.transform = 'translateY(0)'
+          }, 260)
+        }, 30) // tiny gap so last spin word fully exits
+      } else {
+        showSpinWord()
+      }
+    }, 80)
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      if (t1Ref.current)       clearTimeout(t1Ref.current)
+      if (t2Ref.current)       clearTimeout(t2Ref.current)
+    }
+  }, [isActive, service.name])
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -58,44 +147,46 @@ export default function ServiceRow({
           {/* Three-column row: name | spacer | index */}
           <div className="flex items-center w-full">
 
-            {/* Service name — dual-layer mask reveal + tab shift */}
+            {/* Service name — slot machine reel */}
             <motion.div
               className="flex-1"
               style={{ overflow: 'hidden', paddingBottom: '0.04em', paddingLeft: '28px' }}
               animate={{ x: isActive ? 18 : 0 }}
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             >
-              {/* Muted layer — sets height */}
-              <motion.span
-                className="block font-semibold leading-none select-none"
+              {/* Height anchor — always invisible but keeps row height stable */}
+              <span
+                className="block font-semibold leading-none select-none pointer-events-none"
                 style={{
                   fontFamily: "'Degular Display', sans-serif",
                   fontSize: 'clamp(20px, 2.4vw, 38px)',
                   letterSpacing: '-0.02em',
+                  visibility: 'hidden',
+                  userSelect: 'none',
                 }}
-                animate={{ color: isActive ? 'transparent' : 'rgba(22,0,38,0.82)' }}
-                transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-                aria-hidden={isActive ? 'true' : undefined}
+                aria-hidden="true"
               >
                 {service.name}
-              </motion.span>
-
-              {/* Active layer — clips upward */}
-              <span className="absolute inset-0" style={{ overflow: 'hidden' }} aria-hidden="true">
-                <motion.span
-                  className="absolute inset-0 font-semibold leading-none flex items-center"
-                  style={{
-                    fontFamily: "'Degular Display', sans-serif",
-                    fontSize: 'clamp(20px, 2.4vw, 38px)',
-                    letterSpacing: '-0.02em',
-                    color: '#160026',
-                  }}
-                  animate={{ y: isActive ? '0%' : '105%' }}
-                  transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-                >
-                  {service.name}
-                </motion.span>
               </span>
+
+              {/* Slot span — driven imperatively */}
+              <span
+                ref={slotRef}
+                className="absolute inset-0 font-semibold leading-none flex items-center"
+                style={{
+                  fontFamily: "'Degular Display', sans-serif",
+                  fontSize: 'clamp(20px, 2.4vw, 38px)',
+                  letterSpacing: '-0.02em',
+                  color: '#160026',
+                  willChange: 'transform, opacity',
+                }}
+                aria-hidden="true"
+              >
+                {service.name}
+              </span>
+
+              {/* Accessible label always present */}
+              <span className="sr-only">{service.name}</span>
             </motion.div>
 
             {/* Index + arrow */}
@@ -125,7 +216,6 @@ export default function ServiceRow({
             </div>
           </div>
         </div>
-
 
       </motion.a>
     </motion.div>
