@@ -352,6 +352,9 @@
   .process-track {
     display: flex;
     gap: 32px;
+    user-select: none;
+    -webkit-user-select: none;
+    will-change: transform;
   }
   .process-item {
     flex: 0 0 calc(50% - 32px);
@@ -1064,6 +1067,101 @@
     /* start row2 at -50% for a staggered look */
     pos2 = -(inner2.scrollWidth / 2);
     tick();
+  })();
+
+  /* Process carousel — infinite RAF scroll + drag */
+  (function () {
+    var carousel = document.querySelector('.process-carousel');
+    var track    = document.getElementById('processTrack');
+    if (!carousel || !track) return;
+
+    var BASE_SPEED  = 0.6;
+    var HOVER_SPEED = 0.2;
+    var currentSpeed = BASE_SPEED;
+    var targetSpeed  = BASE_SPEED;
+
+    var pos = 0;            /* current translateX (negative = moved left) */
+    var halfWidth = 0;      /* width of one set of 4 cards incl. gaps */
+    var isDragging   = false;
+    var startX       = 0;
+    var dragStartPos = 0;
+
+    function getHalfWidth() {
+      return track.scrollWidth / 2;
+    }
+
+    function applyPos() {
+      track.style.transform = 'translateX(' + pos + 'px)';
+    }
+
+    function wrapPos() {
+      halfWidth = getHalfWidth();
+      if (pos <= -halfWidth) pos += halfWidth;
+      if (pos > 0)           pos -= halfWidth;
+    }
+
+    function tick() {
+      halfWidth = getHalfWidth();
+      currentSpeed += (targetSpeed - currentSpeed) * 0.08;
+      if (!isDragging) {
+        pos -= currentSpeed;
+        wrapPos();
+      }
+      applyPos();
+      requestAnimationFrame(tick);
+    }
+
+    /* hover slow-down */
+    carousel.addEventListener('mouseenter', function () { targetSpeed = HOVER_SPEED; });
+    carousel.addEventListener('mouseleave', function () {
+      targetSpeed = BASE_SPEED;
+      if (isDragging) {
+        isDragging = false;
+        carousel.style.cursor = '';
+      }
+    });
+
+    /* ── Mouse drag ── */
+    carousel.addEventListener('mousedown', function (e) {
+      isDragging   = true;
+      startX       = e.clientX;
+      dragStartPos = pos;
+      carousel.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function (e) {
+      if (!isDragging) return;
+      pos = dragStartPos + (e.clientX - startX);
+      wrapPos();
+    });
+
+    document.addEventListener('mouseup', function () {
+      if (!isDragging) return;
+      isDragging = false;
+      carousel.style.cursor = '';
+    });
+
+    /* ── Touch drag ── */
+    carousel.addEventListener('touchstart', function (e) {
+      isDragging   = true;
+      startX       = e.touches[0].clientX;
+      dragStartPos = pos;
+    }, { passive: true });
+
+    carousel.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      pos = dragStartPos + (e.touches[0].clientX - startX);
+      wrapPos();
+    }, { passive: true });
+
+    carousel.addEventListener('touchend', function () {
+      isDragging = false;
+    });
+
+    /* kick off */
+    carousel.style.cursor = 'grab';
+    requestAnimationFrame(tick);
   })();
 
   /* Contact form — staggered field entrance */
