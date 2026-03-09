@@ -64,7 +64,7 @@ export default function ServiceRow({
               className="flex-1 relative"
               style={{
                 overflow: 'hidden',
-                paddingLeft: '32px',    /* mirrors the marginLeft: 32px on the number div */
+                paddingLeft: '48px',    /* mirrors the marginLeft: 32px on the number div */
               }}
             >
               {/* Invisible sizer — keeps row height stable at all times */}
