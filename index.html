@@ -1115,39 +1115,47 @@
     var track    = document.getElementById('processTrack');
     if (!carousel || !track) return;
 
+    /* Ensure no CSS transition fights the RAF loop */
+    track.style.transition = 'none';
+
+    var GAP         = 32;          /* must match the CSS gap value */
     var BASE_SPEED  = 0.6;
     var HOVER_SPEED = 0.2;
     var currentSpeed = BASE_SPEED;
     var targetSpeed  = BASE_SPEED;
 
-    var pos = 0;            /* current translateX (negative = moved left) */
-    var halfWidth = 0;      /* width of one set of 4 cards incl. gaps */
-    var isDragging   = false;
-    var startX       = 0;
-    var dragStartPos = 0;
+    var currentX   = 0;            /* current translateX in px (always ≤ 0) */
+    var resetPoint = 0;            /* (cardWidth + gap) * 4  — measured dynamically */
+    var isDragging = false;
+    var startX     = 0;
+    var dragStartX = 0;
 
-    function getHalfWidth() {
-      return track.scrollWidth / 2;
+    /* Measure the exact pixel width of one set of 4 cards using getBoundingClientRect */
+    function measureResetPoint() {
+      var first = track.querySelector('.process-item');
+      if (!first) return;
+      var rect = first.getBoundingClientRect();
+      resetPoint = (rect.width + GAP) * 4;
     }
 
-    function applyPos() {
-      track.style.transform = 'translateX(' + pos + 'px)';
+    function applyTransform() {
+      track.style.transform = 'translateX(' + currentX + 'px)';
     }
 
-    function wrapPos() {
-      halfWidth = getHalfWidth();
-      if (pos <= -halfWidth) pos += halfWidth;
-      if (pos > 0)           pos -= halfWidth;
+    /* Add back exacty one set-width so the jump is invisible */
+    function wrapX() {
+      if (resetPoint <= 0) return;
+      if (Math.abs(currentX) >= resetPoint) currentX += resetPoint;
+      if (currentX > 0)                     currentX -= resetPoint;
     }
 
     function tick() {
-      halfWidth = getHalfWidth();
       currentSpeed += (targetSpeed - currentSpeed) * 0.08;
       if (!isDragging) {
-        pos -= currentSpeed;
-        wrapPos();
+        currentX -= currentSpeed;
+        wrapX();
       }
-      applyPos();
+      applyTransform();
       requestAnimationFrame(tick);
     }
 
@@ -1163,17 +1171,17 @@
 
     /* ── Mouse drag ── */
     carousel.addEventListener('mousedown', function (e) {
-      isDragging   = true;
-      startX       = e.clientX;
-      dragStartPos = pos;
+      isDragging = true;
+      startX     = e.clientX;
+      dragStartX = currentX;
       carousel.style.cursor = 'grabbing';
       e.preventDefault();
     });
 
     document.addEventListener('mousemove', function (e) {
       if (!isDragging) return;
-      pos = dragStartPos + (e.clientX - startX);
-      wrapPos();
+      currentX = dragStartX + (e.clientX - startX);
+      wrapX();
     });
 
     document.addEventListener('mouseup', function () {
@@ -1184,23 +1192,25 @@
 
     /* ── Touch drag ── */
     carousel.addEventListener('touchstart', function (e) {
-      isDragging   = true;
-      startX       = e.touches[0].clientX;
-      dragStartPos = pos;
+      isDragging = true;
+      startX     = e.touches[0].clientX;
+      dragStartX = currentX;
     }, { passive: true });
 
     carousel.addEventListener('touchmove', function (e) {
       if (!isDragging) return;
-      pos = dragStartPos + (e.touches[0].clientX - startX);
-      wrapPos();
+      currentX = dragStartX + (e.touches[0].clientX - startX);
+      wrapX();
     }, { passive: true });
 
     carousel.addEventListener('touchend', function () {
       isDragging = false;
     });
 
-    /* kick off */
+    /* Kick off — measure after layout is complete, re-measure on resize */
     carousel.style.cursor = 'grab';
+    measureResetPoint();
+    window.addEventListener('resize', measureResetPoint);
     requestAnimationFrame(tick);
   })();
 
