@@ -430,7 +430,8 @@
 
   /* Specific override for the third card (Execution) to ensure it uses the crimson -> dark pink gradient */
   .process-track .process-item:nth-child(3) {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--pink) 100%);
+    /* stronger two-stop crimson -> dark-pink gradient for better contrast */
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent) 40%, var(--pink) 100%);
   }
 
   /* CTA */
