@@ -701,7 +701,7 @@
   <div class="orb orb-3"></div>
 
   <div class="hero-content">
-    <h1 class="hero-title">We build<span class="line-grad">digital presence</span>that converts.</h1>
+    <h1 class="hero-title">We build<span class="line-grad">digital presence</span>that <span id="converts-word">converts</span>.</h1>
     <p class="hero-sub">
       Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
     </p>
@@ -1514,3 +1514,30 @@
 
 </body>
 </html>
+
+<script>
+  (function(){
+    var el = document.getElementById('converts-word');
+    if (!el) return;
+    var fonts = [
+      {family: "Georgia, serif", style: "normal"},
+      {family: "'Helvetica Neue', sans-serif", style: "normal"},
+      {family: "Garamond, serif", style: "normal"},
+      {family: "Futura, 'Century Gothic', sans-serif", style: "normal"},
+      {family: "Palatino, serif", style: "italic"}
+    ];
+    var idx = 0;
+    el.style.transition = 'opacity 0.15s ease';
+    el.style.opacity = '1';
+    setInterval(function(){
+      el.style.opacity = '0';
+      setTimeout(function(){
+        var f = fonts[idx];
+        el.style.fontFamily = f.family;
+        el.style.fontStyle = f.style === 'italic' ? 'italic' : 'normal';
+        el.style.opacity = '1';
+        idx = (idx + 1) % fonts.length;
+      }, 150);
+    }, 500);
+  })();
+</script>
