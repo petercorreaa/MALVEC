@@ -126,7 +126,7 @@ export default function ServiceRow({
             </div>
 
             {/* Index + arrow */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0', flexShrink: 0, marginLeft: '32px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0', flexShrink: 0, marginLeft: '32px', paddingRight: '48px' }}>
               {/* Arrow — appears on hover, now sits left of the number */}
               <motion.span
                 style={{ fontSize: '16px', color: '#92004a', display: 'block', lineHeight: 1, marginRight: '10px' }}
