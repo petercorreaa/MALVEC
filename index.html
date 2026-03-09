@@ -123,6 +123,14 @@
     justify-content: center; align-items: center;
     padding: 110px 48px 60px;
     position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #160026 0%, #92004a 40%, #9f004a 70%, #160026 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 1;
+    pointer-events: none;
   }
   #hero-fluid-canvas {
     position: absolute; inset: 0;
@@ -165,7 +173,7 @@
   }
 
   .hero-title {
-    font-size: clamp(38px, 6vw, 90px);
+    font-size: clamp(3rem, 7vw, 6.5rem);
     line-height: 1.15;
     font-weight: 700;
     font-family: 'Degular Display', sans-serif;
