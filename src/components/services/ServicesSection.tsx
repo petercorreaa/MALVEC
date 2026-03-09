@@ -58,6 +58,7 @@ export default function ServicesSection() {
           borderBottom: '1px solid rgba(22,0,38,0.08)',
           paddingTop: '42px',
           paddingBottom: '18px',
+          marginBottom: '60px',
         }}
         initial={{ opacity: 0, y: 16 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -65,8 +66,8 @@ export default function ServicesSection() {
       >
         <span className="block w-14 h-px" style={{ background: '#92004a' }} />
         <span
-          className="text-[13px] tracking-[0.36em] uppercase font-semibold"
-          style={{ color: '#92004a' }}
+          className="tracking-[0.36em] uppercase font-semibold"
+          style={{ color: '#92004a', fontSize: 'clamp(3rem, 6vw, 5rem)' }}
         >
           Services
         </span>
