@@ -49,10 +49,10 @@ export default function ServiceRow({
         >
           {/* Left accent bar */}
           <motion.span
-            className="absolute left-0 top-0 bottom-0 w-[3px]"
+            className="absolute left-0 top-0 bottom-0 w-[5px]"
             style={{ background: '#92004a', transformOrigin: 'top' }}
             animate={{ scaleY: isActive ? 1 : 0 }}
-            transition={{ duration: 0.42, ease: EASE_REVEAL }}
+            transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
           />
 
           {/* Three-column row: name | spacer | index */}
@@ -61,9 +61,9 @@ export default function ServiceRow({
             {/* Service name — dual-layer mask reveal + tab shift */}
             <motion.div
               className="flex-1"
-              style={{ overflow: 'hidden', paddingBottom: '0.04em' }}
+              style={{ overflow: 'hidden', paddingBottom: '0.04em', paddingLeft: '28px' }}
               animate={{ x: isActive ? 18 : 0 }}
-              transition={{ duration: 0.42, ease: EASE_REVEAL }}
+              transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
             >
               {/* Muted layer — sets height */}
               <motion.span
@@ -74,7 +74,7 @@ export default function ServiceRow({
                   letterSpacing: '-0.02em',
                 }}
                 animate={{ color: isActive ? 'transparent' : 'rgba(22,0,38,0.82)' }}
-                transition={{ duration: 0.28, ease: EASE_OUT }}
+                transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
                 aria-hidden={isActive ? 'true' : undefined}
               >
                 {service.name}
@@ -91,7 +91,7 @@ export default function ServiceRow({
                     color: '#160026',
                   }}
                   animate={{ y: isActive ? '0%' : '105%' }}
-                  transition={{ duration: 0.5, ease: EASE_REVEAL }}
+                  transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
                 >
                   {service.name}
                 </motion.span>
@@ -101,9 +101,9 @@ export default function ServiceRow({
             {/* Index + arrow */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, marginLeft: '32px' }}>
               <motion.span
-                className="text-[11px] tracking-[0.2em] font-mono tabular-nums"
+                className="text-[1.4rem] tracking-[0.2em] font-mono tabular-nums"
                 animate={{ color: isActive ? '#92004a' : 'rgba(22,0,38,0.28)' }}
-                transition={{ duration: 0.28, ease: EASE_OUT }}
+                transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
               >
                 {service.index}
               </motion.span>
@@ -117,7 +117,7 @@ export default function ServiceRow({
                   lineHeight: 1,
                 }}
                 animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : -6 }}
-                transition={{ duration: 0.28, ease: EASE_OUT }}
+                transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
                 aria-hidden="true"
               >
                 →
