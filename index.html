@@ -666,6 +666,194 @@
     box-shadow: 0 0 40px rgba(159,0,74,0.3);
   }
   .cf-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 60px rgba(159,0,74,0.5); }
+  .cf-submit:disabled { cursor: not-allowed; opacity: 0.65; transform: none !important; }
+
+  /* ══════════════════════════════════════════════════════════════════════
+     FORM POPUP — Centered card with blurred backdrop (2 phases)
+     ══════════════════════════════════════════════════════════════════════ */
+  .cf-popup-overlay {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(22,0,38,0.55);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  .cf-popup-overlay.active { opacity: 1; pointer-events: all; }
+
+  .cf-popup-card {
+    position: relative;
+    background: #fff;
+    border-radius: 28px;
+    padding: 56px 48px 48px;
+    max-width: 460px; width: calc(100% - 40px);
+    box-shadow: 0 32px 80px rgba(22,0,38,0.25), 0 0 0 1px rgba(22,0,38,0.04);
+    transform: translateY(28px) scale(0.97);
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease;
+  }
+  .cf-popup-overlay.active .cf-popup-card {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  .cf-popup-stage { position: relative; text-align: center; }
+
+  /* ── Phase 1: Processing ── */
+  .cf-phase-processing { display: flex; flex-direction: column; align-items: center; }
+  .cf-phase-processing.hidden { display: none; }
+
+  /* Form icon animation — a form/envelope that slides + tilts */
+  .cf-form-icon-wrap {
+    position: relative; width: 120px; height: 100px;
+    margin-bottom: 20px;
+  }
+  .cf-form-icon {
+    position: absolute; top: 0; left: 50%; width: 64px; height: 52px;
+    transform: translateX(-50%);
+    animation: formIconFloat 1.6s cubic-bezier(0.45,0,0.55,1) infinite;
+  }
+  @keyframes formIconFloat {
+    0%   { transform: translateX(-50%) translateY(0) rotate(-12deg); }
+    50%  { transform: translateX(-50%) translateY(-14px) rotate(6deg); }
+    100% { transform: translateX(-50%) translateY(0) rotate(-12deg); }
+  }
+  /* The tray under the form icon */
+  .cf-form-tray {
+    position: absolute; bottom: 10px; left: 50%;
+    width: 80px; height: 18px;
+    transform: translateX(-50%);
+  }
+  .cf-form-tray path {
+    fill: none; stroke: url(#malvecGrad); stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 120; stroke-dashoffset: 120;
+    animation: trayDraw 1.2s ease forwards;
+  }
+  @keyframes trayDraw { to { stroke-dashoffset: 0; } }
+
+  .cf-processing-text {
+    font-family: 'Degular Display', sans-serif;
+    font-size: 20px; font-weight: 600; color: var(--dark);
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+  }
+  .cf-processing-dots { display: flex; gap: 8px; justify-content: center; }
+  .cf-processing-dots span {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--grad);
+    animation: dotBounce 1.4s ease-in-out infinite;
+  }
+  .cf-processing-dots span:nth-child(2) { animation-delay: 0.16s; }
+  .cf-processing-dots span:nth-child(3) { animation-delay: 0.32s; }
+  @keyframes dotBounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40%           { transform: scale(1);   opacity: 1; }
+  }
+
+  /* ── Phase 2: Success ── */
+  .cf-phase-success {
+    display: none; flex-direction: column; align-items: center;
+    animation: successFadeIn 0.5s ease forwards;
+  }
+  .cf-phase-success.visible { display: flex; }
+  @keyframes successFadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Animated circle + checkmark */
+  .cf-success-ring-wrap {
+    position: relative; width: 120px; height: 120px; margin-bottom: 36px;
+  }
+  .cf-success-ring {
+    width: 120px; height: 120px;
+    transform: rotate(-90deg);
+  }
+  .cf-success-ring circle {
+    fill: none; stroke-width: 3;
+    stroke-linecap: round;
+  }
+  .cf-success-ring .ring-bg  { stroke: rgba(22,0,38,0.06); }
+  .cf-success-ring .ring-fg  {
+    stroke: url(#malvecGrad);
+    stroke-dasharray: 340; stroke-dashoffset: 340;
+    animation: ringDraw 1s cubic-bezier(0.65,0,0.35,1) 0.15s forwards;
+  }
+  @keyframes ringDraw { to { stroke-dashoffset: 0; } }
+
+  .cf-success-check {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .cf-success-check path {
+    stroke: #5b0e6e; stroke-width: 3; fill: none;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 36; stroke-dashoffset: 36;
+    animation: checkDraw 0.5s ease 0.9s forwards;
+  }
+  @keyframes checkDraw { to { stroke-dashoffset: 0; } }
+
+  /* Sparkle particles */
+  .cf-sparkles {
+    position: absolute; inset: -30px; pointer-events: none;
+  }
+  .cf-sparkle {
+    position: absolute; border-radius: 50%;
+    opacity: 0;
+    animation: sparkleBurst 1s ease forwards;
+  }
+  @keyframes sparkleBurst {
+    0%   { transform: translate(0,0) scale(0); opacity: 1; }
+    60%  { opacity: 1; }
+    100% { transform: var(--spark-to) scale(0); opacity: 0; }
+  }
+
+  .cf-success-title {
+    font-family: 'Degular Display', sans-serif;
+    font-size: 30px; font-weight: 700;
+    letter-spacing: -0.02em; color: var(--dark);
+    margin-bottom: 12px;
+    opacity: 0; animation: textUp 0.5s ease 1.2s forwards;
+  }
+  .cf-success-body {
+    font-size: 15px; line-height: 1.65;
+    color: rgba(22,0,38,0.58); max-width: 380px;
+    margin-bottom: 40px;
+    opacity: 0; animation: textUp 0.5s ease 1.4s forwards;
+  }
+  @keyframes textUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .cf-popup-close {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 15px 40px;
+    background: var(--grad); color: var(--cream);
+    border: none; border-radius: 100px;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.05em; cursor: pointer;
+    box-shadow: 0 4px 32px rgba(159,0,74,0.3);
+    transition: transform 0.2s, box-shadow 0.3s;
+    opacity: 0; animation: textUp 0.5s ease 1.55s forwards;
+  }
+  .cf-popup-close:hover { transform: translateY(-2px); box-shadow: 0 8px 48px rgba(159,0,74,0.5); }
+  /* Service multi-hint */
+  .cf-service-hint {
+    display: none;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: rgba(159,0,74,0.07);
+    border: 1px solid rgba(159,0,74,0.22);
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 1.55;
+    color: rgba(22,0,38,0.72);
+    animation: hintSlide 0.28s ease both;
+  }
+  .cf-service-hint.visible { display: flex; }
+  .cf-service-hint svg { flex-shrink: 0; margin-top: 1px; }
+  @keyframes hintSlide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
   /* contact form — label alignment & cursor overrides */
   .cf-form .cf-label { text-align: left; display: block; }
   #contact, #contact * { cursor: auto; }
@@ -1092,48 +1280,63 @@
     <div class="section-label" style="justify-content:center;">Contact</div>
     <h2 class="section-title">Ready to build something great?</h2>
     <p>Tell us about your project. We'll get back to you within 24 hours with ideas and a no-commitment quote.</p>
-    <form class="cf-form" id="contactForm" onsubmit="return false;">
+    <form class="cf-form" id="contactForm" action="https://formspree.io/f/mwvrvjdk" method="POST">
 
       <div class="cf-row">
         <div class="cf-group cf-field-reveal">
           <label class="cf-label" for="cf-name">Name</label>
-          <input class="cf-input" id="cf-name" type="text" placeholder="Your name" autocomplete="given-name">
+          <input class="cf-input" id="cf-name" name="from_name" type="text" placeholder="Your name" autocomplete="given-name" required>
         </div>
         <div class="cf-group cf-field-reveal">
           <label class="cf-label" for="cf-lastname">Last Name</label>
-          <input class="cf-input" id="cf-lastname" type="text" placeholder="Your last name" autocomplete="family-name">
+          <input class="cf-input" id="cf-lastname" name="from_lastname" type="text" placeholder="Your last name" autocomplete="family-name" required>
         </div>
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-email">Email</label>
-        <input class="cf-input" id="cf-email" type="email" placeholder="you@example.com" autocomplete="email">
+        <input class="cf-input" id="cf-email" name="reply_to" type="email" placeholder="you@example.com" autocomplete="email" required>
+      </div>
+
+      <div class="cf-group cf-field-reveal">
+        <label class="cf-label" for="cf-phone">Phone <span style="font-size:11px;opacity:0.45;font-weight:400;">(optional)</span></label>
+        <input class="cf-input" id="cf-phone" name="phone" type="tel" placeholder="+54 9 11 0000-0000" autocomplete="tel">
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-service">Type of Service</label>
-        <select class="cf-select" id="cf-service">
+        <select class="cf-select" id="cf-service" name="service_type" required>
           <option value="" disabled selected>Select a service</option>
-          <option value="branding">Branding</option>
-          <option value="web">Web Design</option>
-          <option value="social">Social Media</option>
-          <option value="combo">Full Combo</option>
+          <option value="web-experience">Web Experience</option>
+          <option value="brand-identity">Brand Identity</option>
+          <option value="ecommerce">Ecommerce</option>
+          <option value="marketing">Marketing</option>
+          <option value="content">Content</option>
+          <option value="multiple">2 or more services</option>
         </select>
+        <div class="cf-service-hint" id="cf-service-hint" role="alert">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="8" cy="8" r="7.25" stroke="#9f004a" stroke-opacity="0.75" stroke-width="1.5"/>
+            <rect x="7.25" y="6.75" width="1.5" height="5.25" rx="0.75" fill="#9f004a" fill-opacity="0.8"/>
+            <circle cx="8" cy="4.5" r="0.9" fill="#9f004a" fill-opacity="0.8"/>
+          </svg>
+          <span>Please describe in the <strong>Description of Idea</strong> field below which services you need — we'll craft a combined proposal for you.</span>
+        </div>
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-site">Website or Instagram</label>
-        <input class="cf-input" id="cf-site" type="text" placeholder="yoursite.com or @yourhandle (optional)">
+        <input class="cf-input" id="cf-site" name="website" type="text" placeholder="yoursite.com or @yourhandle" required>
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-desc">Description of idea</label>
-        <textarea class="cf-textarea" id="cf-desc" placeholder="Tell us about your project or idea..."></textarea>
+        <textarea class="cf-textarea" id="cf-desc" name="message" placeholder="Tell us about your project or idea..." required></textarea>
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-source">How did you find us?</label>
-        <select class="cf-select" id="cf-source">
+        <select class="cf-select" id="cf-source" name="source" required>
           <option value="" disabled selected>Select an option</option>
           <option value="instagram">Instagram</option>
           <option value="google">Google</option>
@@ -1144,12 +1347,74 @@
       </div>
 
       <div class="cf-field-reveal">
-        <button type="submit" class="cf-submit">Send Message</button>
+        <button type="submit" class="cf-submit">Send</button>
       </div>
 
     </form>
   </div>
 </section>
+
+<!-- ── Form animated popup (2 phases) ── -->
+<div class="cf-popup-overlay" id="cfPopupOverlay" role="dialog" aria-modal="true" aria-labelledby="cfSuccessTitle">
+
+  <!-- Shared gradient def -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <linearGradient id="malvecGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"   stop-color="#160026"/>
+        <stop offset="100%" stop-color="#9f004a"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="cf-popup-card">
+  <div class="cf-popup-stage">
+
+    <!-- PHASE 1: Processing -->
+    <div class="cf-phase-processing" id="cfPhaseProcessing">
+      <div class="cf-form-icon-wrap">
+        <!-- Form / document icon -->
+        <svg class="cf-form-icon" viewBox="0 0 64 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="2" width="56" height="44" rx="6" fill="url(#malvecGrad)" />
+          <rect x="4" y="2" width="56" height="44" rx="6" fill="rgba(255,255,255,0.12)" />
+          <line x1="16" y1="16" x2="48" y2="16" stroke="#efeee6" stroke-opacity="0.6" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="16" y1="24" x2="42" y2="24" stroke="#efeee6" stroke-opacity="0.4" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="16" y1="32" x2="36" y2="32" stroke="#efeee6" stroke-opacity="0.25" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <!-- Tray arc -->
+        <svg class="cf-form-tray" viewBox="0 0 80 18" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 2 Q40 22 76 2" />
+        </svg>
+      </div>
+      <p class="cf-processing-text">Processing your form</p>
+      <div class="cf-processing-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- PHASE 2: Success -->
+    <div class="cf-phase-success" id="cfPhaseSuccess">
+
+      <div class="cf-success-ring-wrap">
+        <!-- Ring -->
+        <svg class="cf-success-ring" viewBox="0 0 120 120">
+          <circle class="ring-bg" cx="60" cy="60" r="54"/>
+          <circle class="ring-fg" cx="60" cy="60" r="54"/>
+        </svg>
+        <!-- Check -->
+        <svg class="cf-success-check" width="40" height="40" viewBox="0 0 40 40">
+          <path d="M10 20 L17 27 L30 13"/>
+        </svg>
+        <!-- Sparkle container (JS fills these) -->
+        <div class="cf-sparkles" id="cfSparkles"></div>
+      </div>
+
+      <p class="cf-success-title" id="cfSuccessTitle">Form Sent.</p>
+      <p class="cf-success-body">Thanks for reaching out — we'll get back to you<br>within 24 hours with ideas and next steps.</p>
+      <button class="cf-popup-close" id="cfPopupClose">Back to site</button>
+    </div>
+
+  </div>
+  </div>
+</div>
 
 <footer>
   <div class="footer-top">
@@ -1413,21 +1678,136 @@
     requestAnimationFrame(tick);
   })();
 
-  /* Contact form — staggered field entrance */
+  /* ── Contact form: entrance + service hint + AJAX submit + popup ── */
   (function () {
+
+    /* 1. Staggered field entrance */
     var fields = document.querySelectorAll('#contactForm .cf-field-reveal');
-    fields.forEach(function (el, i) {
-      el.style.transitionDelay = (i * 0.1) + 's';
-    });
+    fields.forEach(function (el, i) { el.style.transitionDelay = (i * 0.1) + 's'; });
     var formObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          formObserver.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); formObserver.unobserve(entry.target); }
       });
     }, { threshold: 0.15 });
     fields.forEach(function (el) { formObserver.observe(el); });
+
+    /* 2. Service select → hint + placeholder */
+    var serviceSelect = document.getElementById('cf-service');
+    var serviceHint   = document.getElementById('cf-service-hint');
+    var descArea      = document.getElementById('cf-desc');
+    var DEFAULT_PH    = 'Tell us about your project or idea...';
+    var MULTI_PH      = 'Tell us which services you need and describe your project or idea...';
+    if (serviceSelect && serviceHint) {
+      serviceSelect.addEventListener('change', function () {
+        var isMulti = serviceSelect.value === 'multiple';
+        serviceHint.classList.toggle('visible', isMulti);
+        if (descArea) descArea.placeholder = isMulti ? MULTI_PH : DEFAULT_PH;
+      });
+    }
+
+    /* 3. AJAX submit → 2-phase animated popup */
+    var form          = document.getElementById('contactForm');
+    var btn           = form && form.querySelector('.cf-submit');
+    var overlay       = document.getElementById('cfPopupOverlay');
+    var phaseProcess  = document.getElementById('cfPhaseProcessing');
+    var phaseSuccess  = document.getElementById('cfPhaseSuccess');
+    var sparklesEl    = document.getElementById('cfSparkles');
+    var closeBtn      = document.getElementById('cfPopupClose');
+    if (!form || !btn || !overlay) return;
+
+    /* Sparkle particles generator */
+    var SPARKLE_COLORS = ['#9f004a','#160026','#d4468e','#5b0e6e','#ff4da6','#7b2fbe'];
+    function createSparkles() {
+      sparklesEl.innerHTML = '';
+      for (var i = 0; i < 14; i++) {
+        var el = document.createElement('span');
+        el.className = 'cf-sparkle';
+        var angle = (360 / 14) * i;
+        var dist  = 60 + Math.random() * 40;
+        var tx = Math.cos(angle * Math.PI / 180) * dist;
+        var ty = Math.sin(angle * Math.PI / 180) * dist;
+        var size = 5 + Math.random() * 7;
+        el.style.cssText =
+          'width:' + size + 'px;height:' + size + 'px;' +
+          'top:50%;left:50%;margin:-' + (size/2) + 'px;' +
+          'background:' + SPARKLE_COLORS[i % SPARKLE_COLORS.length] + ';' +
+          '--spark-to:translate(' + tx + 'px,' + ty + 'px);' +
+          'animation-delay:' + (0.7 + Math.random() * 0.3) + 's;' +
+          'animation-duration:' + (0.7 + Math.random() * 0.5) + 's;';
+        sparklesEl.appendChild(el);
+      }
+    }
+
+    function resetPopup() {
+      phaseProcess.classList.remove('hidden');
+      phaseSuccess.classList.remove('visible');
+      sparklesEl.innerHTML = '';
+    }
+
+    function showProcessing() {
+      resetPopup();
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function showSuccess() {
+      phaseProcess.classList.add('hidden');
+      phaseSuccess.classList.add('visible');
+      createSparkles();
+    }
+
+    function closePopup() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(resetPopup, 400);
+    }
+
+    /* Close handlers */
+    if (closeBtn) closeBtn.addEventListener('click', closePopup);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) closePopup(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var originalText = btn.textContent;
+      btn.textContent = 'Sending…';
+      btn.disabled = true;
+
+      /* Show processing phase immediately */
+      showProcessing();
+
+      var data = new FormData(form);
+
+      fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(function (res) {
+        if (res.ok) {
+          form.reset();
+          if (serviceHint) serviceHint.classList.remove('visible');
+          if (descArea)    descArea.placeholder = DEFAULT_PH;
+          /* Hold processing for a beat, then transition to success */
+          setTimeout(showSuccess, 1800);
+        } else {
+          return res.json().then(function (json) { throw new Error(json.error || 'Server error'); });
+        }
+      })
+      .catch(function (err) {
+        console.error('Form error:', err);
+        closePopup();
+        btn.style.background = 'linear-gradient(135deg,#2e0a0a 0%,#7a1010 100%)';
+        btn.textContent = 'Failed — try again';
+        setTimeout(function () { btn.style.background = ''; btn.textContent = originalText; }, 4000);
+      })
+      .finally(function () {
+        btn.disabled = false;
+        if (btn.textContent === 'Sending…') btn.textContent = originalText;
+      });
+    });
+
   })();
 </script>
 
@@ -1689,7 +2069,11 @@
   }
 
   function resizeCanvas() {
-    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+    /* Only reinitialise when the size changes by more than 4px — this prevents
+       1-pixel layout-shift jitter (scrollbar appearing, Lenis reflow, etc.)
+       from resetting the entire simulation every frame.                       */
+    if (Math.abs(canvas.width  - canvas.clientWidth)  > 4 ||
+        Math.abs(canvas.height - canvas.clientHeight) > 4) {
       canvas.width  = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
       initFramebuffers();
@@ -1781,11 +2165,16 @@
   /* ---- Events — scoped to hero, always react on hover ---- */
   hero.addEventListener('mousemove', function(e) {
     var rect = hero.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
+    var x  = e.clientX - rect.left;
+    var y  = e.clientY - rect.top;
+    var dx = (x - pointers[0].x) * 8.0;
+    var dy = (y - pointers[0].y) * 8.0;
+    /* clamp velocity to avoid numerical blow-up on fast sweeps */
+    var len = Math.sqrt(dx * dx + dy * dy);
+    if (len > 600) { dx = dx / len * 600; dy = dy / len * 600; }
     pointers[0].moved = true;
-    pointers[0].dx = (x - pointers[0].x) * 8.0;
-    pointers[0].dy = (y - pointers[0].y) * 8.0;
+    pointers[0].dx = dx;
+    pointers[0].dy = dy;
     pointers[0].x  = x;
     pointers[0].y  = y;
   });
