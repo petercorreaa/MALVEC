@@ -46,7 +46,7 @@ export default function ServiceRow({
         {/* ── Row layout ── */}
         <div
           className="relative flex items-center px-12"
-          style={{ minHeight: '150px' }}
+          style={{ minHeight: '90px', paddingTop: '12px', paddingBottom: '12px' }}
         >
           {/* Left accent bar */}
           <motion.span
