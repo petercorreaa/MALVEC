@@ -696,7 +696,7 @@
   /* FOOTER */
   footer {
     padding: 24px 40px;
-    border-radius: 32px 32px 0 0;
+    border-radius: 0;
     position: relative;
     overflow: hidden;
     background: rgba(255,255,255,0.05);
@@ -709,7 +709,7 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    border-radius: 32px 32px 0 0;
+    border-radius: 0;
     pointer-events: none;
     background: linear-gradient(270deg, #92004a, #160026, #9f004a, #3a0020, #92004a);
     background-size: 400% 400%;
@@ -723,10 +723,11 @@
   .footer-content { position: relative; z-index: 1; line-height: 1.4; }
   .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
   .footer-logo { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.2em; color: var(--cream); margin-bottom: 8px; }
-  .footer-tagline { font-size: 0.9rem; color: rgba(239,238,230,0.5); max-width: 130px; line-height: 1.4; }
-  .footer-links { display: flex; gap: 40px; }
-  .footer-col h4 { font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(239,238,230,0.4); margin-bottom: 10px; }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .footer-tagline { font-size: 0.9rem; color: rgba(239,238,230,0.5); max-width: 360px; line-height: 1.4; }
+  .footer-top > div:first-child { min-width: 360px; }
+  .footer-links { display: flex; gap: 80px; }
+  .footer-col h4 { font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(239,238,230,0.4); margin-bottom: 20px; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
   .footer-col a { color: rgba(239,238,230,0.65); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
   .footer-col a:hover { color: var(--cream); }
   .footer-bottom {
@@ -1199,7 +1200,7 @@
 <footer>
   <div id="footer-bg"></div>
   <div class="footer-content">
-  <img src="/LOGO_MALVEC.png" alt="MALVEC" style="display:block;margin:0 auto 20px auto;height:52px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
+  <img src="/LOGO_MALVEC.png" alt="MALVEC" style="display:block;margin:0 auto 20px auto;height:72px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
   <div class="footer-top">
     <div>
       <div class="footer-logo">MALVEC</div>
