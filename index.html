@@ -850,9 +850,10 @@
     text-align: center;
     width: 100%;
     padding: 0 3rem;
-    font-size: clamp(2.8rem, 5.5vw, 7rem);
+    font-size: clamp(2.5rem, 5vw, 4rem);
     line-height: 1.25;
     font-weight: 500;
+    font-style: italic;
     font-family: 'Lora', Georgia, serif;
     color: white;
     transform-origin: 50% 0;
@@ -895,6 +896,9 @@
     opacity: 0.6;
     color: white;
     margin-top: 16px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
   }
 
   @media screen and (max-width: 1024px) {
@@ -1042,11 +1046,11 @@
     <img class="text-reveal__img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" alt="" loading="lazy">
   </div>
 
-  <!-- Quote -->
-  <div class="tr-quote-wrap">
-    <blockquote class="tr-quote">&ldquo;Design creates culture. Culture shapes values. Values determine the future.&rdquo;</blockquote>
-    <cite class="tr-quote-attr">&mdash; Robert L. Peters</cite>
-  </div>
+  <!-- Lines -->
+  <div class="text-reveal__line">Design creates culture.</div>
+  <div class="text-reveal__line">Culture shapes values.</div>
+  <div class="text-reveal__line text-reveal__line--gap">Values determine the future.</div>
+  <cite class="tr-quote-attr">&mdash; Robert L. Peters</cite>
 </section>
 
 <div id="services-react-root"></div>
