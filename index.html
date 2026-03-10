@@ -695,14 +695,32 @@
 
   /* FOOTER */
   footer {
-    padding: 80px 48px 40px;
+    padding: 40px 48px;
     border-radius: 32px 32px 0 0;
-    background: linear-gradient(135deg, rgba(22,0,38,0.92) 0%, rgba(146,0,74,0.55) 50%, rgba(159,0,74,0.65) 100%);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    position: relative;
+    overflow: hidden;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid rgba(255,255,255,0.12);
-    box-shadow: 0 -8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    box-shadow: 0 -8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
   }
+  #footer-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: 32px 32px 0 0;
+    pointer-events: none;
+    background: linear-gradient(270deg, #92004a, #160026, #9f004a, #3a0020, #92004a);
+    background-size: 400% 400%;
+    animation: footerGradient 6s ease infinite;
+  }
+  @keyframes footerGradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .footer-content { position: relative; z-index: 1; }
   .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 60px; }
   .footer-logo { font-size: 32px; font-weight: 700; letter-spacing: 0.2em; color: var(--cream); margin-bottom: 16px; }
   .footer-tagline { font-size: 14px; color: rgba(239,238,230,0.5); max-width: 260px; line-height: 1.6; }
@@ -1179,6 +1197,8 @@
 </section>
 
 <footer>
+  <div id="footer-bg"></div>
+  <div class="footer-content">
   <img src="/LOGO_MALVEC.png" alt="MALVEC" style="display:block;margin:0 auto 40px auto;height:60px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">
   <div class="footer-top">
     <div>
@@ -1218,6 +1238,7 @@
   <div class="footer-bottom">
     <span>&copy; 2025 MALVEC. All rights reserved.</span>
     <span><span class="argentina-dot"></span>Proudly made in Argentina</span>
+  </div>
   </div>
 </footer>
 
