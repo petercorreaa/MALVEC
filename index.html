@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MALVEC — Digital Agency</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Degular+Display:wght@400;500;600;700&family=Degular:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Degular+Display:wght@400;500;600;700&family=Degular:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     --cream: #efeee6;
@@ -870,6 +870,33 @@
     margin-top: 3.5rem;
   }
 
+  .tr-quote-wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 2rem;
+  }
+  .tr-quote {
+    font-family: 'DM Sans', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    line-height: 1.6;
+    color: white;
+  }
+  .tr-quote-attr {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    color: white;
+    margin-top: 16px;
+  }
+
   @media screen and (max-width: 1024px) {
     .text-reveal-section { padding: 5rem 0 16rem; }
     .text-reveal__line { font-size: clamp(2.2rem, 6vw, 5rem); }
@@ -1015,10 +1042,11 @@
     <img class="text-reveal__img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" alt="" loading="lazy">
   </div>
 
-  <!-- Lines -->
-  <div class="text-reveal__line">Art is not only a form of expression,</div>
-  <div class="text-reveal__line">it is a way of discovering oneself.</div>
-  <div class="text-reveal__line text-reveal__line--gap">We Create websites that bring companies to life.</div>
+  <!-- Quote -->
+  <div class="tr-quote-wrap">
+    <blockquote class="tr-quote">&ldquo;Design creates culture. Culture shapes values. Values determine the future.&rdquo;</blockquote>
+    <cite class="tr-quote-attr">&mdash; Robert L. Peters</cite>
+  </div>
 </section>
 
 <div id="services-react-root"></div>
