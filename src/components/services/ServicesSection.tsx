@@ -55,7 +55,6 @@ export default function ServicesSection() {
       <motion.div
         className="relative z-10 flex items-center justify-start gap-6 px-12"
         style={{
-          borderBottom: '1px solid rgba(22,0,38,0.08)',
           paddingTop: '42px',
           paddingBottom: '18px',
           marginBottom: '60px',
