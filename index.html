@@ -787,13 +787,13 @@
   
   /* loader image (using supplied PNG) */
   .preloader-logo {
-    max-width: 60px;        /* 35% smaller than previous 90px */
-    width: 12vw;
+    max-width: 140px;        /* larger on loading screen only */
+    width: 16vw;
     height: auto;
     opacity: 0;
-    transform: scale(0.5);
-    animation: logoGrow 0.8s ease-out forwards;
-    transition: opacity 0.4s ease;
+    transform: scale(0.85);
+    animation: logoGrow 0.9s cubic-bezier(.2,.9,.2,1) forwards;
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
   .preloader-logo img {
     display: block;
@@ -807,9 +807,13 @@
   .preloader-logo.fade-out { opacity: 0; transition: opacity 0.4s ease; }
 
   @keyframes logoGrow {
-    from { opacity: 0; transform: scale(0.5); }
+    from { opacity: 0; transform: scale(0.85); }
+    80%  { opacity: 1; transform: scale(1.02); }
     to   { opacity: 1; transform: scale(1); }
   }
+
+  /* when hiding, gently nudge and smooth transform to avoid abrupt jump */
+  .preloader-logo.fade-out { opacity: 0; transform: scale(0.98) translateY(-6px); transition: opacity 0.45s ease, transform 0.45s ease; }
 
   /* text removed; logo only on preloader */
   body.loading { overflow: hidden !important; }
