@@ -413,60 +413,59 @@
 
   /* ABOUT */
   #about { background: #000; }
-  .philosophy { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 
-  /* Horizontal row of 3 equal-width stat cards */
-  .philosophy-visual {
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    align-items: center;
-    justify-content: center;
+  /* ── Top two-column header ── */
+  .about-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+    margin-bottom: 52px;
+  }
+  .about-headline {
+    font-family: 'Degular Display', sans-serif;
+    font-size: clamp(2.8rem, 4.5vw, 5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+  }
+  .about-body {
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(239,238,230,0.6);
+    padding-top: 0.5rem;
   }
 
-  /* Base: liquid glass dark card */
-  .phil-box {
-    width: 280px;
-    height: 200px;
-    border-radius: 20px;
-    padding: 28px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    /* liquid glass */
-    background: rgba(80, 10, 40, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(180, 60, 90, 0.3);
-    box-shadow: 0 8px 32px rgba(120, 20, 60, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  /* ── Middle pill / stadium shape ── */
+  .about-pill {
+    width: 100%;
+    height: 300px;
+    border-radius: 9999px;
+    background: #160026;
+    margin-bottom: 52px;
   }
 
-  /* Glass cards: keep all text light */
-  .phil-box-1, .phil-box-2 { /* inherits from .phil-box */ }
-
-  /* Middle gradient card: slightly taller, focal point */
-  .phil-box-3 {
-    height: 228px;
-    background: var(--grad);
-    border-color: transparent;
-    text-align: center;
-    justify-content: center;
-    box-shadow: 0 12px 40px rgba(159, 0, 74, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  /* ── Bottom metrics row ── */
+  .about-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
   }
-
-  /* Consistent typography across dark cards */
-  .phil-metric { font-size: 40px; font-family: 'Degular Display', sans-serif; font-weight: 700; color: var(--cream); line-height: 1; margin-bottom: 4px; }
-  .phil-metric-label { font-size: 13px; color: rgba(239,238,230,0.75); margin-top: 6px; }
-
-  /* Middle card type overrides */
-  .phil-box-3 .phil-metric { font-size: 40px; color: #fff; }
-  .phil-box-3 .phil-metric-label { color: rgba(255,255,255,0.80) !important; }
-
-  .philosophy-text .section-title { margin-bottom: 24px; }
-  .philosophy-text p { font-size: 16px; line-height: 1.8; color: rgba(239,238,230,0.68); margin-bottom: 20px; }
-  .accent-line { width: 60px; height: 2px; background: var(--grad); margin: 32px 0; }
+  .about-metric-num {
+    font-family: 'Degular Display', sans-serif;
+    font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .about-metric-label {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(239,238,230,0.5);
+  }
 
   /* Lenis Smooth Scroll */
   .lenis.lenis-smooth { scroll-behavior: auto; }
@@ -764,8 +763,9 @@
     .hero { padding: 80px 24px 40px; height: 100svh; }
     section { padding: 100px 24px 80px; }
     /* services section padding handled by React component */
-    .philosophy { grid-template-columns: 1fr; }
-    .philosophy-visual { display: none; }
+    .about-header { grid-template-columns: 1fr; gap: 28px; }
+    .about-pill { height: 200px; }
+    .about-metrics { grid-template-columns: repeat(2, 1fr); gap: 40px 24px; }
     .process-carousel { overflow-x: auto; margin-left: -24px; width: 100vw; }
     .process-item { flex: 0 0 85%; }
     .footer-top { flex-direction: column; gap: 40px; }
@@ -1061,30 +1061,32 @@
 <div class="h-line"></div>
 
 <section id="about">
-  <div class="philosophy">
-    <div class="philosophy-visual">
-      <div class="phil-box phil-box-1 reveal-left">
-        <div class="section-label" style="margin-bottom:8px;color:rgba(239,238,230,0.5);font-size:10px;">Projects</div>
-        <div class="phil-metric">+80</div>
-        <div class="phil-metric-label">Brands transformed</div>
-      </div>
-      <div class="phil-box phil-box-3">
-        <div class="phil-metric">100%</div>
-        <div class="phil-metric-label">Dedication</div>
-      </div>
-      <div class="phil-box phil-box-2 reveal-right">
-        <div class="section-label" style="margin-bottom:8px;color:rgba(239,238,230,0.5);font-size:10px;">Origin</div>
-        <div class="phil-metric">ARG</div>
-        <div class="phil-metric-label">Buenos Aires, Argentina</div>
-      </div>
+  <!-- Top: two-column header -->
+  <div class="about-header">
+    <h2 class="about-headline">Argentine design.<br>Global quality.<br>Relentless craft.</h2>
+    <p class="about-body">MALVEC was born from the conviction that Argentine talent can compete — and win — in any market in the world. We combine the creativity and character of our culture with first-class technical standards, producing digital work that moves people and grows businesses.</p>
+  </div>
+
+  <!-- Middle: organic pill placeholder (image will replace fill later) -->
+  <div class="about-pill"></div>
+
+  <!-- Bottom: metrics row -->
+  <div class="about-metrics">
+    <div>
+      <div class="about-metric-num">+80</div>
+      <div class="about-metric-label">Brands transformed</div>
     </div>
-    <div class="philosophy-text reveal-right">
-      <div class="section-label">Who we are</div>
-      <h2 class="section-title">Argentine design. Global quality.</h2>
-      <div class="accent-line"></div>
-      <p>MALVEC was born from the conviction that Argentine talent can compete — and win — in any market in the world. We combine the creativity and character of our culture with first-class technical standards.</p>
-      <p>We're not just another agency. We're the team that gets involved in your business, understands your market, and executes every detail of your digital presence with surgical precision.</p>
-      <a href="#contact" class="btn-primary" style="margin-top:16px;display:inline-block;">Meet the team &rarr;</a>
+    <div>
+      <div class="about-metric-num">100%</div>
+      <div class="about-metric-label">Dedication</div>
+    </div>
+    <div>
+      <div class="about-metric-num">ARG</div>
+      <div class="about-metric-label">Buenos Aires, Argentina</div>
+    </div>
+    <div>
+      <div class="about-metric-num">5+</div>
+      <div class="about-metric-label">Years of experience</div>
     </div>
   </div>
 </section>
