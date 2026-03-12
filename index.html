@@ -420,7 +420,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 64px;
     align-items: start;
-    margin-bottom: 48px;
+    margin-bottom: 52px;
   }
   .about-headline {
     font-family: 'Degular Display', sans-serif;
@@ -437,36 +437,30 @@
     padding-top: 0.5rem;
   }
 
-  /* ── Middle: asymmetric blob + flanking metric ── */
-  .about-mid {
-    position: relative;
-    height: 300px;
-    margin-bottom: 48px;
-  }
-  .about-blob-wrap {
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 0;
-    right: 18%;
-  }
-  .about-blob-wrap svg {
-    display: block;
+  /* ── Middle pill / stadium shape ── */
+  .about-pill {
     width: 100%;
-    height: 100%;
-  }
-  .about-metric-side {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    height: 300px;
+    border-radius: 9999px;
+    background: #160026;
+    margin-bottom: 52px;
   }
 
   /* ── Bottom metrics row ── */
-  .about-metrics-row {
+  .about-metrics {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-    width: 80%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .about-metric-card {
+    padding: 32px 28px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.28),
+                inset 0 1px 0 rgba(255,255,255,0.07);
   }
   .about-metric-num {
     font-family: 'Degular Display', sans-serif;
@@ -780,9 +774,8 @@
     section { padding: 100px 24px 80px; }
     /* services section padding handled by React component */
     .about-header { grid-template-columns: 1fr; gap: 28px; }
-    .about-mid { height: 200px; }
-    .about-metric-side { position: static; transform: none; margin-bottom: 28px; }
-    .about-metrics-row { width: 100%; grid-template-columns: 1fr; gap: 28px; }
+    .about-pill { height: 200px; }
+    .about-metrics { grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .process-carousel { overflow-x: auto; margin-left: -24px; width: 100vw; }
     .process-item { flex: 0 0 85%; }
     .footer-top { flex-direction: column; gap: 40px; }
@@ -1084,36 +1077,24 @@
     <p class="about-body">MALVEC was born from the conviction that Argentine talent can compete — and win — in any market in the world. We combine the creativity and character of our culture with first-class technical standards, producing digital work that moves people and grows businesses.</p>
   </div>
 
-  <!-- Middle: asymmetric organic blob (SVG) + flanking metric -->
-  <div class="about-mid">
-    <div class="about-blob-wrap">
-      <!--
-        Asymmetric pill path — viewBox 0 0 1000 300:
-        • Right side: fully rounded end (radius 150 = half height)
-        • Left side: two concave circular arcs creating organic notches
-      -->
-      <svg viewBox="0 0 1000 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 230,0 H 830 A 150,150 0 0,1 830,300 H 260 A 130,130 0 0,0 90,185 V 75 A 130,130 0 0,1 230,0 Z" fill="#160026"/>
-      </svg>
-    </div>
-    <!-- Metric to the right of the blob -->
-    <div class="about-metric-side">
+  <!-- Middle: organic pill placeholder (image will replace fill later) -->
+  <div class="about-pill"></div>
+
+  <!-- Bottom: metrics row -->
+  <div class="about-metrics">
+    <div class="about-metric-card">
       <div class="about-metric-num">+80</div>
       <div class="about-metric-label">Brands transformed</div>
     </div>
-  </div>
-
-  <!-- Bottom: three metrics spread under the blob -->
-  <div class="about-metrics-row">
-    <div>
+    <div class="about-metric-card">
       <div class="about-metric-num">100%</div>
       <div class="about-metric-label">Dedication</div>
     </div>
-    <div>
+    <div class="about-metric-card">
       <div class="about-metric-num">ARG</div>
       <div class="about-metric-label">Buenos Aires, Argentina</div>
     </div>
-    <div>
+    <div class="about-metric-card">
       <div class="about-metric-num">5+</div>
       <div class="about-metric-label">Years of experience</div>
     </div>
