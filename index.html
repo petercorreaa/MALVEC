@@ -1256,6 +1256,7 @@
   const HALF = 18; // half of 36px
   let mx = window.innerWidth / 2, my = window.innerHeight / 2;
   let rx = mx, ry = my;
+  const heroEl = document.querySelector('.hero');
 
   document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
@@ -1263,6 +1264,10 @@
     rx += (mx - rx) * 0.1;
     ry += (my - ry) * 0.1;
     ring.style.transform = 'translate(' + (rx - HALF) + 'px, ' + (ry - HALF) + 'px)';
+    // Only show ring when cursor is strictly below the hero section
+    var heroBounds = heroEl ? heroEl.getBoundingClientRect() : { bottom: 0 };
+    var belowHero = my > heroBounds.bottom;
+    ring.style.visibility = belowHero ? '' : 'hidden';
     requestAnimationFrame(animateCursor);
   }
   animateCursor();
@@ -1270,19 +1275,6 @@
   document.querySelectorAll('a, button, [data-card]').forEach(function(el) {
     el.addEventListener('mouseenter', function() { ring.style.width = ring.style.height = '52px'; ring.style.marginLeft = ring.style.marginTop = '-8px'; });
     el.addEventListener('mouseleave', function() { ring.style.width = ring.style.height = ''; ring.style.marginLeft = ring.style.marginTop = ''; });
-  });
-
-  var hideCursorZones = [document.querySelector('.hero'), document.getElementById('navbar')];
-  hideCursorZones.forEach(function(zone) {
-    if (!zone) return;
-    zone.addEventListener('mouseenter', function() {
-      ring.style.display = 'none';
-      ring.style.visibility = 'hidden';
-    });
-    zone.addEventListener('mouseleave', function() {
-      ring.style.display = '';
-      ring.style.visibility = '';
-    });
   });
 
   document.querySelectorAll('[data-card]').forEach(function(card) {
