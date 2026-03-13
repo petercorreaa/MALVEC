@@ -155,33 +155,6 @@
     mix-blend-mode: screen;
     opacity: 0.52;
   }
-  .orb {
-    position: absolute; border-radius: 50%;
-    filter: blur(80px);
-    animation: float 8s ease-in-out infinite;
-    z-index: 1;
-  }
-  .orb-1 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(159,0,74,0.25), transparent 70%);
-    top: -100px; right: -100px; animation-delay: 0s;
-  }
-  .orb-2 {
-    width: 350px; height: 350px;
-    background: radial-gradient(circle, rgba(146,0,74,0.15), transparent 70%);
-    bottom: 0; right: 30%; animation-delay: -3s;
-  }
-  .orb-3 {
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(239,238,230,0.04), transparent 70%);
-    top: 40%; left: 60%; animation-delay: -5s;
-  }
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -30px) scale(1.05); }
-    66% { transform: translate(-20px, 20px) scale(0.97); }
-  }
-
   .hero-title {
     font-size: clamp(3rem, 7vw, 6.5rem);
     line-height: 1.15;
@@ -964,9 +937,6 @@
 
 <section class="hero" id="home">
   <canvas id="hero-fluid-canvas"></canvas>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
 
   <div class="hero-content">
     <h1 class="hero-title"><span style="white-space:nowrap">Design that moves</span><br><span class="line-grad">brands forward</span></h1>
@@ -1332,7 +1302,6 @@
 
   var pb = document.getElementById('progressBar');
   var navbar = document.getElementById('navbar');
-  var o1 = document.querySelector('.orb-1'), o2 = document.querySelector('.orb-2');
   var scrollRAF = false;
 
   window.addEventListener('scroll', function() {
@@ -1343,8 +1312,6 @@
         var scrolled = (y / (document.body.scrollHeight - window.innerHeight)) * 100;
         pb.style.width = scrolled + '%';
         navbar.classList.toggle('scrolled', y > 60);
-        if (o1) o1.style.transform = 'translate(' + (y*0.04) + 'px,' + (-y*0.06) + 'px)';
-        if (o2) o2.style.transform = 'translate(' + (-y*0.03) + 'px,' + (y*0.02) + 'px)';
         scrollRAF = false;
       });
     }
