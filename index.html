@@ -27,17 +27,17 @@
   }
 
   /* CURSOR */
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1.5px solid white;
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--pink);
     border-radius: 50%;
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9999;
     will-change: transform;
     mix-blend-mode: difference;
-    background: white;
-    transition: width 0.2s ease, height 0.2s ease;
   }
+  .cursor-ring { display: none; }
+  .cursor-ring.hovered { display: none; }
 
   /* NOISE */
   body::before {
@@ -57,7 +57,23 @@
     transition: width 0.05s linear;
   }
 
-
+  /* CURSOR GLOW + TRAIL */
+  .cursor {
+    box-shadow: 0 0 10px 3px rgba(159,0,74,0.6) !important;
+    mix-blend-mode: normal !important;
+    will-change: transform;
+  }
+  .cursor-trail {
+    position: fixed; pointer-events: none; z-index: 9997;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(159,0,74,0.85) 0%, rgba(159,0,74,0) 70%);
+    transform: translate(-50%, -50%);
+    animation: trailFade 0.5s ease-out forwards;
+  }
+  @keyframes trailFade {
+    0%   { opacity: 0.7; width: 8px;  height: 8px; }
+    100% { opacity: 0;   width: 22px; height: 22px; }
+  }
 
   /* NAV */
   nav {
@@ -71,15 +87,17 @@
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.22);
     transition: padding 0.4s ease;
-    cursor: auto;
   }
   nav.scrolled { padding: 16px 48px; }
-  nav *, nav *::before, nav *::after { cursor: auto; }
-  .hero *, .hero *::before, .hero *::after { cursor: auto; }
 
   .nav-logo {
-    display: inline-flex;
-    align-items: center;
+    font-family: 'Degular Display', sans-serif;
+    font-size: 22px; font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
   }
   .nav-links { display: flex; gap: 36px; list-style: none; }
   .nav-links a {
@@ -127,14 +145,15 @@
     justify-content: center; align-items: center;
     padding: 110px 48px 60px;
     position: relative; overflow: hidden;
-    background: radial-gradient(ellipse 90% 80% at 50% 40%, #4a0072 0%, #2a0050 35%, #130025 65%, #000000 100%);
-    cursor: auto;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, #3a0035 0%, #1a0020 40%, #000000 75%);
   }
   #hero-fluid-canvas {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    z-index: 1;
+    z-index: 0;
     pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.52;
   }
   .hero-title {
     font-size: clamp(3rem, 7vw, 6.5rem);
@@ -387,14 +406,13 @@
     padding-top: 0.5rem;
   }
 
-  /* ── Middle pill / stadium shape ── */
-  .about-pill {
-    width: 100%;
-    height: 300px;
-    border-radius: 9999px;
-    background: url('/assets/pill-bg.png') center/cover no-repeat;
-    margin-bottom: 52px;
-    overflow: hidden;
+  /* ── Middle blob image ── */
+  .about-blob-img {
+    display: block;
+    width: 88%;
+    max-width: 1200px;
+    height: auto;
+    margin: 0 auto 52px;
   }
 
   /* ── Bottom metrics row ── */
@@ -725,7 +743,7 @@
     section { padding: 100px 24px 80px; }
     /* services section padding handled by React component */
     .about-header { grid-template-columns: 1fr; gap: 28px; }
-    .about-pill { height: 200px; }
+    .about-blob-img { width: 96%; }
     .about-metrics { grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .process-carousel { overflow-x: auto; margin-left: -24px; width: 100vw; }
     .process-item { flex: 0 0 85%; }
@@ -783,7 +801,7 @@
   .text-reveal-section {
     position: relative;
     overflow: hidden;
-    padding: 6rem 0 5rem;
+    padding: 6rem 0 14rem;
     perspective: 2000px;
     background: #050506;
   }
@@ -803,22 +821,19 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: grayscale(0);
+    filter: grayscale(1);
   }
 
-  /* img 1: ANYWHERE — square (1:1) */
-  .text-reveal__img-box:nth-child(1) { top: 5%;  left: 3%;   width: 22vw; aspect-ratio: 1 / 1; }
-  /* img 2: ICE BALL — portrait (3:4) */
-  .text-reveal__img-box:nth-child(2) { top: 30%; right: 4%;  width: 20vw; aspect-ratio: 3 / 4; }
-  /* img 3: Create the Scene — landscape (3:4 poster) */
-  .text-reveal__img-box:nth-child(3) { top: 58%; left: 38%;  width: 22vw; aspect-ratio: 3 / 4; }
+  .text-reveal__img-box:nth-child(1) { top: 5%;  left: 3%;   max-width: 22vw; }
+  .text-reveal__img-box:nth-child(2) { top: 35%; right: 4%;  max-width: 24vw; }
+  .text-reveal__img-box:nth-child(3) { top: 62%; left: 38%;  max-width: 20vw; }
 
   .text-reveal__line {
     display: block;
     text-align: center;
     width: 100%;
     padding: 0 3rem;
-    font-size: clamp(2.8rem, 6.8vw, 6rem);
+    font-size: clamp(2.6rem, 6.5vw, 5rem);
     line-height: 1.1;
     font-weight: 800;
     font-style: italic;
@@ -870,17 +885,17 @@
   }
 
   @media screen and (max-width: 1024px) {
-    .text-reveal-section { padding: 5rem 0 4rem; }
+    .text-reveal-section { padding: 5rem 0 16rem; }
     .text-reveal__line { font-size: clamp(1.8rem, 5.5vw, 4rem); }
     .text-reveal__line--gap { margin-top: 2.5rem; }
-    .text-reveal__img-box { width: 36vw !important; }
+    .text-reveal__img-box { max-width: 36vw !important; }
   }
 
   @media screen and (max-width: 768px) {
-    .text-reveal-section { padding: 4rem 0 3rem; }
+    .text-reveal-section { padding: 4rem 0 12rem; }
     .text-reveal__line { font-size: clamp(1.6rem, 6.5vw, 3rem); padding: 0 1.5rem; }
     .text-reveal__line--gap { margin-top: 2rem; }
-    .text-reveal__img-box { width: 42vw !important; }
+    .text-reveal__img-box { max-width: 42vw !important; }
   }
 
   @media screen and (max-width: 575px) {
@@ -890,7 +905,7 @@
   }
 
   @media screen and (min-height: 900px) {
-    .text-reveal-section { padding: 6rem 0 5rem; }
+    .text-reveal-section { padding: 6rem 0 22rem; }
   }
 </style>
 <script type="module" src="/src/main.tsx"></script>
@@ -905,11 +920,12 @@
 </div>
 <!-- /PRELOADER -->
 
+<div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="progress-bar" id="progressBar"></div>
 
 <nav id="navbar">
-  <div class="nav-logo"><img src="/assets/logo-malvec.png" alt="MALVEC logo" style="height:32px;width:auto;object-fit:contain;"></div>
+  <div class="nav-logo"><img src="/LOGO_MALVEC.png" alt="MALVEC logo" style="height:28px;width:auto;object-fit:contain;filter:brightness(0) invert(1);">MALVEC</div>
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#about">About</a></li>
@@ -999,13 +1015,13 @@
 <section class="text-reveal-section">
   <!-- Floating images -->
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.15" data-opacity="0.85">
-    <img class="text-reveal__img" src="/assets/anywhere-iiiwu.png" alt="Anywhere If It Is With You" loading="lazy">
+    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.25" data-opacity="0.70">
-    <img class="text-reveal__img" src="/assets/ice-ball-co.png" alt="Ice Ball Co" loading="lazy">
+    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=600&q=80" alt="" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.10" data-opacity="0.80">
-    <img class="text-reveal__img" src="/assets/create-the-scene.jpg" alt="Create the Scene" loading="lazy">
+    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" alt="" loading="lazy">
   </div>
 
   <!-- Lines -->
@@ -1026,8 +1042,8 @@
     <p class="about-body">MALVEC was born from the conviction that Argentine talent can compete — and win — in any market in the world. We combine the creativity and character of our culture with first-class technical standards, producing digital work that moves people and grows businesses.</p>
   </div>
 
-  <!-- Middle: organic pill placeholder (image will replace fill later) -->
-  <div class="about-pill"></div>
+  <!-- Middle: blob shape image -->
+  <img class="about-blob-img" src="/assets/Blob.png" alt="" aria-hidden="true">
 
   <!-- Bottom: metrics row -->
   <div class="about-metrics">
@@ -1248,29 +1264,26 @@
     }, 1500);
   });
 
+  const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
-  const HALF = 18; // half of 36px
-  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-  let rx = mx, ry = my;
-  const heroEl = document.querySelector('.hero');
+  let mx = 0, my = 0, rx = 0, ry = 0;
 
+  // Store raw mouse instantly — no DOM writes here
   document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
+  // Single RAF loop drives both cursor dot and ring
   function animateCursor() {
-    rx += (mx - rx) * 0.1;
-    ry += (my - ry) * 0.1;
-    ring.style.transform = 'translate(' + (rx - HALF) + 'px, ' + (ry - HALF) + 'px)';
-    // Only show ring when cursor is strictly below the hero section
-    var heroBounds = heroEl ? heroEl.getBoundingClientRect() : { bottom: 0 };
-    var belowHero = my > heroBounds.bottom;
-    ring.style.visibility = belowHero ? '' : 'hidden';
+    cursor.style.transform = 'translate(' + (mx - 6) + 'px, ' + (my - 6) + 'px)';
+    rx += (mx - rx - 18) * 0.12;
+    ry += (my - ry - 18) * 0.12;
+    ring.style.transform = 'translate(' + rx + 'px, ' + ry + 'px)';
     requestAnimationFrame(animateCursor);
   }
   animateCursor();
 
   document.querySelectorAll('a, button, [data-card]').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { ring.style.width = ring.style.height = '52px'; ring.style.marginLeft = ring.style.marginTop = '-8px'; });
-    el.addEventListener('mouseleave', function() { ring.style.width = ring.style.height = ''; ring.style.marginLeft = ring.style.marginTop = ''; });
+    el.addEventListener('mouseenter', function() { ring.classList.add('hovered'); });
+    el.addEventListener('mouseleave', function() { ring.classList.remove('hovered'); });
   });
 
   document.querySelectorAll('[data-card]').forEach(function(card) {
@@ -1498,7 +1511,7 @@
     PRESSURE_DISSIPATION: 0.8,
     PRESSURE_ITERATIONS:  20,
     CURL:                 22,
-    SPLAT_RADIUS:         0.0018
+    SPLAT_RADIUS:         0.0028
   };
 
   /* ---- MALVEC palette (0-10 range, scaled ×0.3 inside splat fn) ---- */
@@ -1542,8 +1555,8 @@
       supportLinearFiltering = gl.getExtension('OES_texture_half_float_linear');
     }
 
-    /* Dark purple background */
-    gl.clearColor(45/255, 0, 75/255, 1.0);
+    /* Dark violet background #160026 = rgb(22, 0, 38) */
+    gl.clearColor(22/255, 0, 38/255, 1.0);
 
     var halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat.HALF_FLOAT_OES;
     var formatRGBA, formatRG, formatR;
@@ -1716,7 +1729,7 @@
     blit(velocity.write[1]);
     velocity.swap();
     gl.uniform1i(splatProg.uniforms.uTarget, density.read[2]);
-    gl.uniform3f(splatProg.uniforms.color, color[0] * 0.5, color[1] * 0.5, color[2] * 0.5);
+    gl.uniform3f(splatProg.uniforms.color, color[0] * 0.19, color[1] * 0.19, color[2] * 0.19);
     blit(density.write[1]);
     density.swap();
   }
