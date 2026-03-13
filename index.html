@@ -27,17 +27,17 @@
   }
 
   /* CURSOR */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--pink);
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid white;
     border-radius: 50%;
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9999;
     will-change: transform;
     mix-blend-mode: difference;
+    background: white;
+    transition: width 0.2s ease, height 0.2s ease;
   }
-  .cursor-ring { display: none; }
-  .cursor-ring.hovered { display: none; }
 
   /* NOISE */
   body::before {
@@ -55,24 +55,6 @@
     z-index: 9000;
     width: 0%;
     transition: width 0.05s linear;
-  }
-
-  /* CURSOR GLOW + TRAIL */
-  .cursor {
-    box-shadow: 0 0 10px 3px rgba(159,0,74,0.6) !important;
-    mix-blend-mode: normal !important;
-    will-change: transform;
-  }
-  .cursor-trail {
-    position: fixed; pointer-events: none; z-index: 9997;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(159,0,74,0.85) 0%, rgba(159,0,74,0) 70%);
-    transform: translate(-50%, -50%);
-    animation: trailFade 0.5s ease-out forwards;
-  }
-  @keyframes trailFade {
-    0%   { opacity: 0.7; width: 8px;  height: 8px; }
-    100% { opacity: 0;   width: 22px; height: 22px; }
   }
 
   /* NAV */
@@ -920,7 +902,6 @@
 </div>
 <!-- /PRELOADER -->
 
-<div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="progress-bar" id="progressBar"></div>
 
@@ -1015,13 +996,13 @@
 <section class="text-reveal-section">
   <!-- Floating images -->
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.15" data-opacity="0.85">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/anywhere-iiiwu.png" alt="Anywhere If It Is With You" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.25" data-opacity="0.70">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/ice-ball-co.png" alt="Ice Ball Co" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.10" data-opacity="0.80">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/create-the-scene.jpg" alt="Create the Scene" loading="lazy">
   </div>
 
   <!-- Lines -->
@@ -1264,26 +1245,29 @@
     }, 1500);
   });
 
-  const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
+  const HALF = 18; // half of 36px
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let rx = mx, ry = my;
+  const heroEl = document.querySelector('.hero');
 
-  // Store raw mouse instantly — no DOM writes here
   document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
-  // Single RAF loop drives both cursor dot and ring
   function animateCursor() {
-    cursor.style.transform = 'translate(' + (mx - 6) + 'px, ' + (my - 6) + 'px)';
-    rx += (mx - rx - 18) * 0.12;
-    ry += (my - ry - 18) * 0.12;
-    ring.style.transform = 'translate(' + rx + 'px, ' + ry + 'px)';
+    rx += (mx - rx) * 0.1;
+    ry += (my - ry) * 0.1;
+    ring.style.transform = 'translate(' + (rx - HALF) + 'px, ' + (ry - HALF) + 'px)';
+    // Only show ring when cursor is strictly below the hero section
+    var heroBounds = heroEl ? heroEl.getBoundingClientRect() : { bottom: 0 };
+    var belowHero = my > heroBounds.bottom;
+    ring.style.visibility = belowHero ? '' : 'hidden';
     requestAnimationFrame(animateCursor);
   }
   animateCursor();
 
   document.querySelectorAll('a, button, [data-card]').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { ring.classList.add('hovered'); });
-    el.addEventListener('mouseleave', function() { ring.classList.remove('hovered'); });
+    el.addEventListener('mouseenter', function() { ring.style.width = ring.style.height = '52px'; ring.style.marginLeft = ring.style.marginTop = '-8px'; });
+    el.addEventListener('mouseleave', function() { ring.style.width = ring.style.height = ''; ring.style.marginLeft = ring.style.marginTop = ''; });
   });
 
   document.querySelectorAll('[data-card]').forEach(function(card) {
