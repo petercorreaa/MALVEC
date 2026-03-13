@@ -33,7 +33,7 @@
     border-radius: 50%;
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9999;
-    transition: transform 0.1s ease;
+    will-change: transform;
     mix-blend-mode: difference;
   }
   .cursor-ring { display: none; }
@@ -61,6 +61,7 @@
   .cursor {
     box-shadow: 0 0 10px 3px rgba(159,0,74,0.6) !important;
     mix-blend-mode: normal !important;
+    will-change: transform;
   }
   .cursor-trail {
     position: fixed; pointer-events: none; z-index: 9997;
@@ -1307,20 +1308,19 @@
   const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
   let mx = 0, my = 0, rx = 0, ry = 0;
-  let lastTrailX = 0, lastTrailY = 0;
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.transform = 'translate(' + (mx - 5) + 'px, ' + (my - 5) + 'px)';
-  });
+  // Store raw mouse instantly — no DOM writes here
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
-  function animateRing() {
+  // Single RAF loop drives both cursor dot and ring
+  function animateCursor() {
+    cursor.style.transform = 'translate(' + (mx - 6) + 'px, ' + (my - 6) + 'px)';
     rx += (mx - rx - 18) * 0.12;
     ry += (my - ry - 18) * 0.12;
     ring.style.transform = 'translate(' + rx + 'px, ' + ry + 'px)';
-    requestAnimationFrame(animateRing);
+    requestAnimationFrame(animateCursor);
   }
-  animateRing();
+  animateCursor();
 
   document.querySelectorAll('a, button, [data-card]').forEach(function(el) {
     el.addEventListener('mouseenter', function() { ring.classList.add('hovered'); });
@@ -1337,11 +1337,24 @@
   });
 
   var pb = document.getElementById('progressBar');
+  var navbar = document.getElementById('navbar');
+  var o1 = document.querySelector('.orb-1'), o2 = document.querySelector('.orb-2');
+  var scrollRAF = false;
+
   window.addEventListener('scroll', function() {
-    var scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    pb.style.width = scrolled + '%';
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-  });
+    if (!scrollRAF) {
+      scrollRAF = true;
+      requestAnimationFrame(function() {
+        var y = window.scrollY;
+        var scrolled = (y / (document.body.scrollHeight - window.innerHeight)) * 100;
+        pb.style.width = scrolled + '%';
+        navbar.classList.toggle('scrolled', y > 60);
+        if (o1) o1.style.transform = 'translate(' + (y*0.04) + 'px,' + (-y*0.06) + 'px)';
+        if (o2) o2.style.transform = 'translate(' + (-y*0.03) + 'px,' + (y*0.02) + 'px)';
+        scrollRAF = false;
+      });
+    }
+  }, { passive: true });
 
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
@@ -1351,13 +1364,6 @@
 
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger').forEach(function(el) {
     observer.observe(el);
-  });
-
-  window.addEventListener('scroll', function() {
-    var y = window.scrollY;
-    var o1 = document.querySelector('.orb-1'), o2 = document.querySelector('.orb-2');
-    if (o1) o1.style.transform = 'translate(' + (y*0.04) + 'px,' + (-y*0.06) + 'px)';
-    if (o2) o2.style.transform = 'translate(' + (-y*0.03) + 'px,' + (y*0.02) + 'px)';
   });
 
   /* Marquee — RAF loop; speed lerps on scroll, never resets position */
