@@ -71,8 +71,11 @@
     border-radius: 16px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.22);
     transition: padding 0.4s ease;
+    cursor: auto;
   }
   nav.scrolled { padding: 16px 48px; }
+  nav *, nav *::before, nav *::after { cursor: auto; }
+  .hero *, .hero *::before, .hero *::after { cursor: auto; }
 
   .nav-logo {
     display: inline-flex;
@@ -125,6 +128,7 @@
     padding: 110px 48px 60px;
     position: relative; overflow: hidden;
     background: radial-gradient(ellipse 90% 80% at 50% 40%, #4a0072 0%, #2a0050 35%, #130025 65%, #000000 100%);
+    cursor: auto;
   }
   #hero-fluid-canvas {
     position: absolute; inset: 0;
@@ -1268,11 +1272,18 @@
     el.addEventListener('mouseleave', function() { ring.style.width = ring.style.height = ''; ring.style.marginLeft = ring.style.marginTop = ''; });
   });
 
-  var heroSection = document.querySelector('.hero');
-  if (heroSection) {
-    heroSection.addEventListener('mouseenter', function() { ring.style.display = 'none'; });
-    heroSection.addEventListener('mouseleave', function() { ring.style.display = ''; });
-  }
+  var hideCursorZones = [document.querySelector('.hero'), document.getElementById('navbar')];
+  hideCursorZones.forEach(function(zone) {
+    if (!zone) return;
+    zone.addEventListener('mouseenter', function() {
+      ring.style.display = 'none';
+      ring.style.visibility = 'hidden';
+    });
+    zone.addEventListener('mouseleave', function() {
+      ring.style.display = '';
+      ring.style.visibility = '';
+    });
+  });
 
   document.querySelectorAll('[data-card]').forEach(function(card) {
     var hl = card.querySelector('.glass-highlight');
