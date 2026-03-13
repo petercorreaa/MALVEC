@@ -65,6 +65,7 @@ export default function ServiceRow({
               style={{
                 overflow: 'hidden',
                 paddingLeft: '48px',    /* mirrors the marginLeft: 32px on the number div */
+                paddingBottom: '0.4em', /* must exceed font's descender-to-em-square overhang */
               }}
             >
               {/* Invisible sizer — keeps row height stable at all times */}
