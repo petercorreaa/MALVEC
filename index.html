@@ -36,7 +36,7 @@
     will-change: transform;
     mix-blend-mode: difference;
     background: white;
-    transition: width 0.2s ease, height 0.2s ease;
+    transition: width 0.2s ease, height 0.2s ease, opacity 0.3s ease;
   }
 
   /* NOISE */
@@ -1267,6 +1267,12 @@
     el.addEventListener('mouseenter', function() { ring.style.width = ring.style.height = '52px'; ring.style.marginLeft = ring.style.marginTop = '-8px'; });
     el.addEventListener('mouseleave', function() { ring.style.width = ring.style.height = ''; ring.style.marginLeft = ring.style.marginTop = ''; });
   });
+
+  var heroSection = document.querySelector('.hero');
+  if (heroSection) {
+    heroSection.addEventListener('mouseenter', function() { ring.style.opacity = '0'; });
+    heroSection.addEventListener('mouseleave', function() { ring.style.opacity = '1'; });
+  }
 
   document.querySelectorAll('[data-card]').forEach(function(card) {
     var hl = card.querySelector('.glass-highlight');
