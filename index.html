@@ -150,10 +150,8 @@
   #hero-fluid-canvas {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    z-index: 0;
+    z-index: 1;
     pointer-events: none;
-    mix-blend-mode: screen;
-    opacity: 0.52;
   }
   .hero-title {
     font-size: clamp(3rem, 7vw, 6.5rem);
@@ -1516,7 +1514,7 @@
     PRESSURE_DISSIPATION: 0.8,
     PRESSURE_ITERATIONS:  20,
     CURL:                 22,
-    SPLAT_RADIUS:         0.0028
+    SPLAT_RADIUS:         0.005
   };
 
   /* ---- MALVEC palette (0-10 range, scaled ×0.3 inside splat fn) ---- */
@@ -1545,7 +1543,7 @@
 
   /* ---- WebGL context ---- */
   function getWebGLContext(canvas) {
-    var params = { alpha: false, depth: false, stencil: false, antialias: false };
+    var params = { alpha: true, depth: false, stencil: false, antialias: false, premultipliedAlpha: false };
     var gl = canvas.getContext('webgl2', params);
     var isWebGL2 = !!gl;
     if (!isWebGL2)
@@ -1561,7 +1559,7 @@
     }
 
     /* Dark violet background #160026 = rgb(22, 0, 38) */
-    gl.clearColor(22/255, 0, 38/255, 1.0);
+    gl.clearColor(0, 0, 0, 0);
 
     var halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat.HALF_FLOAT_OES;
     var formatRGBA, formatRG, formatR;
@@ -1734,7 +1732,7 @@
     blit(velocity.write[1]);
     velocity.swap();
     gl.uniform1i(splatProg.uniforms.uTarget, density.read[2]);
-    gl.uniform3f(splatProg.uniforms.color, color[0] * 0.19, color[1] * 0.19, color[2] * 0.19);
+    gl.uniform3f(splatProg.uniforms.color, color[0] * 0.5, color[1] * 0.5, color[2] * 0.5);
     blit(density.write[1]);
     density.swap();
   }
