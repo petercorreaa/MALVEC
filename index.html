@@ -815,12 +815,15 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: grayscale(1);
+    filter: grayscale(0);
   }
 
-  .text-reveal__img-box:nth-child(1) { top: 5%;  left: 3%;   max-width: 22vw; }
-  .text-reveal__img-box:nth-child(2) { top: 35%; right: 4%;  max-width: 24vw; }
-  .text-reveal__img-box:nth-child(3) { top: 62%; left: 38%;  max-width: 20vw; }
+  /* img 1: ANYWHERE — square (1:1) */
+  .text-reveal__img-box:nth-child(1) { top: 5%;  left: 3%;   width: 22vw; aspect-ratio: 1 / 1; }
+  /* img 2: ICE BALL — portrait (3:4) */
+  .text-reveal__img-box:nth-child(2) { top: 30%; right: 4%;  width: 20vw; aspect-ratio: 3 / 4; }
+  /* img 3: Create the Scene — landscape (3:4 poster) */
+  .text-reveal__img-box:nth-child(3) { top: 58%; left: 38%;  width: 22vw; aspect-ratio: 3 / 4; }
 
   .text-reveal__line {
     display: block;
@@ -882,14 +885,14 @@
     .text-reveal-section { padding: 5rem 0 16rem; }
     .text-reveal__line { font-size: clamp(1.8rem, 5.5vw, 4rem); }
     .text-reveal__line--gap { margin-top: 2.5rem; }
-    .text-reveal__img-box { max-width: 36vw !important; }
+    .text-reveal__img-box { width: 36vw !important; }
   }
 
   @media screen and (max-width: 768px) {
     .text-reveal-section { padding: 4rem 0 12rem; }
     .text-reveal__line { font-size: clamp(1.6rem, 6.5vw, 3rem); padding: 0 1.5rem; }
     .text-reveal__line--gap { margin-top: 2rem; }
-    .text-reveal__img-box { max-width: 42vw !important; }
+    .text-reveal__img-box { width: 42vw !important; }
   }
 
   @media screen and (max-width: 575px) {
@@ -1009,13 +1012,13 @@
 <section class="text-reveal-section">
   <!-- Floating images -->
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.15" data-opacity="0.85">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/anywhere-iiiwu.png" alt="Anywhere If It Is With You" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.25" data-opacity="0.70">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/ice-ball-co.png" alt="Ice Ball Co" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.10" data-opacity="0.80">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/create-the-scene.jpg" alt="Create the Scene" loading="lazy">
   </div>
 
   <!-- Lines -->
