@@ -46,7 +46,7 @@ export default function ServiceRow({
         {/* ── Row layout ── */}
         <div
           className="relative flex items-center px-12"
-          style={{ minHeight: '150px' }}
+          style={{ minHeight: '13vh', paddingTop: '1.5vh', paddingBottom: '1.5vh' }}
         >
           {/* Left accent bar */}
           <motion.span
@@ -65,6 +65,7 @@ export default function ServiceRow({
               style={{
                 overflow: 'hidden',
                 paddingLeft: '48px',    /* mirrors the marginLeft: 32px on the number div */
+                paddingBottom: '0.4em', /* must exceed font's descender-to-em-square overhang */
               }}
             >
               {/* Invisible sizer — keeps row height stable at all times */}

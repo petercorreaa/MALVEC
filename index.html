@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MALVEC — Digital Agency</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Degular+Display:wght@400;500;600;700&family=Degular:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Degular+Display:wght@400;500;600;700&family=Degular:ital,wght@0,400;0,500;0,600;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=DM+Sans:ital,wght@0,400;1,400&family=Inter:ital,wght@1,800&display=swap" rel="stylesheet">
 <style>
   :root {
     --cream: #efeee6;
@@ -27,17 +27,17 @@
   }
 
   /* CURSOR */
-  .cursor {
-    width: 12px; height: 12px;
-    background: var(--pink);
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1.5px solid white;
     border-radius: 50%;
     position: fixed; top: 0; left: 0;
     pointer-events: none; z-index: 9999;
-    transition: transform 0.1s ease;
+    will-change: transform;
     mix-blend-mode: difference;
+    background: white;
+    transition: width 0.2s ease, height 0.2s ease;
   }
-  .cursor-ring { display: none; }
-  .cursor-ring.hovered { display: none; }
 
   /* NOISE */
   body::before {
@@ -55,23 +55,6 @@
     z-index: 9000;
     width: 0%;
     transition: width 0.05s linear;
-  }
-
-  /* CURSOR GLOW + TRAIL */
-  .cursor {
-    box-shadow: 0 0 10px 3px rgba(159,0,74,0.6) !important;
-    mix-blend-mode: normal !important;
-  }
-  .cursor-trail {
-    position: fixed; pointer-events: none; z-index: 9997;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(159,0,74,0.85) 0%, rgba(159,0,74,0) 70%);
-    transform: translate(-50%, -50%);
-    animation: trailFade 0.5s ease-out forwards;
-  }
-  @keyframes trailFade {
-    0%   { opacity: 0.7; width: 8px;  height: 8px; }
-    100% { opacity: 0;   width: 22px; height: 22px; }
   }
 
   /* NAV */
@@ -94,6 +77,9 @@
     font-size: 22px; font-weight: 700;
     letter-spacing: 0.2em;
     color: var(--cream);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
   }
   .nav-links { display: flex; gap: 36px; list-style: none; }
   .nav-links a {
@@ -141,63 +127,25 @@
     justify-content: center; align-items: center;
     padding: 110px 48px 60px;
     position: relative; overflow: hidden;
-    text-align: center;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, #3a0035 0%, #1a0020 40%, #000000 75%);
   }
   #hero-fluid-canvas {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
-    z-index: 0;
+    z-index: 2;
     pointer-events: none;
     mix-blend-mode: screen;
-    opacity: 0.52;
+    opacity: 0.85;
   }
-  .hero-bg {
-    position: absolute; inset: 0; z-index: 1;
-    background: radial-gradient(ellipse 80% 60% at 80% 50%, rgba(146,0,74,0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(22,0,38,0.15) 0%, transparent 70%);
-  }
-  .orb {
-    position: absolute; border-radius: 50%;
-    filter: blur(80px);
-    animation: float 8s ease-in-out infinite;
-    z-index: 1;
-  }
-  .orb-1 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(159,0,74,0.25), transparent 70%);
-    top: -100px; right: -100px; animation-delay: 0s;
-  }
-  .orb-2 {
-    width: 350px; height: 350px;
-    background: radial-gradient(circle, rgba(146,0,74,0.15), transparent 70%);
-    bottom: 0; right: 30%; animation-delay: -3s;
-  }
-  .orb-3 {
-    width: 200px; height: 200px;
-    background: radial-gradient(circle, rgba(239,238,230,0.04), transparent 70%);
-    top: 40%; left: 60%; animation-delay: -5s;
-  }
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(30px, -30px) scale(1.05); }
-    66% { transform: translate(-20px, 20px) scale(0.97); }
-  }
-
-  .hero-tag {
-    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
-    color: var(--pink); margin-bottom: 24px;
-    display: flex; align-items: center; gap: 12px;
-    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
-  }
-  .hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--pink); }
-
   .hero-title {
-    font-size: clamp(38px, 6vw, 90px);
+    font-size: clamp(3rem, 7vw, 6.5rem);
     line-height: 1.15;
     font-weight: 700;
     font-family: 'Degular Display', sans-serif;
     color: var(--cream);
     margin-bottom: 16px;
+    text-align: center;
+    white-space: pre-line;
     opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
   }
   .hero-title .line-grad {
@@ -220,10 +168,28 @@
     text-align: center;
     opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
   }
-  .hero-actions {
-    display: flex; gap: 16px; align-items: center; justify-content: center;
-    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  .hero-content {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    width: 100%; max-width: 800px;
+    margin: 0 auto;
+    position: relative; z-index: 3;
   }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeIn 1s 1.2s forwards;
+    z-index: 3;
+  }
+  .hero-scroll span { font-size: 10px; letter-spacing: 0.2em; color: rgba(239,238,230,0.3); text-transform: uppercase; }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, rgba(159,0,74,0.7), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100%{opacity:0.3;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.2)} }
 
   .btn-primary {
     padding: 16px 36px; background: var(--grad);
@@ -323,6 +289,7 @@
     transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 8px;
     opacity: 0; animation: fadeIn 1s 1.2s forwards;
+    z-index: 3;
   }
   .hero-scroll span { font-size: 10px; letter-spacing: 0.2em; color: rgba(239,238,230,0.3); text-transform: uppercase; }
   .scroll-line {
@@ -399,60 +366,70 @@
 
   /* ABOUT */
   #about { background: #000; }
-  .philosophy { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
 
-  /* Horizontal row of 3 equal-width stat cards */
-  .philosophy-visual {
-    display: flex;
-    flex-direction: row;
-    gap: 24px;
-    align-items: center;
-    justify-content: center;
+  /* ── Top two-column header ── */
+  .about-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+    margin-bottom: 52px;
+  }
+  .about-headline {
+    font-family: 'Degular Display', sans-serif;
+    font-size: clamp(2.8rem, 4.5vw, 5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+  }
+  .about-body {
+    font-size: 15px;
+    line-height: 1.8;
+    color: rgba(239,238,230,0.6);
+    padding-top: 0.5rem;
   }
 
-  /* Base: liquid glass dark card */
-  .phil-box {
-    width: 280px;
-    height: 200px;
-    border-radius: 20px;
-    padding: 28px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    /* liquid glass */
-    background: rgba(80, 10, 40, 0.25);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(180, 60, 90, 0.3);
-    box-shadow: 0 8px 32px rgba(120, 20, 60, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  /* ── Middle blob image ── */
+  .about-blob-img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    margin: 0 auto 52px;
+    object-fit: contain;
   }
 
-  /* Glass cards: keep all text light */
-  .phil-box-1, .phil-box-2 { /* inherits from .phil-box */ }
-
-  /* Middle gradient card: slightly taller, focal point */
-  .phil-box-3 {
-    height: 228px;
-    background: var(--grad);
-    border-color: transparent;
-    text-align: center;
-    justify-content: center;
-    box-shadow: 0 12px 40px rgba(159, 0, 74, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  /* ── Bottom metrics row ── */
+  .about-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
   }
-
-  /* Consistent typography across dark cards */
-  .phil-metric { font-size: 40px; font-family: 'Degular Display', sans-serif; font-weight: 700; color: var(--cream); line-height: 1; margin-bottom: 4px; }
-  .phil-metric-label { font-size: 13px; color: rgba(239,238,230,0.75); margin-top: 6px; }
-
-  /* Middle card type overrides */
-  .phil-box-3 .phil-metric { font-size: 40px; color: #fff; }
-  .phil-box-3 .phil-metric-label { color: rgba(255,255,255,0.80) !important; }
-
-  .philosophy-text .section-title { margin-bottom: 24px; }
-  .philosophy-text p { font-size: 16px; line-height: 1.8; color: rgba(239,238,230,0.68); margin-bottom: 20px; }
-  .accent-line { width: 60px; height: 2px; background: var(--grad); margin: 32px 0; }
+  .about-metric-card {
+    padding: 32px 28px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.28),
+                inset 0 1px 0 rgba(255,255,255,0.07);
+  }
+  .about-metric-num {
+    font-family: 'Degular Display', sans-serif;
+    font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .about-metric-label {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(239,238,230,0.5);
+  }
 
   /* Lenis Smooth Scroll */
   .lenis.lenis-smooth { scroll-behavior: auto; }
@@ -561,7 +538,7 @@
   .cta-section {
     position: relative; overflow: hidden;
     padding: 120px 48px; text-align: center;
-    background: var(--cream);
+    background: #ffffff;
   }
   .cta-blob {
     position: absolute; width: 800px; height: 800px;
@@ -666,194 +643,6 @@
     box-shadow: 0 0 40px rgba(159,0,74,0.3);
   }
   .cf-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 60px rgba(159,0,74,0.5); }
-  .cf-submit:disabled { cursor: not-allowed; opacity: 0.65; transform: none !important; }
-
-  /* ══════════════════════════════════════════════════════════════════════
-     FORM POPUP — Centered card with blurred backdrop (2 phases)
-     ══════════════════════════════════════════════════════════════════════ */
-  .cf-popup-overlay {
-    position: fixed; inset: 0; z-index: 9999;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(22,0,38,0.55);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.4s ease;
-  }
-  .cf-popup-overlay.active { opacity: 1; pointer-events: all; }
-
-  .cf-popup-card {
-    position: relative;
-    background: #fff;
-    border-radius: 28px;
-    padding: 56px 48px 48px;
-    max-width: 460px; width: calc(100% - 40px);
-    box-shadow: 0 32px 80px rgba(22,0,38,0.25), 0 0 0 1px rgba(22,0,38,0.04);
-    transform: translateY(28px) scale(0.97);
-    opacity: 0;
-    transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease;
-  }
-  .cf-popup-overlay.active .cf-popup-card {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-
-  .cf-popup-stage { position: relative; text-align: center; }
-
-  /* ── Phase 1: Processing ── */
-  .cf-phase-processing { display: flex; flex-direction: column; align-items: center; }
-  .cf-phase-processing.hidden { display: none; }
-
-  /* Form icon animation — a form/envelope that slides + tilts */
-  .cf-form-icon-wrap {
-    position: relative; width: 120px; height: 100px;
-    margin-bottom: 20px;
-  }
-  .cf-form-icon {
-    position: absolute; top: 0; left: 50%; width: 64px; height: 52px;
-    transform: translateX(-50%);
-    animation: formIconFloat 1.6s cubic-bezier(0.45,0,0.55,1) infinite;
-  }
-  @keyframes formIconFloat {
-    0%   { transform: translateX(-50%) translateY(0) rotate(-12deg); }
-    50%  { transform: translateX(-50%) translateY(-14px) rotate(6deg); }
-    100% { transform: translateX(-50%) translateY(0) rotate(-12deg); }
-  }
-  /* The tray under the form icon */
-  .cf-form-tray {
-    position: absolute; bottom: 10px; left: 50%;
-    width: 80px; height: 18px;
-    transform: translateX(-50%);
-  }
-  .cf-form-tray path {
-    fill: none; stroke: url(#malvecGrad); stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-dasharray: 120; stroke-dashoffset: 120;
-    animation: trayDraw 1.2s ease forwards;
-  }
-  @keyframes trayDraw { to { stroke-dashoffset: 0; } }
-
-  .cf-processing-text {
-    font-family: 'Degular Display', sans-serif;
-    font-size: 20px; font-weight: 600; color: var(--dark);
-    letter-spacing: -0.01em;
-    margin-bottom: 14px;
-  }
-  .cf-processing-dots { display: flex; gap: 8px; justify-content: center; }
-  .cf-processing-dots span {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--grad);
-    animation: dotBounce 1.4s ease-in-out infinite;
-  }
-  .cf-processing-dots span:nth-child(2) { animation-delay: 0.16s; }
-  .cf-processing-dots span:nth-child(3) { animation-delay: 0.32s; }
-  @keyframes dotBounce {
-    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-    40%           { transform: scale(1);   opacity: 1; }
-  }
-
-  /* ── Phase 2: Success ── */
-  .cf-phase-success {
-    display: none; flex-direction: column; align-items: center;
-    animation: successFadeIn 0.5s ease forwards;
-  }
-  .cf-phase-success.visible { display: flex; }
-  @keyframes successFadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* Animated circle + checkmark */
-  .cf-success-ring-wrap {
-    position: relative; width: 120px; height: 120px; margin-bottom: 36px;
-  }
-  .cf-success-ring {
-    width: 120px; height: 120px;
-    transform: rotate(-90deg);
-  }
-  .cf-success-ring circle {
-    fill: none; stroke-width: 3;
-    stroke-linecap: round;
-  }
-  .cf-success-ring .ring-bg  { stroke: rgba(22,0,38,0.06); }
-  .cf-success-ring .ring-fg  {
-    stroke: url(#malvecGrad);
-    stroke-dasharray: 340; stroke-dashoffset: 340;
-    animation: ringDraw 1s cubic-bezier(0.65,0,0.35,1) 0.15s forwards;
-  }
-  @keyframes ringDraw { to { stroke-dashoffset: 0; } }
-
-  .cf-success-check {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-  }
-  .cf-success-check path {
-    stroke: #5b0e6e; stroke-width: 3; fill: none;
-    stroke-linecap: round; stroke-linejoin: round;
-    stroke-dasharray: 36; stroke-dashoffset: 36;
-    animation: checkDraw 0.5s ease 0.9s forwards;
-  }
-  @keyframes checkDraw { to { stroke-dashoffset: 0; } }
-
-  /* Sparkle particles */
-  .cf-sparkles {
-    position: absolute; inset: -30px; pointer-events: none;
-  }
-  .cf-sparkle {
-    position: absolute; border-radius: 50%;
-    opacity: 0;
-    animation: sparkleBurst 1s ease forwards;
-  }
-  @keyframes sparkleBurst {
-    0%   { transform: translate(0,0) scale(0); opacity: 1; }
-    60%  { opacity: 1; }
-    100% { transform: var(--spark-to) scale(0); opacity: 0; }
-  }
-
-  .cf-success-title {
-    font-family: 'Degular Display', sans-serif;
-    font-size: 30px; font-weight: 700;
-    letter-spacing: -0.02em; color: var(--dark);
-    margin-bottom: 12px;
-    opacity: 0; animation: textUp 0.5s ease 1.2s forwards;
-  }
-  .cf-success-body {
-    font-size: 15px; line-height: 1.65;
-    color: rgba(22,0,38,0.58); max-width: 380px;
-    margin-bottom: 40px;
-    opacity: 0; animation: textUp 0.5s ease 1.4s forwards;
-  }
-  @keyframes textUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-  .cf-popup-close {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 15px 40px;
-    background: var(--grad); color: var(--cream);
-    border: none; border-radius: 100px;
-    font-family: inherit; font-size: 14px; font-weight: 500;
-    letter-spacing: 0.05em; cursor: pointer;
-    box-shadow: 0 4px 32px rgba(159,0,74,0.3);
-    transition: transform 0.2s, box-shadow 0.3s;
-    opacity: 0; animation: textUp 0.5s ease 1.55s forwards;
-  }
-  .cf-popup-close:hover { transform: translateY(-2px); box-shadow: 0 8px 48px rgba(159,0,74,0.5); }
-  /* Service multi-hint */
-  .cf-service-hint {
-    display: none;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 10px;
-    padding: 12px 16px;
-    background: rgba(159,0,74,0.07);
-    border: 1px solid rgba(159,0,74,0.22);
-    border-radius: 12px;
-    font-size: 12px;
-    line-height: 1.55;
-    color: rgba(22,0,38,0.72);
-    animation: hintSlide 0.28s ease both;
-  }
-  .cf-service-hint.visible { display: flex; }
-  .cf-service-hint svg { flex-shrink: 0; margin-top: 1px; }
-  @keyframes hintSlide {
-    from { opacity: 0; transform: translateY(-6px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
   /* contact form — label alignment & cursor overrides */
   .cf-form .cf-label { text-align: left; display: block; }
   #contact, #contact * { cursor: auto; }
@@ -868,23 +657,188 @@
     transform: translateY(0);
   }
 
-  /* FOOTER */
-  footer { padding: 80px 48px 40px; border-top: 1px solid rgba(239,238,230,0.06); }
-  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 60px; }
-  .footer-logo { font-size: 32px; font-weight: 700; letter-spacing: 0.2em; color: var(--cream); margin-bottom: 16px; }
-  .footer-tagline { font-size: 14px; color: rgba(239,238,230,0.5); max-width: 260px; line-height: 1.6; }
-  .footer-links { display: flex; gap: 80px; }
-  .footer-col h4 { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(239,238,230,0.4); margin-bottom: 20px; }
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-  .footer-col a { color: rgba(239,238,230,0.65); text-decoration: none; font-size: 14px; transition: color 0.2s; }
-  .footer-col a:hover { color: var(--cream); }
-  .footer-bottom {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 32px; border-top: 1px solid rgba(239,238,230,0.06);
-    font-size: 12px; color: rgba(239,238,230,0.4); letter-spacing: 0.05em;
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    overflow: hidden;
+    background: #0e0810;
+    padding: 80px 48px 40px;
   }
-  .footer-bottom span { display: flex; align-items: center; gap: 6px; }
-  .argentina-dot { width: 8px; height: 8px; background: var(--pink); border-radius: 50%; }
+
+  /* Orbs */
+  .footer-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform, opacity;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  }
+  /* Staggered reveal when footer gets .orbs-visible */
+  footer.orbs-visible .footer-orb-1 { opacity: 0.75; transition-delay: 0ms; }
+  footer.orbs-visible .footer-orb-2 { opacity: 0.75; transition-delay: 180ms; }
+  footer.orbs-visible .footer-orb-3 { opacity: 0.75; transition-delay: 320ms; }
+  footer.orbs-visible .footer-orb-4 { opacity: 0.75; transition-delay: 500ms; }
+
+  /* Orbs — clustered near footer center, sizes varied */
+  /* NOTE: solid background-color is used (not gradient) so CSS can
+     interpolate colors smoothly between keyframe stops. The
+     filter:blur + border-radius:50% already produces a soft blob. */
+  .footer-orb-1 {
+    width: 380px; height: 380px;
+    filter: blur(90px);
+    top: -60px; left: calc(50% - 300px);
+    animation: orbColor1 12s ease-in-out infinite, orbDrift1 9s ease-in-out infinite alternate;
+  }
+  .footer-orb-2 {
+    width: 260px; height: 260px;
+    filter: blur(78px);
+    top: 30px; left: calc(50% + 10px);
+    animation: orbColor2 16s ease-in-out infinite, orbDrift2 13s ease-in-out infinite alternate;
+  }
+  .footer-orb-3 {
+    width: 310px; height: 310px;
+    filter: blur(85px);
+    bottom: -50px; left: calc(50% - 200px);
+    animation: orbColor3 10s ease-in-out infinite, orbDrift3 7s ease-in-out infinite alternate;
+  }
+  .footer-orb-4 {
+    width: 220px; height: 220px;
+    filter: blur(72px);
+    top: 25%; left: calc(50% + 60px);
+    animation: orbColor4 14s ease-in-out infinite, orbDrift4 11s ease-in-out infinite alternate;
+  }
+
+  /* Color cycles — solid colors so the browser can smoothly interpolate */
+  @keyframes orbColor1 {
+    0%   { background: #c0185c; }
+    25%  { background: #d1386a; }
+    50%  { background: #8b1a4a; }
+    75%  { background: #f4a0b8; }
+    100% { background: #c0185c; }
+  }
+  @keyframes orbColor2 {
+    0%   { background: #3d0d52; }
+    25%  { background: #8b1a4a; }
+    50%  { background: #c0185c; }
+    75%  { background: #d1386a; }
+    100% { background: #3d0d52; }
+  }
+  @keyframes orbColor3 {
+    0%   { background: #d1386a; }
+    25%  { background: #3d0d52; }
+    50%  { background: #f4a0b8; }
+    75%  { background: #8b1a4a; }
+    100% { background: #d1386a; }
+  }
+  @keyframes orbColor4 {
+    0%   { background: #f4a0b8; }
+    25%  { background: #c0185c; }
+    50%  { background: #d1386a; }
+    75%  { background: #3d0d52; }
+    100% { background: #f4a0b8; }
+  }
+
+  /* Drift — centered, all durations unique, ±15–25px range */
+  @keyframes orbDrift1 {
+    0%   { transform: translate(0px,    0px); }
+    100% { transform: translate(18px,  -15px); }
+  }
+  @keyframes orbDrift2 {
+    0%   { transform: translate(0px,  0px); }
+    100% { transform: translate(-22px, 20px); }
+  }
+  @keyframes orbDrift3 {
+    0%   { transform: translate(0px,  0px); }
+    100% { transform: translate(15px, 24px); }
+  }
+  @keyframes orbDrift4 {
+    0%   { transform: translate(0px,    0px); }
+    100% { transform: translate(-16px, -22px); }
+  }
+
+  /* Footer content */
+  .footer-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Center logo area */
+  .footer-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 56px;
+    animation: footerLogoIn 1s 0.1s cubic-bezier(.2,.9,.2,1) both;
+  }
+  @keyframes footerLogoIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .footer-center img {
+    width: clamp(120px, 14vw, 180px);
+    height: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+  }
+  .footer-center-tagline {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(244, 160, 184, 0.55);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  /* Bottom bar */
+  .footer-bottom-bar {
+    width: 100%;
+    border-top: 0.5px solid rgba(255,255,255,0.10);
+    padding-top: 28px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+  }
+  .footer-nav {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .footer-nav--right { justify-content: flex-end; }
+  .footer-nav a {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-nav a:hover { color: rgba(255, 180, 200, 0.8); }
+  .footer-copy {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.22);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    footer { padding: 64px 24px 36px; }
+    .footer-bottom-bar {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer-nav { justify-content: center; flex-wrap: wrap; gap: 20px; }
+    .footer-nav--right { justify-content: center; }
+    .footer-copy { order: -1; }
+  }
 
   /* SCROLL REVEAL */
   .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
@@ -911,8 +865,9 @@
     .hero { padding: 80px 24px 40px; height: 100svh; }
     section { padding: 100px 24px 80px; }
     /* services section padding handled by React component */
-    .philosophy { grid-template-columns: 1fr; }
-    .philosophy-visual { display: none; }
+    .about-header { grid-template-columns: 1fr; gap: 28px; }
+    .about-blob-img { width: 100%; }
+    .about-metrics { grid-template-columns: repeat(2, 1fr); gap: 16px; }
     .process-carousel { overflow-x: auto; margin-left: -24px; width: 100vw; }
     .process-item { flex: 0 0 85%; }
     .footer-top { flex-direction: column; gap: 40px; }
@@ -934,13 +889,13 @@
   
   /* loader image (using supplied PNG) */
   .preloader-logo {
-    max-width: 60px;        /* 35% smaller than previous 90px */
-    width: 12vw;
+    max-width: 140px;        /* larger on loading screen only */
+    width: 16vw;
     height: auto;
     opacity: 0;
-    transform: scale(0.5);
-    animation: logoGrow 0.8s ease-out forwards;
-    transition: opacity 0.4s ease;
+    transform: scale(0.85);
+    animation: logoGrow 0.9s cubic-bezier(.2,.9,.2,1) forwards;
+    transition: opacity 0.4s ease, transform 0.4s ease;
   }
   .preloader-logo img {
     display: block;
@@ -954,9 +909,13 @@
   .preloader-logo.fade-out { opacity: 0; transition: opacity 0.4s ease; }
 
   @keyframes logoGrow {
-    from { opacity: 0; transform: scale(0.5); }
+    from { opacity: 0; transform: scale(0.85); }
+    80%  { opacity: 1; transform: scale(1.02); }
     to   { opacity: 1; transform: scale(1); }
   }
+
+  /* when hiding, gently nudge and smooth transform to avoid abrupt jump */
+  .preloader-logo.fade-out { opacity: 0; transform: scale(0.98) translateY(-6px); transition: opacity 0.45s ease, transform 0.45s ease; }
 
   /* text removed; logo only on preloader */
   body.loading { overflow: hidden !important; }
@@ -965,7 +924,7 @@
   .text-reveal-section {
     position: relative;
     overflow: hidden;
-    padding: 6rem 0 14rem;
+    padding: 6rem 0 9rem;
     perspective: 2000px;
     background: #050506;
   }
@@ -985,7 +944,6 @@
     height: 100%;
     object-fit: cover;
     object-position: center;
-    filter: grayscale(1);
   }
 
   .text-reveal__img-box:nth-child(1) { top: 5%;  left: 3%;   max-width: 22vw; }
@@ -997,10 +955,11 @@
     text-align: center;
     width: 100%;
     padding: 0 3rem;
-    font-size: clamp(2.8rem, 5.5vw, 7rem);
-    line-height: 1.25;
-    font-weight: 500;
-    font-family: 'Lora', Georgia, serif;
+    font-size: clamp(2.6rem, 6.5vw, 5rem);
+    line-height: 1.1;
+    font-weight: 800;
+    font-style: italic;
+    font-family: 'Inter', sans-serif;
     color: white;
     transform-origin: 50% 0;
     will-change: transform;
@@ -1017,28 +976,58 @@
     margin-top: 3.5rem;
   }
 
+  .tr-quote-wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 2rem;
+  }
+  .tr-quote {
+    font-family: 'DM Sans', sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    line-height: 1.6;
+    color: white;
+  }
+  .tr-quote-attr {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    color: white;
+    margin-top: 16px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
   @media screen and (max-width: 1024px) {
-    .text-reveal-section { padding: 5rem 0 16rem; }
-    .text-reveal__line { font-size: clamp(2.2rem, 6vw, 5rem); }
+    .text-reveal-section { padding: 5rem 0 10rem; }
+    .text-reveal__line { font-size: clamp(1.8rem, 5.5vw, 4rem); }
     .text-reveal__line--gap { margin-top: 2.5rem; }
     .text-reveal__img-box { max-width: 36vw !important; }
   }
 
   @media screen and (max-width: 768px) {
-    .text-reveal-section { padding: 4rem 0 12rem; }
-    .text-reveal__line { font-size: clamp(1.8rem, 6.5vw, 3.5rem); padding: 0 1.5rem; }
+    .text-reveal-section { padding: 4rem 0 8rem; }
+    .text-reveal__line { font-size: clamp(1.6rem, 6.5vw, 3rem); padding: 0 1.5rem; }
     .text-reveal__line--gap { margin-top: 2rem; }
     .text-reveal__img-box { max-width: 42vw !important; }
   }
 
   @media screen and (max-width: 575px) {
-    .text-reveal__line { font-size: clamp(1.6rem, 7vw, 2.8rem); }
+    .text-reveal__line { font-size: clamp(1.4rem, 7vw, 2.2rem); }
     .text-reveal__line--gap { margin-top: 1.5rem; }
     .text-reveal__img-box { display: none; }
   }
 
   @media screen and (min-height: 900px) {
-    .text-reveal-section { padding: 6rem 0 22rem; }
+    .text-reveal-section { padding: 6rem 0 14rem; }
   }
 </style>
 <script type="module" src="/src/main.tsx"></script>
@@ -1048,18 +1037,16 @@
 <!-- PRELOADER -->
 <div id="preloader">
   <div class="preloader-logo" id="preloaderLogo">
-    <!-- the logo PNG should be placed at the specified path -->
-    <img src="logo.png" alt="MALVEC logo" />
+    <img src="/LOGO_MALVEC.png" alt="MALVEC logo" />
   </div>
 </div>
 <!-- /PRELOADER -->
 
-<div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="progress-bar" id="progressBar"></div>
 
 <nav id="navbar">
-  <div class="nav-logo">MALVEC</div>
+  <div class="nav-logo"><img src="/Logo_MALVEC_Completo.png" alt="Malvec" style="height:36px;width:auto;object-fit:contain;"></div>
   <ul class="nav-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#about">About</a></li>
@@ -1070,16 +1057,18 @@
 
 <section class="hero" id="home">
   <canvas id="hero-fluid-canvas"></canvas>
-  <div class="hero-bg"></div>
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
 
-  <div class="hero-tag">Digital Agency · Argentina</div>
-  <h1 class="hero-title">Design that moves<span class="line-grad">brands forward.</span></h1>
-  <p class="hero-sub">
-    Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
-  </p>
+  <div class="hero-content">
+    <h1 class="hero-title"><span style="white-space:nowrap">Design that moves</span><br><span class="line-grad">brands forward</span></h1>
+    <p class="hero-sub">
+      Design, development and strategy for brands that want to stand out in a saturated world. From Buenos Aires to the world.
+    </p>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+
 </section>
 
 <div class="marquee-section" id="marqueeSection">
@@ -1147,19 +1136,20 @@
 <section class="text-reveal-section">
   <!-- Floating images -->
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.15" data-opacity="0.85">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/anywhere-iiiwu.png" alt="Anywhere If It Is With You" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.25" data-opacity="0.70">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1634193295627-1cdddf751ebf?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/ice-ball-co.png" alt="Ice Ball Co" loading="lazy">
   </div>
   <div class="text-reveal__img-box has-tr-prlx" data-speed="0.10" data-opacity="0.80">
-    <img class="text-reveal__img" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&q=80" alt="" loading="lazy">
+    <img class="text-reveal__img" src="/assets/create-the-scene.jpg" alt="Create the Scene" loading="lazy">
   </div>
 
   <!-- Lines -->
-  <div class="text-reveal__line">Art is not only a form of expression,</div>
-  <div class="text-reveal__line">it is a way of discovering oneself.</div>
-  <div class="text-reveal__line text-reveal__line--gap">We Create websites that bring companies to life.</div>
+  <div class="text-reveal__line">Design creates culture.</div>
+  <div class="text-reveal__line">Culture shapes values.</div>
+  <div class="text-reveal__line text-reveal__line--gap">Values determine the future.</div>
+  <cite class="tr-quote-attr">&mdash; Robert L. Peters</cite>
 </section>
 
 <div id="services-react-root"></div>
@@ -1167,30 +1157,32 @@
 <div class="h-line"></div>
 
 <section id="about">
-  <div class="philosophy">
-    <div class="philosophy-visual">
-      <div class="phil-box phil-box-1 reveal-left">
-        <div class="section-label" style="margin-bottom:8px;color:rgba(239,238,230,0.5);font-size:10px;">Projects</div>
-        <div class="phil-metric">+80</div>
-        <div class="phil-metric-label">Brands transformed</div>
-      </div>
-      <div class="phil-box phil-box-3">
-        <div class="phil-metric">100%</div>
-        <div class="phil-metric-label">Dedication</div>
-      </div>
-      <div class="phil-box phil-box-2 reveal-right">
-        <div class="section-label" style="margin-bottom:8px;color:rgba(239,238,230,0.5);font-size:10px;">Origin</div>
-        <div class="phil-metric">ARG</div>
-        <div class="phil-metric-label">Buenos Aires, Argentina</div>
-      </div>
+  <!-- Top: two-column header -->
+  <div class="about-header">
+    <h2 class="about-headline">Argentine design.<br>Global quality.<br>Relentless craft.</h2>
+    <p class="about-body">MALVEC was born from the conviction that Argentine talent can compete — and win — in any market in the world. We combine the creativity and character of our culture with first-class technical standards, producing digital work that moves people and grows businesses.</p>
+  </div>
+
+  <!-- Middle: blob shape -->
+  <img class="about-blob-img" src="/assets/Blob.png" alt="">
+
+  <!-- Bottom: metrics row -->
+  <div class="about-metrics">
+    <div class="about-metric-card">
+      <div class="about-metric-num">+80</div>
+      <div class="about-metric-label">Brands transformed</div>
     </div>
-    <div class="philosophy-text reveal-right">
-      <div class="section-label">Who we are</div>
-      <h2 class="section-title">Argentine design. Global quality.</h2>
-      <div class="accent-line"></div>
-      <p>MALVEC was born from the conviction that Argentine talent can compete — and win — in any market in the world. We combine the creativity and character of our culture with first-class technical standards.</p>
-      <p>We're not just another agency. We're the team that gets involved in your business, understands your market, and executes every detail of your digital presence with surgical precision.</p>
-      <a href="#contact" class="btn-primary" style="margin-top:16px;display:inline-block;">Meet the team &rarr;</a>
+    <div class="about-metric-card">
+      <div class="about-metric-num">100%</div>
+      <div class="about-metric-label">Dedication</div>
+    </div>
+    <div class="about-metric-card">
+      <div class="about-metric-num">ARG</div>
+      <div class="about-metric-label">Buenos Aires, Argentina</div>
+    </div>
+    <div class="about-metric-card">
+      <div class="about-metric-num">5+</div>
+      <div class="about-metric-label">Years of experience</div>
     </div>
   </div>
 </section>
@@ -1280,63 +1272,48 @@
     <div class="section-label" style="justify-content:center;">Contact</div>
     <h2 class="section-title">Ready to build something great?</h2>
     <p>Tell us about your project. We'll get back to you within 24 hours with ideas and a no-commitment quote.</p>
-    <form class="cf-form" id="contactForm" action="https://formspree.io/f/mwvrvjdk" method="POST">
+    <form class="cf-form" id="contactForm" onsubmit="return false;">
 
       <div class="cf-row">
         <div class="cf-group cf-field-reveal">
           <label class="cf-label" for="cf-name">Name</label>
-          <input class="cf-input" id="cf-name" name="from_name" type="text" placeholder="Your name" autocomplete="given-name" required>
+          <input class="cf-input" id="cf-name" type="text" placeholder="Your name" autocomplete="given-name">
         </div>
         <div class="cf-group cf-field-reveal">
           <label class="cf-label" for="cf-lastname">Last Name</label>
-          <input class="cf-input" id="cf-lastname" name="from_lastname" type="text" placeholder="Your last name" autocomplete="family-name" required>
+          <input class="cf-input" id="cf-lastname" type="text" placeholder="Your last name" autocomplete="family-name">
         </div>
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-email">Email</label>
-        <input class="cf-input" id="cf-email" name="reply_to" type="email" placeholder="you@example.com" autocomplete="email" required>
-      </div>
-
-      <div class="cf-group cf-field-reveal">
-        <label class="cf-label" for="cf-phone">Phone <span style="font-size:11px;opacity:0.45;font-weight:400;">(optional)</span></label>
-        <input class="cf-input" id="cf-phone" name="phone" type="tel" placeholder="+54 9 11 0000-0000" autocomplete="tel">
+        <input class="cf-input" id="cf-email" type="email" placeholder="you@example.com" autocomplete="email">
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-service">Type of Service</label>
-        <select class="cf-select" id="cf-service" name="service_type" required>
+        <select class="cf-select" id="cf-service">
           <option value="" disabled selected>Select a service</option>
-          <option value="web-experience">Web Experience</option>
-          <option value="brand-identity">Brand Identity</option>
-          <option value="ecommerce">Ecommerce</option>
-          <option value="marketing">Marketing</option>
-          <option value="content">Content</option>
-          <option value="multiple">2 or more services</option>
+          <option value="branding">Branding</option>
+          <option value="web">Web Design</option>
+          <option value="social">Social Media</option>
+          <option value="combo">Full Combo</option>
         </select>
-        <div class="cf-service-hint" id="cf-service-hint" role="alert">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="8" cy="8" r="7.25" stroke="#9f004a" stroke-opacity="0.75" stroke-width="1.5"/>
-            <rect x="7.25" y="6.75" width="1.5" height="5.25" rx="0.75" fill="#9f004a" fill-opacity="0.8"/>
-            <circle cx="8" cy="4.5" r="0.9" fill="#9f004a" fill-opacity="0.8"/>
-          </svg>
-          <span>Please describe in the <strong>Description of Idea</strong> field below which services you need — we'll craft a combined proposal for you.</span>
-        </div>
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-site">Website or Instagram</label>
-        <input class="cf-input" id="cf-site" name="website" type="text" placeholder="yoursite.com or @yourhandle" required>
+        <input class="cf-input" id="cf-site" type="text" placeholder="yoursite.com or @yourhandle (optional)">
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-desc">Description of idea</label>
-        <textarea class="cf-textarea" id="cf-desc" name="message" placeholder="Tell us about your project or idea..." required></textarea>
+        <textarea class="cf-textarea" id="cf-desc" placeholder="Tell us about your project or idea..."></textarea>
       </div>
 
       <div class="cf-group cf-field-reveal">
         <label class="cf-label" for="cf-source">How did you find us?</label>
-        <select class="cf-select" id="cf-source" name="source" required>
+        <select class="cf-select" id="cf-source">
           <option value="" disabled selected>Select an option</option>
           <option value="instagram">Instagram</option>
           <option value="google">Google</option>
@@ -1347,114 +1324,41 @@
       </div>
 
       <div class="cf-field-reveal">
-        <button type="submit" class="cf-submit">Send</button>
+        <button type="submit" class="cf-submit">Send Message</button>
       </div>
 
     </form>
   </div>
 </section>
 
-<!-- ── Form animated popup (2 phases) ── -->
-<div class="cf-popup-overlay" id="cfPopupOverlay" role="dialog" aria-modal="true" aria-labelledby="cfSuccessTitle">
-
-  <!-- Shared gradient def -->
-  <svg width="0" height="0" style="position:absolute">
-    <defs>
-      <linearGradient id="malvecGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"   stop-color="#160026"/>
-        <stop offset="100%" stop-color="#9f004a"/>
-      </linearGradient>
-    </defs>
-  </svg>
-
-  <div class="cf-popup-card">
-  <div class="cf-popup-stage">
-
-    <!-- PHASE 1: Processing -->
-    <div class="cf-phase-processing" id="cfPhaseProcessing">
-      <div class="cf-form-icon-wrap">
-        <!-- Form / document icon -->
-        <svg class="cf-form-icon" viewBox="0 0 64 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4" y="2" width="56" height="44" rx="6" fill="url(#malvecGrad)" />
-          <rect x="4" y="2" width="56" height="44" rx="6" fill="rgba(255,255,255,0.12)" />
-          <line x1="16" y1="16" x2="48" y2="16" stroke="#efeee6" stroke-opacity="0.6" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="16" y1="24" x2="42" y2="24" stroke="#efeee6" stroke-opacity="0.4" stroke-width="2.5" stroke-linecap="round"/>
-          <line x1="16" y1="32" x2="36" y2="32" stroke="#efeee6" stroke-opacity="0.25" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
-        <!-- Tray arc -->
-        <svg class="cf-form-tray" viewBox="0 0 80 18" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 2 Q40 22 76 2" />
-        </svg>
-      </div>
-      <p class="cf-processing-text">Processing your form</p>
-      <div class="cf-processing-dots"><span></span><span></span><span></span></div>
-    </div>
-
-    <!-- PHASE 2: Success -->
-    <div class="cf-phase-success" id="cfPhaseSuccess">
-
-      <div class="cf-success-ring-wrap">
-        <!-- Ring -->
-        <svg class="cf-success-ring" viewBox="0 0 120 120">
-          <circle class="ring-bg" cx="60" cy="60" r="54"/>
-          <circle class="ring-fg" cx="60" cy="60" r="54"/>
-        </svg>
-        <!-- Check -->
-        <svg class="cf-success-check" width="40" height="40" viewBox="0 0 40 40">
-          <path d="M10 20 L17 27 L30 13"/>
-        </svg>
-        <!-- Sparkle container (JS fills these) -->
-        <div class="cf-sparkles" id="cfSparkles"></div>
-      </div>
-
-      <p class="cf-success-title" id="cfSuccessTitle">Form Sent.</p>
-      <p class="cf-success-body">Thanks for reaching out — we'll get back to you<br>within 24 hours with ideas and next steps.</p>
-      <button class="cf-popup-close" id="cfPopupClose">Back to site</button>
-    </div>
-
-  </div>
-  </div>
-</div>
-
 <footer>
-  <div class="footer-top">
-    <div>
-      <div class="footer-logo">MALVEC</div>
-      <p class="footer-tagline">Argentine digital agency. Design, development and marketing that deliver results.</p>
+  <!-- Orbs -->
+  <div class="footer-orb footer-orb-1"></div>
+  <div class="footer-orb footer-orb-2"></div>
+  <div class="footer-orb footer-orb-3"></div>
+  <div class="footer-orb footer-orb-4"></div>
+
+  <div class="footer-inner">
+    <!-- Centered logo + tagline -->
+    <div class="footer-center">
+      <img src="/LOGO_MALVEC.png" alt="MALVEC">
+      <span class="footer-center-tagline">Argentine design &mdash; global quality</span>
     </div>
-    <div class="footer-links">
-      <div class="footer-col">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="/services/web-experience">Web Experience</a></li>
-          <li><a href="/services/brand-identity">Brand Identity</a></li>
-          <li><a href="/services/ecommerce">Ecommerce</a></li>
-          <li><a href="/services/marketing">Marketing</a></li>
-          <li><a href="/services/content">Content</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Portfolio</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Social</h4>
-        <ul>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">LinkedIn</a></li>
-          <li><a href="#">Behance</a></li>
-        </ul>
-      </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom-bar">
+      <ul class="footer-nav">
+        <li><a href="#services">Work</a></li>
+        <li><a href="#about">Studio</a></li>
+        <li><a href="#process">Journal</a></li>
+      </ul>
+      <span class="footer-copy">&copy; 2025 MALVEC</span>
+      <ul class="footer-nav footer-nav--right">
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </div>
-  </div>
-  <div class="footer-bottom">
-    <span>&copy; 2025 MALVEC. All rights reserved.</span>
-    <span><span class="argentina-dot"></span>Proudly made in Argentina</span>
   </div>
 </footer>
 
@@ -1470,27 +1374,29 @@
     }, 1500);
   });
 
-  const cursor = document.getElementById('cursor');
   const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  let lastTrailX = 0, lastTrailY = 0;
+  const HALF = 18; // half of 36px
+  let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  let rx = mx, ry = my;
+  const heroEl = document.querySelector('.hero');
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.transform = 'translate(' + (mx - 5) + 'px, ' + (my - 5) + 'px)';
-  });
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
-  function animateRing() {
-    rx += (mx - rx - 18) * 0.12;
-    ry += (my - ry - 18) * 0.12;
-    ring.style.transform = 'translate(' + rx + 'px, ' + ry + 'px)';
-    requestAnimationFrame(animateRing);
+  function animateCursor() {
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.transform = 'translate(' + (rx - HALF) + 'px, ' + (ry - HALF) + 'px)';
+    // Only show ring when cursor is strictly below the hero section
+    var heroBounds = heroEl ? heroEl.getBoundingClientRect() : { bottom: 0 };
+    var belowHero = my > heroBounds.bottom;
+    ring.style.visibility = belowHero ? '' : 'hidden';
+    requestAnimationFrame(animateCursor);
   }
-  animateRing();
+  animateCursor();
 
   document.querySelectorAll('a, button, [data-card]').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { ring.classList.add('hovered'); });
-    el.addEventListener('mouseleave', function() { ring.classList.remove('hovered'); });
+    el.addEventListener('mouseenter', function() { ring.style.width = ring.style.height = '52px'; ring.style.marginLeft = ring.style.marginTop = '-8px'; });
+    el.addEventListener('mouseleave', function() { ring.style.width = ring.style.height = ''; ring.style.marginLeft = ring.style.marginTop = ''; });
   });
 
   document.querySelectorAll('[data-card]').forEach(function(card) {
@@ -1503,11 +1409,21 @@
   });
 
   var pb = document.getElementById('progressBar');
+  var navbar = document.getElementById('navbar');
+  var scrollRAF = false;
+
   window.addEventListener('scroll', function() {
-    var scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    pb.style.width = scrolled + '%';
-    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-  });
+    if (!scrollRAF) {
+      scrollRAF = true;
+      requestAnimationFrame(function() {
+        var y = window.scrollY;
+        var scrolled = (y / (document.body.scrollHeight - window.innerHeight)) * 100;
+        pb.style.width = scrolled + '%';
+        navbar.classList.toggle('scrolled', y > 60);
+        scrollRAF = false;
+      });
+    }
+  }, { passive: true });
 
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
@@ -1517,13 +1433,6 @@
 
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger').forEach(function(el) {
     observer.observe(el);
-  });
-
-  window.addEventListener('scroll', function() {
-    var y = window.scrollY;
-    var o1 = document.querySelector('.orb-1'), o2 = document.querySelector('.orb-2');
-    if (o1) o1.style.transform = 'translate(' + (y*0.04) + 'px,' + (-y*0.06) + 'px)';
-    if (o2) o2.style.transform = 'translate(' + (-y*0.03) + 'px,' + (y*0.02) + 'px)';
   });
 
   /* Marquee — RAF loop; speed lerps on scroll, never resets position */
@@ -1678,136 +1587,36 @@
     requestAnimationFrame(tick);
   })();
 
-  /* ── Contact form: entrance + service hint + AJAX submit + popup ── */
+  /* Contact form — staggered field entrance */
   (function () {
-
-    /* 1. Staggered field entrance */
     var fields = document.querySelectorAll('#contactForm .cf-field-reveal');
-    fields.forEach(function (el, i) { el.style.transitionDelay = (i * 0.1) + 's'; });
+    fields.forEach(function (el, i) {
+      el.style.transitionDelay = (i * 0.1) + 's';
+    });
     var formObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) { entry.target.classList.add('visible'); formObserver.unobserve(entry.target); }
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          formObserver.unobserve(entry.target);
+        }
       });
     }, { threshold: 0.15 });
     fields.forEach(function (el) { formObserver.observe(el); });
+  })();
 
-    /* 2. Service select → hint + placeholder */
-    var serviceSelect = document.getElementById('cf-service');
-    var serviceHint   = document.getElementById('cf-service-hint');
-    var descArea      = document.getElementById('cf-desc');
-    var DEFAULT_PH    = 'Tell us about your project or idea...';
-    var MULTI_PH      = 'Tell us which services you need and describe your project or idea...';
-    if (serviceSelect && serviceHint) {
-      serviceSelect.addEventListener('change', function () {
-        var isMulti = serviceSelect.value === 'multiple';
-        serviceHint.classList.toggle('visible', isMulti);
-        if (descArea) descArea.placeholder = isMulti ? MULTI_PH : DEFAULT_PH;
-      });
-    }
-
-    /* 3. AJAX submit → 2-phase animated popup */
-    var form          = document.getElementById('contactForm');
-    var btn           = form && form.querySelector('.cf-submit');
-    var overlay       = document.getElementById('cfPopupOverlay');
-    var phaseProcess  = document.getElementById('cfPhaseProcessing');
-    var phaseSuccess  = document.getElementById('cfPhaseSuccess');
-    var sparklesEl    = document.getElementById('cfSparkles');
-    var closeBtn      = document.getElementById('cfPopupClose');
-    if (!form || !btn || !overlay) return;
-
-    /* Sparkle particles generator */
-    var SPARKLE_COLORS = ['#9f004a','#160026','#d4468e','#5b0e6e','#ff4da6','#7b2fbe'];
-    function createSparkles() {
-      sparklesEl.innerHTML = '';
-      for (var i = 0; i < 14; i++) {
-        var el = document.createElement('span');
-        el.className = 'cf-sparkle';
-        var angle = (360 / 14) * i;
-        var dist  = 60 + Math.random() * 40;
-        var tx = Math.cos(angle * Math.PI / 180) * dist;
-        var ty = Math.sin(angle * Math.PI / 180) * dist;
-        var size = 5 + Math.random() * 7;
-        el.style.cssText =
-          'width:' + size + 'px;height:' + size + 'px;' +
-          'top:50%;left:50%;margin:-' + (size/2) + 'px;' +
-          'background:' + SPARKLE_COLORS[i % SPARKLE_COLORS.length] + ';' +
-          '--spark-to:translate(' + tx + 'px,' + ty + 'px);' +
-          'animation-delay:' + (0.7 + Math.random() * 0.3) + 's;' +
-          'animation-duration:' + (0.7 + Math.random() * 0.5) + 's;';
-        sparklesEl.appendChild(el);
-      }
-    }
-
-    function resetPopup() {
-      phaseProcess.classList.remove('hidden');
-      phaseSuccess.classList.remove('visible');
-      sparklesEl.innerHTML = '';
-    }
-
-    function showProcessing() {
-      resetPopup();
-      overlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function showSuccess() {
-      phaseProcess.classList.add('hidden');
-      phaseSuccess.classList.add('visible');
-      createSparkles();
-    }
-
-    function closePopup() {
-      overlay.classList.remove('active');
-      document.body.style.overflow = '';
-      setTimeout(resetPopup, 400);
-    }
-
-    /* Close handlers */
-    if (closeBtn) closeBtn.addEventListener('click', closePopup);
-    overlay.addEventListener('click', function (e) { if (e.target === overlay) closePopup(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      var originalText = btn.textContent;
-      btn.textContent = 'Sending…';
-      btn.disabled = true;
-
-      /* Show processing phase immediately */
-      showProcessing();
-
-      var data = new FormData(form);
-
-      fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      })
-      .then(function (res) {
-        if (res.ok) {
-          form.reset();
-          if (serviceHint) serviceHint.classList.remove('visible');
-          if (descArea)    descArea.placeholder = DEFAULT_PH;
-          /* Hold processing for a beat, then transition to success */
-          setTimeout(showSuccess, 1800);
-        } else {
-          return res.json().then(function (json) { throw new Error(json.error || 'Server error'); });
+  /* Footer orbs — fade in on scroll enter, stay visible */
+  (function () {
+    var footerEl = document.querySelector('footer');
+    if (!footerEl) return;
+    var footerOrbObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          footerEl.classList.add('orbs-visible');
+          footerOrbObserver.unobserve(footerEl);
         }
-      })
-      .catch(function (err) {
-        console.error('Form error:', err);
-        closePopup();
-        btn.style.background = 'linear-gradient(135deg,#2e0a0a 0%,#7a1010 100%)';
-        btn.textContent = 'Failed — try again';
-        setTimeout(function () { btn.style.background = ''; btn.textContent = originalText; }, 4000);
-      })
-      .finally(function () {
-        btn.disabled = false;
-        if (btn.textContent === 'Sending…') btn.textContent = originalText;
       });
-    });
-
+    }, { threshold: 0.2 });
+    footerOrbObserver.observe(footerEl);
   })();
 </script>
 
@@ -1859,7 +1668,7 @@
 
   /* ---- WebGL context ---- */
   function getWebGLContext(canvas) {
-    var params = { alpha: false, depth: false, stencil: false, antialias: false };
+    var params = { alpha: true, depth: false, stencil: false, antialias: false };
     var gl = canvas.getContext('webgl2', params);
     var isWebGL2 = !!gl;
     if (!isWebGL2)
@@ -1874,8 +1683,8 @@
       supportLinearFiltering = gl.getExtension('OES_texture_half_float_linear');
     }
 
-    /* Dark violet background #160026 = rgb(22, 0, 38) */
-    gl.clearColor(22/255, 0, 38/255, 1.0);
+    /* Transparent background — hero CSS gradient shows through */
+    gl.clearColor(0, 0, 0, 0);
 
     var halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : halfFloat.HALF_FLOAT_OES;
     var formatRGBA, formatRG, formatR;
@@ -2069,11 +1878,7 @@
   }
 
   function resizeCanvas() {
-    /* Only reinitialise when the size changes by more than 4px — this prevents
-       1-pixel layout-shift jitter (scrollbar appearing, Lenis reflow, etc.)
-       from resetting the entire simulation every frame.                       */
-    if (Math.abs(canvas.width  - canvas.clientWidth)  > 4 ||
-        Math.abs(canvas.height - canvas.clientHeight) > 4) {
+    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
       canvas.width  = canvas.clientWidth;
       canvas.height = canvas.clientHeight;
       initFramebuffers();
@@ -2165,16 +1970,11 @@
   /* ---- Events — scoped to hero, always react on hover ---- */
   hero.addEventListener('mousemove', function(e) {
     var rect = hero.getBoundingClientRect();
-    var x  = e.clientX - rect.left;
-    var y  = e.clientY - rect.top;
-    var dx = (x - pointers[0].x) * 8.0;
-    var dy = (y - pointers[0].y) * 8.0;
-    /* clamp velocity to avoid numerical blow-up on fast sweeps */
-    var len = Math.sqrt(dx * dx + dy * dy);
-    if (len > 600) { dx = dx / len * 600; dy = dy / len * 600; }
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
     pointers[0].moved = true;
-    pointers[0].dx = dx;
-    pointers[0].dy = dy;
+    pointers[0].dx = (x - pointers[0].x) * 8.0;
+    pointers[0].dy = (y - pointers[0].y) * 8.0;
     pointers[0].x  = x;
     pointers[0].y  = y;
   });
@@ -2238,14 +2038,14 @@
     // Image reveal tied to corresponding line
     if (images[index]) {
       var targetOpacity = parseFloat(images[index].getAttribute('data-opacity')) || 0.85;
-      var startOffset   = window.innerWidth < 1024 ? '-=150' : '-=400';
       gsap.to(images[index], {
         opacity: targetOpacity,
+        duration: 0.35,
+        ease: 'power2.out',
         scrollTrigger: {
           trigger: line,
-          start: 'bottom bottom' + startOffset,
-          end: 'bottom top',
-          scrub: true
+          start: 'top 85%',
+          toggleActions: 'play none none reverse'
         }
       });
     }
