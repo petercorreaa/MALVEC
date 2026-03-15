@@ -390,24 +390,31 @@
     padding-top: 0.5rem;
   }
 
-  /* ── Middle blob image ── */
-  .about-blob-img {
-    display: block;
+  /* ── Blob + metrics composite layout ── */
+  /* The wrapper is sized by the blob image (aspect 4661:1340 = 28.74%).
+     Cards are absolutely positioned into the blob's negative space:
+       Top-left empty zone:    x=0..22.6%,  y=0..48%
+       Bottom-right empty zone: x=27.4..100%, y=51..100% (3 cards side-by-side) */
+  .about-blob-wrap {
+    position: relative;
     width: 100%;
-    max-width: none;
-    height: auto;
+    /* pad-bottom = img height / img width = 1340/4661 */
+    padding-bottom: 28.74%;
     margin: 0 auto 52px;
+  }
+  .about-blob-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    object-position: top left;
+    display: block;
   }
-
-  /* ── Bottom metrics row ── */
-  .about-metrics {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
+  /* Shared card styles */
   .about-metric-card {
-    padding: 32px 28px;
+    position: absolute;
+    padding: 20px 20px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(18px) saturate(160%);
@@ -415,21 +422,53 @@
     border: 1px solid rgba(255, 255, 255, 0.09);
     box-shadow: 0 8px 32px rgba(0,0,0,0.28),
                 inset 0 1px 0 rgba(255,255,255,0.07);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-sizing: border-box;
+  }
+  /* Left card — top-left negative space */
+  .about-metric-card--tl {
+    left: 0%;
+    top: 0%;
+    width: 22.4%;
+    height: 48%;
+  }
+  /* Right 3 cards — bottom-right negative space */
+  .about-metric-card--br1 {
+    left: 27.6%;
+    top: 52%;
+    width: 24.1%;
+    height: 48%;
+  }
+  .about-metric-card--br2 {
+    left: 51.85%;
+    top: 52%;
+    width: 24.1%;
+    height: 48%;
+  }
+  .about-metric-card--br3 {
+    left: 76.1%;
+    top: 52%;
+    width: 24.1%;
+    height: 48%;
   }
   .about-metric-num {
     font-family: 'Degular Display', sans-serif;
-    font-size: clamp(2.2rem, 3.5vw, 3.8rem);
+    font-size: clamp(1.6rem, 2.8vw, 3.8rem);
     font-weight: 700;
     line-height: 1;
     color: var(--cream);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .about-metric-label {
-    font-size: 12px;
+    font-size: clamp(9px, 0.75vw, 12px);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: rgba(239,238,230,0.5);
   }
+  /* .about-metrics is no longer used in the composite layout */
+  .about-metrics { display: contents; }
 
   /* Lenis Smooth Scroll */
   .lenis.lenis-smooth { scroll-behavior: auto; }
@@ -866,8 +905,12 @@
     section { padding: 100px 24px 80px; }
     /* services section padding handled by React component */
     .about-header { grid-template-columns: 1fr; gap: 28px; }
-    .about-blob-img { width: 100%; }
-    .about-metrics { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .about-blob-wrap { padding-bottom: 60%; }
+    .about-metric-card { padding: 14px 14px; }
+    .about-metric-card--tl { width: 38%; height: 44%; }
+    .about-metric-card--br1 { left: 27.6%; top: 56%; width: 24.1%; height: 44%; }
+    .about-metric-card--br2 { left: 51.85%; top: 56%; width: 24.1%; height: 44%; }
+    .about-metric-card--br3 { left: 76.1%; top: 56%; width: 24.1%; height: 44%; }
     .process-carousel { overflow-x: auto; margin-left: -24px; width: 100vw; }
     .process-item { flex: 0 0 85%; }
     .footer-top { flex-direction: column; gap: 40px; }
@@ -1163,24 +1206,24 @@
     <p class="about-body">MALVEC was born from the conviction that Argentine talent can compete — and win — in any market in the world. We combine the creativity and character of our culture with first-class technical standards, producing digital work that moves people and grows businesses.</p>
   </div>
 
-  <!-- Middle: blob shape -->
-  <img class="about-blob-img" src="/assets/Blob.png" alt="">
-
-  <!-- Bottom: metrics row -->
-  <div class="about-metrics">
-    <div class="about-metric-card">
+  <!-- Blob + overlaid stat cards: cards are direct siblings of img inside .about-blob-wrap -->
+  <div class="about-blob-wrap">
+    <img class="about-blob-img" src="/assets/Blob.png" alt="">
+    <!-- child 2: left card — top-left negative space -->
+    <div class="about-metric-card about-metric-card--tl">
       <div class="about-metric-num">+80</div>
       <div class="about-metric-label">Brands transformed</div>
     </div>
-    <div class="about-metric-card">
+    <!-- children 3-5: right cards — bottom-right negative space -->
+    <div class="about-metric-card about-metric-card--br1">
       <div class="about-metric-num">100%</div>
       <div class="about-metric-label">Dedication</div>
     </div>
-    <div class="about-metric-card">
+    <div class="about-metric-card about-metric-card--br2">
       <div class="about-metric-num">ARG</div>
       <div class="about-metric-label">Buenos Aires, Argentina</div>
     </div>
-    <div class="about-metric-card">
+    <div class="about-metric-card about-metric-card--br3">
       <div class="about-metric-num">5+</div>
       <div class="about-metric-label">Years of experience</div>
     </div>
