@@ -42,34 +42,7 @@ function HeroVisual({ index }: { index: string }) {
         }}
       />
 
-      {/* Accent gradient band */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '22%',
-          left: '-8%',
-          right: '18%',
-          height: '32%',
-          borderRadius: '18px',
-          background:
-            'linear-gradient(135deg, rgba(159,0,74,0.22) 0%, rgba(80,0,120,0.14) 100%)',
-          filter: 'blur(1px)',
-        }}
-      />
 
-      {/* Small pill accent */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '18%',
-          right: '-6%',
-          width: '42%',
-          height: '10%',
-          borderRadius: '100px',
-          background: 'rgba(159,0,74,0.12)',
-          border: '1px solid rgba(159,0,74,0.18)',
-        }}
-      />
 
       {/* Horizontal rule */}
       <div

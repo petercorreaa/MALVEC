@@ -6,7 +6,7 @@ import ServiceNav from '../components/services/ServiceNav'
 import ServiceHero from '../components/services/ServiceHero'
 import ServiceOverview from '../components/services/ServiceOverview'
 import ServiceCapabilities from '../components/services/ServiceCapabilities'
-import ServiceProjects from '../components/services/ServiceProjects'
+// ServiceProjects removed — "Selected Work" section no longer shown
 import ServiceCTA from '../components/services/ServiceCTA'
 
 // Page-level fade-in transition
@@ -66,8 +66,7 @@ export default function ServiceDetailPage() {
         deliverables={service.deliverables}
       />
 
-      {/* Selected work — large project cards */}
-      <ServiceProjects projects={service.projects} />
+
 
       {/* Final CTA — full-width dark closer */}
       <ServiceCTA
